@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+.content-box-container {
+  @apply mx-auto mt-10 flex w-7/8 flex-col justify-center rounded-xl bg-amber-200 p-5 font-semibold text-gray-600 shadow-lg transition-all duration-300 hover:shadow-xl;
+}

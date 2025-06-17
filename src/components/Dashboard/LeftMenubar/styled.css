@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+/* 공통 스타일 */
+.left-menu-bar a {
+  @apply cursor-pointer;
+}
+
+.left-menu-bar button {
+  @apply rounded-full border-none bg-white font-bold text-balance text-black shadow-md transition-all duration-300;
+}
+
+.left-menu-bar button:hover {
+  @apply -translate-y-0.5 transform bg-white;
+}
+
+.left-menu-bar button:active {
+  @apply translate-y-0 transform bg-amber-100;
+}
+
+.left-menu-bar {
+  @apply flex h-screen flex-col bg-gray-100;
+}
+
+.logo-box {
+  @apply flex flex-col items-center justify-center rounded-t-sm rounded-b-sm p-4;
+  background-image: url('../../../asset/left_logoBg02.jpg'); /* 이미지 경로는 실제 위치에 맞게 조정하세요 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.logo {
+  @apply h-16 w-16 rounded-full;
+}
+
+.user-info {
+  @apply mt-4 text-center text-white;
+}
+
+.menu-list {
+  @apply mt-4 flex flex-col;
+}
+
+.parent-menu {
+  @apply flex flex-col rounded-b-sm bg-[#2e9acc] text-white;
+}
+
+.child-menu-name {
+  @apply ml-4 pb-3;
+}
+
+@media (min-width: 900px) {
+  .parent-menu {
+    @apply items-start; /* 화면 크기가 md(768px) 이상일 때 왼쪽 정렬 */
+  }
+}
+
+@media (max-width: 900px) {
+  .parent-menu {
+    @apply items-center;
+  }
+}
+
+.parent-menu img {
+  @apply m-4 items-center;
+}
+
+.child-menu-link {
+  @apply mt-2 hidden w-full flex-col bg-blue-300 p-2 text-gray-700 shadow transition-all duration-300 ease-in-out group-hover:flex;
+}
+
+/* 활성화된 링크의 부모 메뉴 스타일 */
+.child-menu-link.active {
+  @apply mt-2 flex w-full flex-col bg-blue-300 p-2 text-gray-700 shadow;
+}
+
+.child-menu-link div {
+  @apply mb-2;
+}
+
+.styled-link {
+  @apply block rounded px-4 py-2 text-sm text-gray-700 transition-all duration-400 hover:bg-blue-600 hover:text-white;
+}
+
+.styled-link.active {
+  @apply bg-blue-600 text-white;
+}

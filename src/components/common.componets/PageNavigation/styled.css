@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+
+.pagination-container {
+  @apply mt-4 flex items-center justify-center gap-2;
+}
+
+.pagination-button {
+  @apply rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out;
+}
+
+.pagination-button:hover:not(:disabled) {
+  @apply -translate-y-0.5 border-blue-400 bg-blue-50 text-blue-600 shadow-md;
+}
+
+.pagination-button:active:not(:disabled) {
+  @apply translate-y-0 transform bg-blue-100;
+}
+
+.pagination-button:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.pagination-number-button {
+  @apply rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out hover:bg-blue-50;
+}
+
+.pagination-number-button.active {
+  @apply bg-blue-500 text-white shadow-md hover:bg-blue-600;
+}
+
+.pagination-numbers-container {
+  @apply flex gap-1;
+}
