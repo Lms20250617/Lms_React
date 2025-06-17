@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import logo_img from '../../asset/logo_img.png';
 import type { ILoginInfo } from '../../model/ILogin';
 import { loginInfoState } from '../../stores/userInfo';
 import './styled.css';
+import { modalState } from '../../stores/modalState';
+import { Portal } from '../../common/Portal';
+import { NoticeModal } from '../Support/Notice/NoticeModal/NoticeModal';
+import { SignupModal } from '../User/Signup/SignupModal/SignupModal';
 
 export interface IAccount {
   lgn_Id: string;
@@ -19,6 +23,17 @@ export const LoginMain = () => {
     pwd: '',
   });
   const navigate = useNavigate();
+  const [modal, setModal] = useRecoilState(modalState);
+
+  // ----------------------------//
+
+  const signupDetail = () => {
+    setModal({ isOpen: true });
+  };
+
+  const postSuccess = () => {
+    setModal({ isOpen: false });
+  };
 
   const loginHandler = () => {
     const param = new URLSearchParams();
@@ -41,6 +56,14 @@ export const LoginMain = () => {
   return (
     <>
       <div className="login-main">
+        {modal.isOpen && (
+          <Portal>
+            <SignupModal
+              id={modal.payload as number}
+              reSearch={() => {}}
+            ></SignupModal>
+          </Portal>
+        )}
         <div className="login-container">
           <div className="login-image">
             <img alt="" src={logo_img} />
@@ -88,7 +111,9 @@ export const LoginMain = () => {
               <button className="login-button" onClick={loginHandler}>
                 Login
               </button>
-              <button className="signup-button"> Sign Up </button>
+              <button className="signup-button" onClick={signupDetail}>
+                Sign Up
+              </button>
             </div>
           </div>
         </div>
