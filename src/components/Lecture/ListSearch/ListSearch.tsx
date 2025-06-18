@@ -1,11 +1,8 @@
 import { useContext, useRef, useState } from 'react';
 import './styeld.css';
-import { useRecoilState } from 'recoil';
-import { modalState } from '../../../stores/modalState';
 import { ListContext } from '../../../provider/Lecture/ListProvider';
 
 export const ListSearch = () => {
-  const [_, setModal] = useRecoilState(modalState);
   const title = useRef<HTMLInputElement>(null);
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
