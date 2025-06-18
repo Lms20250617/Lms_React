@@ -3,6 +3,8 @@ import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import { TestInfo } from '../pages/Lecture/Test/TestInfo';
+import { Test } from '../pages/Lecture/Test/Test';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -20,6 +22,19 @@ const routers: RouteObject[] = [
           {
             path: 'notice',
             Component: Notice,
+          },
+        ],
+      },
+      {
+        path: 'lecture',
+        children: [
+          {
+            path: 'test-info',
+            Component: TestInfo,
+          },
+          {
+            path: 'test',
+            Component: Test,
           },
         ],
       },
