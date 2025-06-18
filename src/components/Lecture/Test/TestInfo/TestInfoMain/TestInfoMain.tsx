@@ -11,6 +11,7 @@ import type {
   ITest,
   ITestResponse,
 } from '../../../../../model/lecture/test/ITest';
+import { TestRegisterModal } from '../TestInfoModal/TestRegisterModal';
 
 export const TestInfoMain = () => {
   //const { search } = useLocation();
@@ -55,15 +56,16 @@ export const TestInfoMain = () => {
 
   return (
     <div className="notice-main-container">
-      {modal.isOpen && (
-        <Portal>
-          <TestInfoModal
-            postSuccess={postSuccess}
-            id={noticeId}
-            setId={setNoticeId}
-          ></TestInfoModal>
-        </Portal>
-      )}
+      {modal.isOpen &&
+        (modal.payload === 'register' ? (
+          <Portal>
+            <TestRegisterModal />
+          </Portal>
+        ) : (
+          <Portal>
+            <TestInfoModal />
+          </Portal>
+        ))}
 
       <table className="notice-table">
         <thead className="notice-table-header">
@@ -96,7 +98,9 @@ export const TestInfoMain = () => {
                   <td className="notice-cell">
                     {test.testRegDate.split('.')[0].slice(0, 16)}
                   </td>
-                  <td className="notice-cell">시험문제보기</td>
+                  <td className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800">
+                    시험문제보기
+                  </td>
                 </tr>
               );
             })

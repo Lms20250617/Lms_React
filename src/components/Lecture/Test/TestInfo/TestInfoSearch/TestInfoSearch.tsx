@@ -19,7 +19,7 @@ export const TestInfoSearch = () => {
   const [endDate, setEndDate] = useState<string>();
   const [searchTag, setSearchTag] = useState<
     'lecName' | 'lecInstructorName' | 'lecRoomName'
-  >();
+  >('lecName');
   const { setSearchData } = useContext(TestInfoContext);
 
   // const navigate = useNavigate();
@@ -49,7 +49,7 @@ export const TestInfoSearch = () => {
   };
 
   const openModal = () => {
-    setModal({ isOpen: true });
+    setModal({ isOpen: true, payload: 'register' });
   };
 
   const handleSearchTagSelect = (e: BaseSyntheticEvent) => {
