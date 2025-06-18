@@ -4,14 +4,16 @@ import { MaterialContext } from '../../../../provider/support/MaterialProvier';
 import { modalState } from '../../../../stores/modalState';
 import './styeld.css';
 
-export const NoticeSearch = () => {
+export const MaterialSearch = () => {
 
   const [_, setModal] = useRecoilState(modalState);
   const title = useRef<HTMLInputElement>(null);
-  const [startDate, setStarDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const writer = useRef<HTMLInputElement>(null);
 
   const { setSearchData } =useContext(MaterialContext);
+
+  const [selectedValue, setSelectValue] = useState('title');
+  const [inputName, setInputName] = useState('');
 
 
   // const navigate = useNavigate();
@@ -32,10 +34,11 @@ export const NoticeSearch = () => {
 
     // navigate(querySring);
 
+    console.log(title.current?.value);
+
     setSearchData({
       title: title.current ? title.current.value : '',
-      startDate: startDate || '',
-      endDate: endDate || '',
+      writer: writer.current ? writer.current.value : '',
     })
 
   };
@@ -47,14 +50,21 @@ export const NoticeSearch = () => {
   return (
     <div className="notice-container">
       <div className="input-box">
-        제목: <input ref={title}></input>
+        제목: 
+        <select 
+        className='selectedValue'
+        name={selectedValue}
+        value={selectedValue}
+        onChange={(e) => {
+            setSelectValue(e.target.value);
+        }}
+        >
+            <option value='title'>제목</option>
+            <option value='writer'>작성자</option>
+        </select>
         <input 
-        type="date" 
-        onChange={(e) => setStarDate(e.target.value)}
-        ></input>
-        <input 
-        type="date" 
-        onChange={(e) => setEndDate(e.target.value)}
+        type="text" 
+        ref={selectedValue === 'title' ? title : writer}
         ></input>
         <button onClick={handlerSearch}>검색</button>
         <button onClick={openModal}>등록</button>

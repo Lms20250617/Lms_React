@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+.modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-gray-500/50 font-bold backdrop-blur-xs;
+}
+
+.modal-container {
+  @apply mx-4 max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white shadow-xl;
+}
+
+.modal-header {
+  @apply flex items-center justify-between rounded-t-lg border-b bg-slate-600 p-4 text-white;
+}
+
+.modal-title {
+  @apply text-lg font-semibold;
+}
+
+.modal-content {
+  @apply p-0;
+}
+
+.section-header {
+  @apply mb-1 bg-amber-500 px-4 py-2 font-semibold text-white;
+}
+
+.section-header-plan {
+  @apply bg-slate-400;
+}
+
+.detail-grid {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.detail-column {
+  @apply space-y-1;
+}
+
+.detail-row {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.detail-label {
+  @apply bg-slate-400 px-3 py-2 text-sm font-medium text-white;
+}
+
+.detail-value {
+  @apply col-span-2 border bg-gray-50 px-3 py-2 text-sm text-gray-500;
+}
+
+.plan-section {
+  @apply mb-6;
+}
+
+.plan-content {
+  @apply space-y-4;
+}
+
+.plan-item {
+  @apply mb-4;
+}
+
+.plan-label {
+  @apply mb-2 bg-slate-400 px-3 py-2 text-sm font-medium text-white;
+}
+
+.plan-placeholder {
+  @apply border bg-gray-50 px-3 py-2 text-sm text-gray-500;
+}
+
+.weekly-header {
+  @apply mb-2 grid grid-cols-3 grid-cols-[1fr_2fr_4fr] gap-1;
+}
+
+.weekly-header-cell {
+  @apply bg-slate-400 px-3 py-2 text-center text-sm font-medium text-white;
+}
+
+.weekly-row {
+  @apply mb-2 grid grid-cols-3 grid-cols-[1fr_2fr_4fr] gap-1;
+}
+
+.weekly-week {
+  @apply border bg-gray-50 px-3 py-2 text-center text-sm text-gray-500;
+}
+
+.weekly-input-cell {
+  @apply border bg-gray-50 px-3 py-2 text-sm;
+}
+
+.weekly-input {
+  @apply w-full bg-transparent outline-none;
+}
+
+.button-container {
+  @apply mt-4 space-x-2 text-center;
+}
+
+.button-container button {
+  @apply rounded-md px-4 py-2 transition-colors duration-200 first:bg-blue-500 first:text-white last:bg-gray-300 last:text-gray-700 first:hover:bg-blue-600 last:hover:bg-gray-400;
+}

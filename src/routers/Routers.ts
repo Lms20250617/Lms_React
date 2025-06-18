@@ -1,10 +1,13 @@
+import { Counsel } from './../pages/manage/Counsel';
 import { Notice } from './../pages/Support/Notice';
+import { Material } from './../pages/Support/Material';
 import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { TestInfo } from '../pages/Lecture/Test/TestInfo';
 import { Test } from '../pages/Lecture/Test/Test';
+import { List } from '../pages/Lecture/List';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -22,6 +25,28 @@ const routers: RouteObject[] = [
           {
             path: 'notice',
             Component: Notice,
+          },
+          {
+            path: 'learning-materials',
+            Component: Material,
+          },
+        ],
+      },
+      {
+        path: 'manage',
+        children: [
+          {
+            path: 'counsel',
+            Component: Counsel,
+          },
+        ],
+      },
+      {
+        path: 'lecture',
+        children: [
+          {
+            path: 'list',
+            Component: List,
           },
         ],
       },
