@@ -35,3 +35,7 @@
 .button-container button {
   @apply rounded-md px-4 py-2 transition-colors duration-200 first:bg-blue-500 first:text-white last:bg-gray-300 last:text-gray-700 first:hover:bg-blue-600 last:hover:bg-gray-400;
 }
+
+.border-line {
+  @apply table-auto border-collapse border border-gray-400/20;
+}
