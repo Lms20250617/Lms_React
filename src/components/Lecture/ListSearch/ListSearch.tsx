@@ -42,7 +42,6 @@ export const ListSearch = () => {
         ></input>
         <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
         <button onClick={handlerSearch}>검색</button>
-        <button onClick={() => setModal({ isOpen: true })}>등록</button>
       </div>
     </div>
   );
