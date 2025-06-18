@@ -1,4 +1,6 @@
+import { Counsel } from './../pages/manage/Counsel';
 import { Notice } from './../pages/Support/Notice';
+import { Material } from './../pages/Support/Material'
 import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
@@ -20,6 +22,19 @@ const routers: RouteObject[] = [
           {
             path: 'notice',
             Component: Notice,
+          },
+          {
+            path: 'learning-materials',
+            Component: Material,
+          },
+        ],
+      },
+      {
+        path: 'manage',
+        children: [
+          {
+            path: 'counsel',
+            Component: Counsel,
           },
         ],
       },
