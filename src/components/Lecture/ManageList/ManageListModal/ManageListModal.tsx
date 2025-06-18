@@ -1,82 +1,52 @@
 import { useEffect, useState, type FC } from 'react';
 import './styled.css';
 import axios, { type AxiosResponse } from 'axios';
-import type {
-  IListDetail,
-  IListDetailResponse,
-} from '../../../model/Lecture/IList';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modalState } from '../../../stores/modalState';
-import { loginInfoState } from '../../../stores/userInfo';
+import { modalState } from '../../../../stores/modalState';
+import type { IManageListDetail } from '../../../../model/Lecture/IManageList';
 
-interface IListProps {
-  id?: number;
+interface IManageListProps {
+  payload?: { id: number; insId: string };
   reSearch: () => void;
 }
 
 interface IPostResponse {
-  result:
-    | 'success'
-    | 'fail'
-    | 'loginIdNotExist'
-    | 'lecIdAlreadyExist'
-    | 'lecExceedsCapacity';
+  result: 'success' | 'fail';
 }
 
-export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
+export const ManageListModal: FC<IManageListProps> = ({
+  payload,
+  reSearch,
+}) => {
   const [_, setModal] = useRecoilState(modalState);
-  const [detailValue, setDetailValue] = useState<IListDetail>();
-  const [canRegister, setCanRegister] = useState<boolean>(false);
-  const { userType, loginId } = useRecoilValue(loginInfoState);
+  const [detailValue, setDetailValue] = useState<IManageListDetail>();
 
   useEffect(() => {
-    id && detailList();
+    payload?.id && detailList();
   }, []);
 
   const detailList = () => {
     const param = new URLSearchParams();
 
-    param.append('lecId', `${id}`);
+    param.append('lecId', `${payload?.id}`);
+    param.append('lecInstructorId', `${payload?.insId}`);
 
-    axios
-      .post('/api/lecture/lectureDetail.do', param)
-      .then((res: AxiosResponse<IListDetailResponse>) => {
-        console.log(res.data.lectureDetailValue);
-        setDetailValue(res.data.lectureDetailValue);
-        setCanRegister(res.data.isLectureRegistrationAvailable);
-        console.log(userType);
-      });
+    axios.post('/api/lecture/lectureManagePlanDetail.do', param).then(
+      (
+        res: AxiosResponse<{
+          lectureManagePlanDetailValue: IManageListDetail;
+        }>
+      ) => {
+        setDetailValue(res.data.lectureManagePlanDetailValue);
+      }
+    );
   };
 
-  const handlerlectureRegister = () => {
-    const param = new URLSearchParams();
+  const handlerManageListSave = () => {};
 
-    param.append('lecId', `${id}`);
-    param.append('studentId', `${loginId}`);
-
-    axios
-      .post('/api/lecture/lectureStdRegister.do', param)
-      .then((res: AxiosResponse<IPostResponse>) => {
-        if (res.data.result === 'success') {
-          alert('신청되었습니다.');
-          setModal({ isOpen: false });
-          reSearch();
-        } else if (res.data.result === 'loginIdNotExist') {
-          alert(
-            '학생정보가 등록되어 있지 않아 수강 신청할 수 없습니다.\n관리자에게 문의하시오.'
-          );
-        } else if (res.data.result === 'lecIdAlreadyExist') {
-          alert('이미 수강 신청한 강의입니다.');
-        } else if (res.data.result === 'lecExceedsCapacity') {
-          alert(
-            '현재 수강 인원이 모두 마감되었습니다. 다른 강의를 확인해 주세요.'
-          );
-        }
-      });
-  };
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
+    <div className="manage-list-modal-overlay">
+      <div className="manage-list-modal-container">
         {/* Header */}
         <div className="modal-header">
           <h2 className="modal-title">강의 상세 및 계획서</h2>
@@ -154,22 +124,37 @@ export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
             <div className="plan-content">
               <div className="plan-item">
                 <div className="plan-label">강의목표</div>
-                <div className="plan-placeholder">
-                  {detailValue?.lecGoal || '아직 입력된 정보가 없습니다.'}
+                <div className="plan-input-cell">
+                  <input
+                    type="text"
+                    defaultValue={detailValue?.lecGoal || ''}
+                    className="plan-input"
+                  />
                 </div>
+                {/* <div className="plan-placeholder">
+                  {detailValue?.lecGoal || '아직 입력된 정보가 없습니다.'}
+                </div> */}
               </div>
 
               <div className="plan-item">
                 <div className="plan-label">강의내용</div>
-                <div className="plan-placeholder">
-                  {detailValue?.lecContent || '아직 입력된 정보가 없습니다.'}
+                <div className="plan-input-cell">
+                  <input
+                    type="text"
+                    defaultValue={detailValue?.lecContent || ''}
+                    className="plan-input"
+                  />
                 </div>
               </div>
 
               <div className="plan-item">
                 <div className="plan-label">강의기타사항</div>
-                <div className="plan-placeholder">
-                  {detailValue?.lecSpecifics || '아직 입력된 정보가 없습니다.'}
+                <div className="plan-input-cell">
+                  <input
+                    type="text"
+                    defaultValue={detailValue?.lecSpecifics || ''}
+                    className="plan-input"
+                  />
                 </div>
               </div>
             </div>
@@ -182,25 +167,28 @@ export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
               <div className="weekly-header-cell">학습목표</div>
               <div className="weekly-header-cell">학습내용</div>
             </div>
-            {detailValue?.lecWeekPlanList &&
-            detailValue.lecWeekPlanList.length > 0 ? (
-              detailValue.lecWeekPlanList.map((list) => (
-                <div key={list.lecWeekPlanId} className="weekly-row">
-                  <div className="weekly-week">{list.lecWeekRound}</div>
-                  <div className="weekly-week">{list.lecWeekGoal}</div>
-                  <div className="weekly-week">{list.lecWeekContent}</div>
+            {detailValue?.lecWeekPlanList.map((list) => (
+              <div key={list.lecWeekPlanId} className="weekly-row">
+                <div className="weekly-week">{list.lecWeekRound}</div>
+                <div className="plan-input-cell">
+                  <input
+                    type="text"
+                    defaultValue={list.lecWeekGoal || ''}
+                    className="plan-input"
+                  />
                 </div>
-              ))
-            ) : (
-              <div className="plan-placeholder">
-                아직 입력된 정보가 없습니다.
+                <div className="plan-input-cell">
+                  <input
+                    type="text"
+                    defaultValue={list.lecWeekContent || ''}
+                    className="plan-input"
+                  />
+                </div>
               </div>
-            )}
+            ))}
 
             <div className="button-container">
-              {userType === 'S' && canRegister && (
-                <button onClick={handlerlectureRegister}>신청</button>
-              )}
+              <button onClick={handlerManageListSave}>저장</button>
 
               <button
                 onClick={() => {

@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
-.modal-overlay {
+.manage-list-modal-overlay {
   @apply fixed inset-0 flex items-center justify-center bg-gray-500/50 font-bold backdrop-blur-xs;
 }
 
-.modal-container {
-  @apply mx-4 max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white shadow-xl;
+.manage-list-modal-container {
+  @apply relative mx-4 max-h-[90vh] w-[400px] w-full max-w-4xl overflow-y-auto rounded-lg bg-white p-5 opacity-100 shadow-lg shadow-xl;
 }
 
 .modal-header {
@@ -84,11 +84,11 @@
   @apply border bg-gray-50 px-3 py-2 text-center text-sm text-gray-500;
 }
 
-.weekly-input-cell {
+.plan-input-cell {
   @apply border bg-gray-50 px-3 py-2 text-sm;
 }
 
-.weekly-input {
+.plan-input {
   @apply w-full bg-transparent outline-none;
 }
 

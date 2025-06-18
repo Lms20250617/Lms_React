@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-.list-container {
+.manage-list-container {
   @apply flex w-full flex-col items-end justify-center pt-1 pr-20 text-center font-semibold text-black;
 
   button {
@@ -14,7 +14,7 @@
 
 /* 1170px 이하일 때의 스타일 */
 @media (max-width: 1170px) {
-  .list-container {
+  .manage-list-container {
     @apply flex-row items-center gap-4;
 
     button,

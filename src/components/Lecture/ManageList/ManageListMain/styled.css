@@ -1,37 +1,41 @@
 @import 'tailwindcss';
 
-.list-main-container {
+.manage-list-main-container {
   @apply flex min-h-screen flex-col items-center justify-start p-5;
 }
 
-.list-table {
+.manage-list-table {
   @apply w-full max-w-6xl overflow-hidden rounded-lg bg-white shadow-lg;
 }
 
-.list-table-header {
+.manage-list-table-header {
   @apply bg-amber-500 text-gray-900;
 }
 
-.list-table-header th {
+.manage-list-table-header th {
   @apply border-b border-blue-400 px-6 py-4 text-left text-sm font-semibold tracking-wider text-white uppercase;
 }
 
-.list-table-row {
+.manage-list-table-row {
   @apply transition duration-300 ease-in-out hover:bg-gray-50;
 }
 
-.list-table-row td {
+.manage-list-table-row td {
   @apply border-b border-gray-200 px-6 py-4 text-sm text-gray-700;
 }
 
-.list-cell {
+.manage-list-cell {
   @apply border-b border-gray-200 px-6 py-4 text-sm font-medium text-gray-700;
 }
 
-.list-select-cell {
+.manage-list-cell button {
+  @apply rounded-md bg-blue-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600;
+}
+
+.manage-list-select-cell {
   @apply cursor-pointer border-b border-gray-200 px-6 py-4 text-sm font-bold text-blue-600 hover:text-blue-800;
 }
 
-.list-empty-row {
+.manage-list-empty-row {
   @apply py-8 text-center text-gray-500;
 }

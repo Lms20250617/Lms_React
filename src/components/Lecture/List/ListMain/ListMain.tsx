@@ -1,14 +1,14 @@
 import { useRecoilState } from 'recoil';
 import './styled.css';
-import { Portal } from '../../../common/Portal';
-import { PageNavigation } from '../../common.componets/PageNavigation/PageNavigation';
+import { Portal } from '../../../../common/Portal';
+import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
 import { ListModal } from '../ListModal/ListModal';
-import { modalState } from '../../../stores/modalState';
+import { modalState } from '../../../../stores/modalState';
 import { useContext, useEffect, useState } from 'react';
-import { ListContext } from '../../../provider/Lecture/ListProvider';
+import { ListContext } from '../../../../provider/Lecture/ListProvider';
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import type { IList, IListResponse } from '../../../model/Lecture/IList';
+import type { IList, IListResponse } from '../../../../model/Lecture/IList';
 
 export const ListMain = () => {
   const [modal, setModal] = useRecoilState(modalState);

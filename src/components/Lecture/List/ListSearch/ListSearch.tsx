@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import './styeld.css';
-import { ListContext } from '../../../provider/Lecture/ListProvider';
+import { ListContext } from '../../../../provider/Lecture/ListProvider';
 
 export const ListSearch = () => {
   const title = useRef<HTMLInputElement>(null);
