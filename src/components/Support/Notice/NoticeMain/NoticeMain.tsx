@@ -1,17 +1,14 @@
-import { useLocation } from 'react-router-dom';
-import './styled.css';
-import { useContext, useEffect, useState } from 'react';
 import axios, { type AxiosResponse } from 'axios';
-import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
-import type {
-  INtotice,
-  INoticeResponse,
-} from '../../../../model/Support/INotice';
-import { NoticeContext } from '../../../../provider/NoticeProvider';
-import { NoticeModal } from '../NoticeModal/NoticeModal';
+import { useContext, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { modalState } from '../../../../stores/modalState';
 import { Portal } from '../../../../common/Portal';
+import type { INoticeResponse, INtotice } from '../../../../model/Support/INotice';
+import { NoticeContext } from '../../../../provider/NoticeProvider';
+import { modalState } from '../../../../stores/modalState';
+import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
+import { NoticeModal } from '../NoticeModal/NoticeModal';
+import './styled.css';
+
 
 export const NoticeMain = () => {
   //const { search } = useLocation();
@@ -53,6 +50,7 @@ export const NoticeMain = () => {
     setModal({ isOpen: true });
     setNoticeId(id);
   };
+
 
   return (
     <div className="notice-main-container">

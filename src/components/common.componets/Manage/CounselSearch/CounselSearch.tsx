@@ -1,39 +1,32 @@
 import { useContext, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { MaterialContext } from '../../../../provider/support/MaterialProvier';
+import { ICounselContext } from '../../../../provider/manage/CounselProvier';
 import { modalState } from '../../../../stores/modalState';
 import './styeld.css';
 
-export const NoticeSearch = () => {
+export const CounselSearch = () => {
 
   const [_, setModal] = useRecoilState(modalState);
-  const title = useRef<HTMLInputElement>(null);
+  const searchTitle = useRef<HTMLInputElement>(null);
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
 
-  const { setSearchData } =useContext(MaterialContext);
-
-
-  // const navigate = useNavigate();
-
-  // useEffect(()=>{
-  //   window.location.search && navigate(window.location.pathname)
-  // },[navigate])
+  const { setSearchData } =useContext(ICounselContext);
 
   const handlerSearch = () => {
-    // //console.log(startDate, endDate, title.current?.value);
-    // const query:string[] = [];
 
-    // !title.current?.value || query.push(`title=${title.current.value}`);
-    // !startDate || query.push(`startDate=${startDate}`);
-    // !endDate || query.push(`endDate=${endDate}`);
 
-    // const querySring = query.length > 0 ? `?${query.join("&")}` : '';
+    const start = new Date(startDate as string);
+    const end = new Date(endDate as string);
 
-    // navigate(querySring);
+    if (start > end) {
+      alert("시작일이 종료일보다 이후입니다!");
+      return;
+    }
+
 
     setSearchData({
-      title: title.current ? title.current.value : '',
+      searchTitle: searchTitle.current ? searchTitle.current.value : '',
       startDate: startDate || '',
       endDate: endDate || '',
     })
@@ -47,7 +40,7 @@ export const NoticeSearch = () => {
   return (
     <div className="notice-container">
       <div className="input-box">
-        제목: <input ref={title}></input>
+        제목: <input ref={searchTitle}></input>
         <input 
         type="date" 
         onChange={(e) => setStarDate(e.target.value)}
