@@ -28,3 +28,26 @@ export interface IManageListResponse {
   lectureManageList: IManageList[];
   lectureManageCnt: number;
 }
+
+export interface ILectureResponse {}
+
+export interface ISelectBoxClassRoom {
+  roomId: number;
+  roomName: string;
+}
+
+export interface ISelectBoxInstructorInfo {
+  insName: string;
+
+  lecInstructorId: string;
+}
+
+export interface ISelectBoxLecName {
+  lecId: number;
+  lecName: string;
+}
+export interface ILectrueSelectBoxList {
+  lecSelectBoxClassRoomList: ISelectBoxClassRoom[];
+  lecSelectBoxInstructorInfoList: ISelectBoxInstructorInfo[];
+  lecSelectBoxLecNameList: ISelectBoxLecName[];
+}

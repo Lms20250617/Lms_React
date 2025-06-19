@@ -2,7 +2,6 @@ import { useRecoilState } from 'recoil';
 import './styled.css';
 import { Portal } from '../../../../common/Portal';
 import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
-import { ListModal } from '../../List/ListModal/ListModal';
 import { modalState } from '../../../../stores/modalState';
 import { useContext, useEffect, useState } from 'react';
 import type { AxiosResponse } from 'axios';
@@ -13,6 +12,7 @@ import type {
   IManageListResponse,
 } from '../../../../model/Lecture/IManageList';
 import { ManageListModal } from '../ManageListModal/ManageListModal';
+import { LectureModal } from '../LectureModal/LectureModal';
 
 export const ManageListMain = () => {
   const [modal, setModal] = useRecoilState(modalState);
@@ -24,7 +24,6 @@ export const ManageListMain = () => {
 
   useEffect(() => {
     searchList();
-    console.log(searchData);
   }, [searchData]);
 
   const searchList = (cPage?: number) => {
@@ -44,15 +43,27 @@ export const ManageListMain = () => {
   };
 
   const manageListDetail = (id: number, insId: string) => {
-    setModal({ isOpen: true, payload: { id, insId } });
+    setModal({ isOpen: true, type: 'manageList', payload: { id, insId } });
+  };
+
+  const lectureDetail = (id: number) => {
+    setModal({ isOpen: true, type: 'lecture', payload: { id } });
   };
 
   return (
     <div className="manage-list-main-container">
-      {modal.isOpen && (
+      {modal.isOpen && modal.type === 'manageList' && (
         <Portal>
           <ManageListModal
             payload={modal.payload as { id: number; insId: string }}
+            reSearch={searchList}
+          />
+        </Portal>
+      )}
+      {modal.isOpen && modal.type === 'lecture' && (
+        <Portal>
+          <LectureModal
+            payload={modal.payload as { id: number }}
             reSearch={searchList}
           />
         </Portal>
@@ -75,7 +86,14 @@ export const ManageListMain = () => {
             manageList.map((list) => {
               return (
                 <tr key={list.lecId} className="manage-list-table-row">
-                  <td className="manage-list-select-cell">{list.lecName}</td>
+                  <td
+                    className="manage-list-select-cell"
+                    onClick={() => {
+                      lectureDetail(list.lecId);
+                    }}
+                  >
+                    {list.lecName}
+                  </td>
                   <td className="manage-list-cell">{list.lecInstructorName}</td>
                   <td className="manage-list-cell">{list.lecStartDate}</td>
                   <td className="manage-list-cell">{list.lecEndDate}</td>
