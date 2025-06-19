@@ -58,10 +58,7 @@ export const LoginMain = () => {
       <div className="login-main">
         {modal.isOpen && (
           <Portal>
-            <SignupModal
-              id={modal.payload as number}
-              reSearch={() => {}}
-            ></SignupModal>
+            <SignupModal reSearch={() => {}}></SignupModal>
           </Portal>
         )}
         <div className="login-container">
