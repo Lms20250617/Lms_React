@@ -5,6 +5,7 @@ import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
 
 const routers: RouteObject[] = [
@@ -48,6 +49,17 @@ const routers: RouteObject[] = [
           },
         ],
       },
+// 여기에 page 추가
+      {
+        path: 'system',
+        children: [
+          {
+            path: 'classroom',
+            Component: Classroom,
+          },
+        ],
+      },
+// 여기에 page 추가
     ],
   },
 ];
