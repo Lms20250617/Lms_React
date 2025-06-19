@@ -7,6 +7,7 @@ import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
+import { ManageList } from '../pages/Lecture/ManageList';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -46,6 +47,10 @@ const routers: RouteObject[] = [
           {
             path: 'list',
             Component: List,
+          },
+          {
+            path: 'lecture-manage-list',
+            Component: ManageList,
           },
         ],
       },
