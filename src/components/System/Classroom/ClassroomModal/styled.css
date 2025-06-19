@@ -16,6 +16,10 @@
   @apply mt-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
 }
 
+.modal-form input[type='number'] {
+  @apply mt-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+}
+
 .modal-form input[type='file'] {
   @apply hidden;
 }
