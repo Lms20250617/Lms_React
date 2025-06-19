@@ -20,4 +20,5 @@ export interface INtoticeDetail extends INtotice {
 export interface INoticeResponse {
   count : number;
   list : INtotice[];
+  
 }

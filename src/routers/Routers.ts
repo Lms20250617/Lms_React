@@ -1,8 +1,11 @@
+import { Counsel } from './../pages/manage/Counsel';
 import { Notice } from './../pages/Support/Notice';
+import { Material } from './../pages/Support/Material'
 import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
 import { ManageList } from '../pages/Lecture/ManageList';
 
@@ -23,6 +26,19 @@ const routers: RouteObject[] = [
             path: 'notice',
             Component: Notice,
           },
+          {
+            path: 'learning-materials',
+            Component: Material,
+          },
+        ],
+      },
+      {
+        path: 'manage',
+        children: [
+          {
+            path: 'counsel',
+            Component: Counsel,
+          },
         ],
       },
       {
@@ -38,6 +54,17 @@ const routers: RouteObject[] = [
           },
         ],
       },
+// 여기에 page 추가
+      {
+        path: 'system',
+        children: [
+          {
+            path: 'classroom',
+            Component: Classroom,
+          },
+        ],
+      },
+// 여기에 page 추가
     ],
   },
 ];

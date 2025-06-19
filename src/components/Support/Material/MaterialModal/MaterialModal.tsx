@@ -4,34 +4,39 @@ import { modalState } from '../../../../stores/modalState';
 import { useEffect, useRef, useState, type ChangeEvent, type FC } from 'react';
 import axios, { type AxiosResponse } from 'axios';
 import type { INtoticeDetail } from '../../../../model/Support/INotice';
+import type { IMaterialDetail } from '../../../../model/Support/IMaterial';
+import type { IClassList, ICounselDetail } from '../../../../model/manage/ICounsel';
 
 interface INoticeProps {
   postSuccess: () => void;
   id: number;
   setId: React.Dispatch<React.SetStateAction<number>>;
+  lecture: IClassList[];
 }
 
 interface IPostResponse {
   result: 'success' | 'fail';
 }
 
-export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
+export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lecture }) => {
   
   const [_, setModal] = useRecoilState(modalState);
   const formRef = useRef<HTMLFormElement>(null);
-  const [detail, setDetail] = useState<INtoticeDetail>();
+  const [detail, setDetail] = useState<IMaterialDetail>();
   const [imgaeUrl, setImageUrl] = useState<string>('');
 
   useEffect(() => {
-    id && detailNotice();
+
+    id && detailMaterial();
 
     return () => {
       setId(0);
     }
   }, []);
 
-  const savaNotice = () => {
-    axios.post('/api/support/noticeFileSave.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
+
+  const savaMaterial = () => {
+    axios.post('/api/support/saveMtr.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
         alert('저장 되었습니다');
         setModal({isOpen:false});
@@ -41,12 +46,15 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
 
   };
 
-  const detailNotice = () => {
+  const detailMaterial = () => {
     const param = new URLSearchParams();
 
-    param.append("noticeId", id.toString());
+    param.append("materiId", id.toString());
 
-    axios.post('/api/support/noticeFileDetail.do',param).then((res:AxiosResponse<{detailValue: INtoticeDetail}>) => {
+    axios.post('/api/support/getMtrDetail.do',param).then((res:AxiosResponse<{detailValue: IMaterialDetail}>) => {
+        
+
+      console.log(res.data.detailValue);
 
       const { fileExt, logicalPath } = res.data.detailValue;
 
@@ -61,7 +69,6 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
 
       setDetail(res.data.detailValue);
 
-
     }
   );
   }
@@ -69,10 +76,10 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
   const updateDetail = () => {
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append("noticeId", id.toString());
+    formData.append("materiId", id.toString());
 
     axios
-      .post('/api/support/noticeFileUpdate.do', formData)
+      .post('/api/support/updateMtr.do', formData)
       .then((res:AxiosResponse<IPostResponse>) => {
         if(res.data.result === "success"){
           alert('수정 되었습니다');
@@ -85,10 +92,10 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
 
   const deleteDetail = () => {
 
-    const param = new URLSearchParams({ noticeId : id.toString() });
+    const param = new URLSearchParams({ materiId : id.toString() });
 
     axios
-      .post('/api/support/noticeFileDelete.do', param)
+      .post('/api/support/deleteMtr.do', param)
       .then((res:AxiosResponse<IPostResponse>) => {
         if(res.data.result === "success"){
           alert('삭제 되었습니다');
@@ -119,35 +126,35 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
 
   };
 
-  const downloadFile = () =>{
-    const param = new URLSearchParams();
-    param.append('noticeId', id.toString());
-
-    axios.post('/api/support/noticeDownload.do', param, {
-      responseType : 'blob' ,
-    }).then((res: AxiosResponse<Blob>) => {
-      const url = window.URL.createObjectURL(res.data);
-      const link = document.createElement('a');
-      link.href = url;
-
-      link.setAttribute('download', detail?.fileName as string);
-
-      document.body.appendChild(link);
-
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    })
-  };
 
   return (
     <div className="modal-overlay">
       <form ref={formRef} className="modal-form modal-container">
         <label>
-          제목 :<input type="text" name="fileTitle" defaultValue={detail?.noticeTitle} />
+            강의명 
+            <select className='LectureSelect' name='lecId' id='counselLecId' value={detail?.lecId}
+            onChange={(e) =>
+            setDetail((prev) => ({
+                ...(prev as IMaterialDetail),
+                lecId: Number(e.target.value)
+            }))
+            }
+            >
+            <option value="">-- 과목을 선택하세요 --</option>
+            {
+                lecture.map((lec)=>{
+                return(
+                    <option value={lec.lecId}>{lec.lecName}</option>
+                )
+                })
+            }
+            </select>
         </label>
         <label>
-          내용 :<input type="text" name="fileContent" defaultValue={detail?.noticeContent} />
+          제목 :<input type="text" name="mtrTitle" defaultValue={detail?.materiTitle} />
+        </label>
+        <label>
+          내용 :<input type="text" name="mtrContent" defaultValue={detail?.materiContent} />
         </label>
         파일 :
         <input type="file" id="fileInput" name='file' onChange={handlerFile}/>
@@ -155,7 +162,7 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
           파일 첨부하기
         </label>
         <div>
-          <div onClick={downloadFile}>
+          <div>
             {
               imgaeUrl ? (
                 <>
@@ -169,7 +176,7 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
           </div>
         </div>
         <div className="button-container">
-          <button type="button" onClick={!id ? savaNotice : updateDetail}>
+          <button type="button" onClick={!id ? savaMaterial : updateDetail}>
               {!id ? '저장' : '수정' }
           </button>
           {
