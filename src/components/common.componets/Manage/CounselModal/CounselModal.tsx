@@ -126,7 +126,7 @@ export const CounselModal: FC<ICounselProps> = ({ postSuccess, id, setId, lectur
   }
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" key={detail?.lecId}>
       <form ref={formRef} className="modal-form modal-container">
         <label>
           상담 과목
@@ -142,7 +142,7 @@ export const CounselModal: FC<ICounselProps> = ({ postSuccess, id, setId, lectur
             {
              lecture.map((lec)=>{
                 return(
-                    <option value={lec.lecId}>{lec.lecName}</option>
+                    <option key={lec.lecId} value={lec.lecId}>{lec.lecName}</option>
                 )
              })
             }

@@ -6,6 +6,8 @@ import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { List } from '../pages/Lecture/List';
+import { Survey } from '../pages/Support/Survey';
+import { SurveyManage } from '../pages/Support/SurveyManage';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -27,6 +29,14 @@ const routers: RouteObject[] = [
           {
             path: 'learning-materials',
             Component: Material,
+          },
+          {
+            path: 'lecture-survey',
+            Component: Survey,
+          },
+          {
+            path: 'manage-survey',
+            Component: SurveyManage,
           },
         ],
       },

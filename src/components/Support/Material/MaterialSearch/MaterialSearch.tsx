@@ -3,10 +3,13 @@ import { useRecoilState } from 'recoil';
 import { MaterialContext } from '../../../../provider/support/MaterialProvier';
 import { modalState } from '../../../../stores/modalState';
 import './styeld.css';
+import type { ILoginInfo } from '../../../../model/ILogin';
+import { loginInfoState } from '../../../../stores/userInfo';
 
 export const MaterialSearch = () => {
 
   const [_, setModal] = useRecoilState(modalState);
+  const [userInfo, setUserInfo] = useRecoilState<ILoginInfo>(loginInfoState);
   const title = useRef<HTMLInputElement>(null);
   const writer = useRef<HTMLInputElement>(null);
 
@@ -43,6 +46,12 @@ export const MaterialSearch = () => {
 
   };
 
+  const handlerKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter'){
+      handlerSearch();
+    }
+  }
+
   const openModal = () => {
     setModal({isOpen: true});
   }
@@ -65,9 +74,17 @@ export const MaterialSearch = () => {
         <input 
         type="text" 
         ref={selectedValue === 'title' ? title : writer}
+        onKeyDown={handlerKeyDown}
         ></input>
-        <button onClick={handlerSearch}>검색</button>
-        <button onClick={openModal}>등록</button>
+        <button 
+        onClick={handlerSearch}
+        >
+          검색
+        </button>
+        {
+          userInfo.loginId === 'teacher'&&
+          <button onClick={openModal}>등록</button>
+        }
       </div>
     </div>
   );
