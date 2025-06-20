@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import logo_img from '../../asset/logo_img.png';
 import type { ILoginInfo } from '../../model/ILogin';
 import { loginInfoState } from '../../stores/userInfo';
 import './styled.css';
+import { modalState } from '../../stores/modalState';
+import { Portal } from '../../common/Portal';
+import { SignupModal } from '../User/Signup/SignupModal/SignupModal';
+import { FindModal } from '../User/Find/FindModal/FindModal';
 
 export interface IAccount {
   lgn_Id: string;
@@ -19,6 +23,21 @@ export const LoginMain = () => {
     pwd: '',
   });
   const navigate = useNavigate();
+  const [modal, setModal] = useRecoilState(modalState);
+
+  // ----------------------------//
+
+  const findModalDetail = () => {
+    setModal({ isOpen: true, type: 'find' });
+  };
+
+  const signupDetail = () => {
+    setModal({ isOpen: true, type: 'signup' });
+  };
+
+  const postSuccess = () => {
+    setModal({ isOpen: false });
+  };
 
   const loginHandler = () => {
     const param = new URLSearchParams();
@@ -41,6 +60,16 @@ export const LoginMain = () => {
   return (
     <>
       <div className="login-main">
+        {modal.isOpen && modal.type === 'signup' && (
+          <Portal>
+            <SignupModal reSearch={() => {}}></SignupModal>
+          </Portal>
+        )}
+        {modal.isOpen && modal.type === 'find' && (
+          <Portal>
+            <FindModal></FindModal>
+          </Portal>
+        )}
         <div className="login-container">
           <div className="login-image">
             <img alt="" src={logo_img} />
@@ -88,8 +117,13 @@ export const LoginMain = () => {
               <button className="login-button" onClick={loginHandler}>
                 Login
               </button>
-              <button className="signup-button"> Sign Up </button>
+              <button className="signup-button" onClick={signupDetail}>
+                Sign Up
+              </button>
             </div>
+            <span className="mt-2 text-center" onClick={findModalDetail}>
+              [ 계정을 잊어버리셨나요? ]
+            </span>
           </div>
         </div>
       </div>

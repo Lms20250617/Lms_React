@@ -4,10 +4,10 @@ import axios, { type AxiosResponse } from 'axios';
 import type {
   IListDetail,
   IListDetailResponse,
-} from '../../../model/Lecture/IList';
+} from '../../../../model/Lecture/IList';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modalState } from '../../../stores/modalState';
-import { loginInfoState } from '../../../stores/userInfo';
+import { modalState } from '../../../../stores/modalState';
+import { loginInfoState } from '../../../../stores/userInfo';
 
 interface IListProps {
   id?: number;
@@ -75,8 +75,8 @@ export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
       });
   };
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
+    <div className="list-modal-overlay">
+      <div className="list-modal-container">
         {/* Header */}
         <div className="modal-header">
           <h2 className="modal-title">강의 상세 및 계획서</h2>

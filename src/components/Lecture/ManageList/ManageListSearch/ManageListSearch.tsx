@@ -1,14 +1,17 @@
 import { useContext, useRef, useState } from 'react';
 import './styeld.css';
-import { ListContext } from '../../../provider/Lecture/ListProvider';
+import { ManageListContext } from '../../../../provider/Lecture/ManageListProvider';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../../../../stores/modalState';
 
-export const ListSearch = () => {
+export const ManageListSearch = () => {
   const title = useRef<HTMLInputElement>(null);
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [selectedValue, setSelectedValue] = useState<string>('lecName');
+  const [_, setModal] = useRecoilState(modalState);
 
-  const { setSearchData } = useContext(ListContext);
+  const { setSearchData } = useContext(ManageListContext);
 
   const handlerSearch = () => {
     setSearchData({
@@ -20,7 +23,7 @@ export const ListSearch = () => {
   };
 
   return (
-    <div className="list-container">
+    <div className="manage-list-container">
       <div className="input-box">
         <select
           name="searchTag"
@@ -39,6 +42,13 @@ export const ListSearch = () => {
         ></input>
         <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
         <button onClick={handlerSearch}>검색</button>
+        <button
+          onClick={() => {
+            setModal({ isOpen: true, type: 'lecture' });
+          }}
+        >
+          신규
+        </button>
       </div>
     </div>
   );

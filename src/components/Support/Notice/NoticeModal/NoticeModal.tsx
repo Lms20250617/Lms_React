@@ -30,7 +30,6 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
     }
   }, []);
 
-
   const savaNotice = () => {
     axios.post('/api/support/noticeFileSave.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
