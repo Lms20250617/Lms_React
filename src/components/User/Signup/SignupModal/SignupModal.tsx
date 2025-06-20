@@ -481,7 +481,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
                     </td>
                     <th className="signup-border-line bg-blue-300/30 px-5 py-3">
                       <span className="text-gray-700 after:ml-1 after:text-red-500 after:content-['*']">
-                        전화번호
+                        연락처
                       </span>
                     </th>
                     <td className="signup-border-line px-5 py-3" colSpan={2}>
