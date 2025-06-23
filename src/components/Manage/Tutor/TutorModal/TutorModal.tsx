@@ -3,17 +3,18 @@ import './styled.css';
 import axios, { type AxiosResponse } from 'axios';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../../../../stores/modalState';
+
 import type {
   ILectureInfo,
-  IStudentDetail,
-} from '../../../../model/manage/IStudent';
+  ITutorDetail,
+} from '../../../../model/manage/ITutor';
 
-interface IStudentProps {
+interface ITutorProps {
   payload?: { id: string };
 }
 
-export const TutorModal: FC<IStudentProps> = ({ payload }) => {
-  const [detailValue, setDetailValue] = useState<IStudentDetail>();
+export const TutorModal: FC<ITutorProps> = ({ payload }) => {
+  const [detailValue, setDetailValue] = useState<ITutorDetail>();
   const [_, setModal] = useRecoilState(modalState);
   const [lectureList, setLectureList] = useState<ILectureInfo[]>([]);
 
@@ -23,11 +24,12 @@ export const TutorModal: FC<IStudentProps> = ({ payload }) => {
 
   const searchDetail = () => {
     axios
-      .post(`/api//manage/student-detail/${payload?.id}`)
-      .then((res: AxiosResponse<IStudentDetail>) => {
+      .post(`/api/manage/tutor-detail/${payload?.id}`)
+      .then((res: AxiosResponse<ITutorDetail>) => {
         console.log(res.data);
         setDetailValue(res.data);
         setLectureList(res.data.lectureInfo);
+        console.log(res.data.lectureInfo);
       });
   };
   const getStatusText = (status: string | undefined) => {
@@ -35,57 +37,55 @@ export const TutorModal: FC<IStudentProps> = ({ payload }) => {
       case 'W':
         return '대기';
       case 'Y':
-        return '재학';
+        return '재직';
       case 'N':
-        return '탈퇴';
+        return '퇴직';
       default:
         return '알 수 없음';
     }
   };
-  const convertTimestamp = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toISOString().slice(0, 10);
-  };
   return (
-    <div className="student-modal-overlay">
-      <div className="student-modal-container">
+    <div className="tutor-modal-overlay">
+      <div className="tutor-modal-container">
         {/* Header */}
         <div className="modal-header">
-          <h2 className="modal-title">학생 상세</h2>
+          <h2 className="modal-title">강사 상세</h2>
         </div>
 
         <div className="modal-content">
           {/* 강의 상세 */}
           <div className="plan-section">
             <div className="section-header section-header-detail">
-              학생 정보
+              강사 정보
             </div>
 
             <div className="detail-grid">
               <div className="detail-column">
                 <div className="detail-row">
-                  <div className="detail-label">학생 ID</div>
-                  <div className="detail-value">{detailValue?.studentId}</div>
+                  <div className="detail-label">강사 ID</div>
+                  <div className="detail-value">
+                    {detailValue?.insId || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
-                  <div className="detail-label">학번</div>
+                  <div className="detail-label">강사 번호</div>
                   <div className="detail-value">
-                    {detailValue?.studentNumber}
+                    {detailValue?.insNumber || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">이메일</div>
                   <div className="detail-value">
-                    {detailValue?.studentEmail}
+                    {detailValue?.insEmail || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
-                  <div className="detail-label">재학상태</div>
+                  <div className="detail-label">은행</div>
                   <div className="detail-value">
-                    {getStatusText(detailValue?.statusYn)}
+                    {detailValue?.insBank || '-'}
                   </div>
                 </div>
               </div>
@@ -93,24 +93,28 @@ export const TutorModal: FC<IStudentProps> = ({ payload }) => {
               <div className="detail-column">
                 <div className="detail-row">
                   <div className="detail-label">이름</div>
-                  <div className="detail-value">{detailValue?.studentName}</div>
+                  <div className="detail-value">
+                    {detailValue?.insName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">연락처</div>
-                  <div className="detail-value">{detailValue?.studentHp}</div>
+                  <div className="detail-value">
+                    {detailValue?.insHp || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
-                  <div className="detail-label">생일</div>
+                  <div className="detail-label">재직 상태</div>
                   <div className="detail-value">
-                    {detailValue?.studentBirthday}
+                    {getStatusText(detailValue?.insStatusYn)}
                   </div>
                 </div>
                 <div className="detail-row">
-                  <div className="detail-label">취업상태</div>
+                  <div className="detail-label">계좌 번호</div>
                   <div className="detail-value">
-                    {detailValue?.studentEmpStatus === 'Y' ? '취업' : '미취업'}
+                    {detailValue?.insAccount || '-'}
                   </div>
                 </div>
               </div>
@@ -121,8 +125,8 @@ export const TutorModal: FC<IStudentProps> = ({ payload }) => {
           <div className="plan-section">
             <div className="section-header">강의 목록</div>
             <div>
-              <table className="student-modal-table">
-                <thead className="student-modal-table-header">
+              <table className="tutor-modal-table">
+                <thead className="tutor-modal-table-header">
                   <tr>
                     <th>강의번호</th>
                     <th>강의명</th>
@@ -134,28 +138,25 @@ export const TutorModal: FC<IStudentProps> = ({ payload }) => {
                   {lectureList.length > 0 ? (
                     lectureList.map((list) => {
                       return (
-                        <tr
-                          key={list.lecId}
-                          className="student-modal-table-row"
-                        >
-                          <td className="student-modal-cell">{list.lecId}</td>
-                          <td className="student-modal-cell">
-                            {list.lectureName}
+                        <tr key={list.lecId} className="tutor-modal-table-row">
+                          <td className="tutor-modal-cell">{list.lecId}</td>
+                          <td className="tutor-modal-cell">
+                            {list.lecName || '-'}
                           </td>
 
-                          <td className="student-modal-cell">
-                            {convertTimestamp(list.lectureStartDate)}
+                          <td className="tutor-modal-cell">
+                            {list.lecStartDate || '-'}
                           </td>
-                          <td className="student-modal-cell">
-                            {convertTimestamp(list.lectureEndDate)}
+                          <td className="tutor-modal-cell">
+                            {list.lecEndDate || '-'}
                           </td>
                         </tr>
                       );
                     })
                   ) : (
                     <tr>
-                      <td colSpan={4} className="student-modal-empty-row">
-                        등록된 강의가 없습니다
+                      <td colSpan={4} className="tutor-modal-empty-row">
+                        진행하는 강의 목록이 없습니다
                       </td>
                     </tr>
                   )}

@@ -23,7 +23,7 @@ export const StudentModal: FC<IStudentProps> = ({ payload }) => {
 
   const searchDetail = () => {
     axios
-      .post(`/api//manage/student-detail/${payload?.id}`)
+      .post(`/api/manage/student-detail/${payload?.id}`)
       .then((res: AxiosResponse<IStudentDetail>) => {
         console.log(res.data);
         setDetailValue(res.data);
@@ -65,20 +65,22 @@ export const StudentModal: FC<IStudentProps> = ({ payload }) => {
               <div className="detail-column">
                 <div className="detail-row">
                   <div className="detail-label">학생 ID</div>
-                  <div className="detail-value">{detailValue?.studentId}</div>
+                  <div className="detail-value">
+                    {detailValue?.studentId || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">학번</div>
                   <div className="detail-value">
-                    {detailValue?.studentNumber}
+                    {detailValue?.studentNumber || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">이메일</div>
                   <div className="detail-value">
-                    {detailValue?.studentEmail}
+                    {detailValue?.studentEmail || '-'}
                   </div>
                 </div>
 
@@ -93,18 +95,22 @@ export const StudentModal: FC<IStudentProps> = ({ payload }) => {
               <div className="detail-column">
                 <div className="detail-row">
                   <div className="detail-label">이름</div>
-                  <div className="detail-value">{detailValue?.studentName}</div>
+                  <div className="detail-value">
+                    {detailValue?.studentName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">연락처</div>
-                  <div className="detail-value">{detailValue?.studentHp}</div>
+                  <div className="detail-value">
+                    {detailValue?.studentHp || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">생일</div>
                   <div className="detail-value">
-                    {detailValue?.studentBirthday}
+                    {detailValue?.studentBirthday || '-'}
                   </div>
                 </div>
                 <div className="detail-row">
@@ -138,16 +144,18 @@ export const StudentModal: FC<IStudentProps> = ({ payload }) => {
                           key={list.lecId}
                           className="student-modal-table-row"
                         >
-                          <td className="student-modal-cell">{list.lecId}</td>
                           <td className="student-modal-cell">
-                            {list.lectureName}
+                            {list.lecId || '-'}
+                          </td>
+                          <td className="student-modal-cell">
+                            {list.lectureName || '-'}
                           </td>
 
                           <td className="student-modal-cell">
-                            {convertTimestamp(list.lectureStartDate)}
+                            {convertTimestamp(list.lectureStartDate) || '-'}
                           </td>
                           <td className="student-modal-cell">
-                            {convertTimestamp(list.lectureEndDate)}
+                            {convertTimestamp(list.lectureEndDate) || '-'}
                           </td>
                         </tr>
                       );

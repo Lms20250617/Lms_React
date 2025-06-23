@@ -1,16 +1,24 @@
 import { useContext, useRef, useState } from 'react';
-import { StudentContext } from '../../../../provider/manage/StudentProvider';
 import './styeld.css';
+import { TutorContext } from '../../../../provider/manage/TutorProvider';
 
 export const TutorSearch = () => {
   const name = useRef<HTMLInputElement>(null);
-  const [startDate, setStarDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStarDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const [selectedValue, setSelectedValue] = useState<string>('');
 
-  const { setSearchData } = useContext(StudentContext);
+  const { setSearchData } = useContext(TutorContext);
 
   const handlerSearch = () => {
+    if (!!startDate && !!endDate) {
+      if (startDate >= endDate) {
+        alert(
+          '강의 날짜 입력을 잘못했습니다. 시작일이 종료일보다 늦을 수 없습니다.'
+        );
+        return false;
+      }
+    }
     setSearchData({
       searchName: name.current ? name.current.value : '',
       regStDate: startDate || '',
@@ -20,11 +28,11 @@ export const TutorSearch = () => {
   };
 
   return (
-    <div className="student-container">
+    <div className="tutor-container">
       <div className="input-box">
         {'이름: '}
         <input ref={name}></input>
-        {'  재학상태 : '}
+        {'  재직상태 : '}
         <select
           name="searchStatusYn"
           value={selectedValue}
@@ -32,8 +40,8 @@ export const TutorSearch = () => {
         >
           <option value="">선택</option>
           <option value="W">승인대기</option>
-          <option value="Y">재학</option>
-          <option value="N">탈퇴</option>
+          <option value="Y">재직</option>
+          <option value="N">퇴직</option>
         </select>
         <input
           type="date"
