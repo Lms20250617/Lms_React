@@ -75,14 +75,15 @@ const [lecture, setLeceture] = useState<IClassList[]>([]);
           {counselList.length > 0 ? (
             counselList.map((counsel) => {
               return (
-                <tr key={counsel.counselId} className="notice-table-row">
-                  <td className="notice-cell">{counsel.counselId}</td>
-                  <td className="notice-cell">{counsel.lecName}</td>
-                  <td
-                    className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                <tr key={counsel.counselId} className="notice-table-row cursor-pointer"
                     onClick={() => {
                        CounselDetail(counsel.counselId);
                     }}
+                >
+                  <td className="notice-cell">{counsel.counselId}</td>
+                  <td className="notice-cell">{counsel.lecName}</td>
+                  <td
+                    className="notice-cell text-blue-600 hover:text-blue-800"
                   >
                     {counsel.counselTitle}
                   </td>

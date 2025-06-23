@@ -33,6 +33,12 @@ export const CounselSearch = () => {
 
   };
 
+  const handlerKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter'){
+      handlerSearch();
+    }
+  }
+
   const openModal = () => {
     setModal({isOpen: true});
   }
@@ -40,14 +46,16 @@ export const CounselSearch = () => {
   return (
     <div className="notice-container">
       <div className="input-box">
-        제목: <input ref={searchTitle}></input>
+        제목: <input ref={searchTitle} onKeyDown={handlerKeyDown}></input>
         <input 
         type="date" 
         onChange={(e) => setStarDate(e.target.value)}
+        onKeyDown={handlerKeyDown}
         ></input>
         <input 
         type="date" 
         onChange={(e) => setEndDate(e.target.value)}
+        onKeyDown={handlerKeyDown}
         ></input>
         <button onClick={handlerSearch}>검색</button>
         <button onClick={openModal}>등록</button>
