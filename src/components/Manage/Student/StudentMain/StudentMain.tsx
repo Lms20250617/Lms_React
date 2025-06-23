@@ -18,7 +18,6 @@ export const StudentMain = () => {
   const { searchData } = useContext(StudentContext);
   const [studentList, setStudentList] = useState<IStudentList[]>([]);
   const [studentListCnt, setStudentListCnt] = useState<number>(0);
-  const [statusYn, setStatusYn] = useState<string>('');
 
   useEffect(() => {
     searchList();
@@ -44,13 +43,13 @@ export const StudentMain = () => {
     setModal({ isOpen: true, payload: { id } });
   };
 
-  const updateStatusYn = (id: string) => {
+  const updateStatusYn = (id: string, status: string) => {
     const confirm: boolean = window.confirm('재학 상태를 변경하시겠습니까?');
     if (!confirm) return;
 
     const param = {
       studentId: id,
-      studentStatus: statusYn,
+      studentStatus: status,
     };
 
     axios
@@ -107,8 +106,7 @@ export const StudentMain = () => {
                     <select
                       defaultValue={list.statusYN}
                       onChange={(e) => {
-                        setStatusYn(e.target.value);
-                        updateStatusYn(list.studentId);
+                        updateStatusYn(list.studentId, e.target.value);
                       }}
                     >
                       <option value="W">승인대기</option>
