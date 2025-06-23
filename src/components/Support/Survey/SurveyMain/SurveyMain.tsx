@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { SurveyContext } from "../../../../provider/support/SurveyProvider";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import type { ILoginInfo } from "../../../../model/ILogin";
+import { loginInfoState } from "../../../../stores/userInfo";
 
 export const SurveyMain = () => {
 
@@ -12,6 +15,8 @@ export const SurveyMain = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const SurveyView = ['매우 나쁨', '나쁨', '보통', '좋음', '매우 좋음'];
+
+  const [userInfo, setUserInfo] = useRecoilState<ILoginInfo>(loginInfoState);
 
   //체크 박스 값을 담을 리스트를 만들고 값을 저장해서 버튼 이동 시에도 사라지지 않게 구현 
 
@@ -108,6 +113,11 @@ export const SurveyMain = () => {
   }
 
   useEffect(()=>{
+
+    if(userInfo.userType !== 'S'){
+      alert("설문 대상이 아닙니다.");
+      return;
+    }
     //id 값이 있을 경우만 실행 
     // selectData.success !== 1 준 이유는 
     // 완료되었을때 1 -> 0으로 바꿔줄건데 그럼 두번 실행됨 이게 

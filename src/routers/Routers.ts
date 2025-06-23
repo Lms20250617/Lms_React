@@ -5,9 +5,12 @@ import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
+import { ManageList } from '../pages/Lecture/ManageList';
+
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -56,8 +59,23 @@ const routers: RouteObject[] = [
             path: 'list',
             Component: List,
           },
+          {
+            path: 'lecture-manage-list',
+            Component: ManageList,
+          },
         ],
       },
+// 여기에 page 추가
+      {
+        path: 'system',
+        children: [
+          {
+            path: 'classroom',
+            Component: Classroom,
+          },
+        ],
+      },
+// 여기에 page 추가
     ],
   },
 ];

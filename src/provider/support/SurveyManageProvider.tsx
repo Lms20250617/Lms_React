@@ -2,14 +2,14 @@ import { createContext, useState, type FC } from "react";
 
 interface SurveyMangeContext {
     selectData: {
-        result: number;
+        result: string;
     };
     setSelectData: (params: Partial<SurveyMangeContext['selectData']>) => void;
 }
 
 const defaultValue: SurveyMangeContext = {
     selectData: {
-        result: 0
+        result: ''
     },
     setSelectData: () => {},
 }

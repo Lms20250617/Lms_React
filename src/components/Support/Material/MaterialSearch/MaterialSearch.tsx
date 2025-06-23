@@ -59,7 +59,6 @@ export const MaterialSearch = () => {
   return (
     <div className="notice-container">
       <div className="input-box">
-        제목: 
         <select 
         className='selectedValue'
         name={selectedValue}
