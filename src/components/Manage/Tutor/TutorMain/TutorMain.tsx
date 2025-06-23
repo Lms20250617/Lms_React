@@ -19,7 +19,6 @@ export const TutorMain = () => {
   const { searchData } = useContext(TutorContext);
   const [tutorList, setTutorList] = useState<ITutorList[]>([]);
   const [tutorListCnt, setTutorListCnt] = useState<number>(0);
-  const [statusYn, setStatusYn] = useState<string>('');
 
   useEffect(() => {
     searchList();
@@ -46,17 +45,17 @@ export const TutorMain = () => {
     setModal({ isOpen: true, payload: { id } });
   };
 
-  const updateStatusYn = (id: string) => {
+  const updateStatusYn = (id: string, status: string) => {
     const confirm: boolean = window.confirm('재직 상태를 변경하시겠습니까?');
     if (!confirm) return;
 
     const param = {
-      studentId: id,
-      studentStatus: statusYn,
+      tutorId: id,
+      tutorStatus: status,
     };
 
     axios
-      .post('/api/manage/student-status', param)
+      .post('/api/manage/update-ins-status', param)
       .then((res: AxiosResponse<string>) => {
         console.log(res);
         if (res.data === 'SUCCESS') {
@@ -106,13 +105,12 @@ export const TutorMain = () => {
                     <select
                       defaultValue={list.insStatusYn}
                       onChange={(e) => {
-                        setStatusYn(e.target.value);
-                        updateStatusYn(list.insId);
+                        updateStatusYn(list.insId, e.target.value);
                       }}
                     >
                       <option value="W">승인대기</option>
-                      <option value="Y">재학</option>
-                      <option value="N">탈퇴</option>
+                      <option value="Y">재직</option>
+                      <option value="N">퇴직</option>
                     </select>
                   </td>
                 </tr>
