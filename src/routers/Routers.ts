@@ -8,6 +8,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Resume } from '../pages/User/Resume';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
 
@@ -75,6 +76,15 @@ const routers: RouteObject[] = [
         ],
       },
       // 여기에 page 추가
+      {
+        path: 'user',
+        children: [
+          {
+            path: 'resume',
+            Component: Resume,
+          },
+        ],
+      },
     ],
   },
 ];
