@@ -1,6 +1,6 @@
 import { Counsel } from './../pages/manage/Counsel';
 import { Notice } from './../pages/Support/Notice';
-import { Material } from './../pages/Support/Material'
+import { Material } from './../pages/Support/Material';
 import { Dashboard } from '../pages/Dashboard';
 import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
@@ -10,6 +10,8 @@ import { List } from '../pages/Lecture/List';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Student } from '../pages/manage/Student';
+import { Tutor } from '../pages/manage/Tutor';
 
 
 const routers: RouteObject[] = [
@@ -50,6 +52,14 @@ const routers: RouteObject[] = [
             path: 'counsel',
             Component: Counsel,
           },
+          {
+            path: 'student',
+            Component: Student,
+          },
+          {
+            path: 'tutor',
+            Component: Tutor,
+          },
         ],
       },
       {
@@ -65,7 +75,7 @@ const routers: RouteObject[] = [
           },
         ],
       },
-// 여기에 page 추가
+      // 여기에 page 추가
       {
         path: 'system',
         children: [
@@ -75,7 +85,7 @@ const routers: RouteObject[] = [
           },
         ],
       },
-// 여기에 page 추가
+      // 여기에 page 추가
     ],
   },
 ];
