@@ -13,6 +13,7 @@ import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Resume } from '../pages/User/Resume';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
 import { Company } from '../pages/System/Company';
@@ -115,6 +116,15 @@ const routers: RouteObject[] = [
         ],
       },
       // 여기에 page 추가
+      {
+        path: 'user',
+        children: [
+          {
+            path: 'resume',
+            Component: Resume,
+          },
+        ],
+      },
     ],
   },
 ];
