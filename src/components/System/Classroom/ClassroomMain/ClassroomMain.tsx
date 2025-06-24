@@ -10,7 +10,7 @@ import type {
   IClassroom,
   IClassroomResponse,
 } from '../../../../model/System/IClassroom';
-import { ClassroomContext } from '../../../../provider/ClassroomProvider';
+import { ClassroomContext } from '../../../../provider/system/ClassroomProvider';
 
 export const ClassroomMain = () => {
   const [classroomList, setClassroomList] = useState<IClassroom[]>([]);
@@ -102,7 +102,6 @@ export const ClassroomMain = () => {
                   >
                     {classroom.roomName}
                   </td>
-
                   <td className="classroom-cell">{classroom.roomPersonnel}</td>
                   <td className="classroom-cell">{classroom.roomSize}</td>
                   <td className="classroom-cell">{classroom.roomRemark}</td>

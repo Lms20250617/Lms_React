@@ -29,7 +29,6 @@ interface SurveyManageResult {
 export const SurveyManageMain = () => {
 
   const {selectData, setSelectData} = useContext(SurveyMangeContext);
-  const [isSurveyManage, setIsSurveyManage] = useState<string>();
 
   //select된 값에 맞는 화면을 출력하기 위해 값을 담아줄 변수
   const [completeList, setCompleteList] = useState<SurveyManageType[]>([]);
@@ -60,7 +59,6 @@ export const SurveyManageMain = () => {
     axios.post('/api/support/getCompletedPageList.do',params).then((res)=>{
         setCompleteList(res.data.resultList);
         setCompleteCnt(res.data.resultCnt);
-        setIsSurveyManage(selectData.result);
       }
     )
   }
@@ -79,7 +77,6 @@ export const SurveyManageMain = () => {
     axios.post('/api/support/getResultListReact.do',params).then((res)=>{
         setResultList(res.data.fixedRes);
         setResultCnt(res.data.resultCnt);
-        setIsSurveyManage(selectData.result);
       }
     )
 
@@ -112,30 +109,36 @@ export const SurveyManageMain = () => {
             <table className="notice-table">
             <thead className="notice-table-header">
               {
-              isSurveyManage === 'complete' || isSurveyManage === undefined ?   
-              <tr>
+              selectData.result === 'complete' ?   
+              (<tr>
                 <th>No</th>
                 <th>과목명</th>
                 <th>학생ID</th>
                 <th>학생명</th>
                 <th>상세보기</th>
-              </tr>
-              :
-              <tr>
+              </tr>)
+              : selectData.result === 'result' ?
+              (<tr>
                 <th>No</th>
                 <th>과목명</th>
                 <th>강사이름</th>
                 <th>평균</th>
                 <th>응답인원</th>
-                <th>완료율</th>
-              </tr>
+                <th>
+                  <div className="text-center">
+                    완료율
+                  </div>
+                </th>
+              </tr>)
+              :
+              null
               }
 
             </thead>
             <tbody>
             {
               <>
-                {isSurveyManage === 'complete' && 
+                {selectData.result === 'complete' && 
                 <>
                   {
                     completeList.length > 0 ?   
@@ -171,7 +174,7 @@ export const SurveyManageMain = () => {
                     )
                   }
                 </>}
-                {isSurveyManage === 'result' && 
+                {selectData.result === 'result' && 
                 <>
                                   {
                     resultList.length > 0 ?   
@@ -222,19 +225,21 @@ export const SurveyManageMain = () => {
            </tbody>
          </table>
          {
-          selectData.result === 'complete' || selectData.result === undefined ? 
+          selectData.result === 'complete'? 
 
           <PageNavigation 
           totalItems={completeCnt} 
           itemsPerPage={5}
           onPageChange={completeSearch}
           />
-          :
+          : selectData.result === 'result' ?
           <PageNavigation 
           totalItems={resultCnt} 
           itemsPerPage={5}
           onPageChange={resultSearch}
           />
+          :
+          null
          }
        </div>
     );
