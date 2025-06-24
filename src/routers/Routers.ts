@@ -7,6 +7,7 @@ import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
+import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
@@ -82,6 +83,10 @@ const routers: RouteObject[] = [
           {
             path: 'classroom',
             Component: Classroom,
+          },
+          {
+            path: 'equipment',
+            Component: Equipment,
           },
         ],
       },
