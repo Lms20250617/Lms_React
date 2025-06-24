@@ -90,13 +90,14 @@ export const CommoncodeMain = () => {
           {commonList.length > 0 ? (
             commonList.map((common) => {
               return (
-                <tr key={common.regId} className="notice-table-row">
-                  <td className="notice-cell">{common.detailCode}</td>
-                  <td
-                    className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                <tr key={common.regId} className="notice-table-row"
                     onClick={() => {
                       commonDetail(common.detailCode);
                     }}
+                >
+                  <td className="notice-cell">{common.detailCode}</td>
+                  <td
+                    className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
                   >
                     {common.groupName}
                   </td>

@@ -7,13 +7,13 @@ import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
 import { List } from '../pages/Lecture/List';
+import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
 import { commoncode } from '../pages/System/commoncode';
-
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -87,6 +87,10 @@ const routers: RouteObject[] = [
           {
             path: 'commoncode',
             Component: commoncode,
+          },
+          {
+            path: 'equipment',
+            Component: Equipment,
           },
         ],
       },
