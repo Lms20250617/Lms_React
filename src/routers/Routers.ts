@@ -13,6 +13,7 @@ import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
+import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
 
 const routers: RouteObject[] = [
@@ -83,6 +84,10 @@ const routers: RouteObject[] = [
           {
             path: 'classroom',
             Component: Classroom,
+          },
+          {
+            path: 'company',
+            Component: Company,
           },
           {
             path: 'commoncode',
