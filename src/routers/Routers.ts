@@ -6,6 +6,8 @@ import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
+import { TestInfo } from '../pages/Lecture/Test/TestInfo';
+import { Test } from '../pages/Lecture/Test/Test';
 import { List } from '../pages/Lecture/List';
 import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
@@ -74,6 +76,14 @@ const routers: RouteObject[] = [
           {
             path: 'lecture-manage-list',
             Component: ManageList,
+          },
+          {
+            path: 'test',
+            Component: Test,
+          },
+          {
+            path: 'test-info',
+            Component: TestInfo,
           },
         ],
       },
