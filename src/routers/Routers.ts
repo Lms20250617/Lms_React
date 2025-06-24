@@ -66,6 +66,19 @@ const routers: RouteObject[] = [
           },
         ],
       },
+      {
+        path: 'lecture',
+        children: [
+          {
+            path: 'test-Info',
+            Component: TestInfo,
+          },
+          {
+            path: 'test',
+            Component: Test,
+          },
+        ],
+      },
     ],
   },
 ];

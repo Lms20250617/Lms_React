@@ -1,26 +1,14 @@
-import {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type BaseSyntheticEvent,
-  type ChangeEvent,
-  type ReactEventHandler,
-} from 'react';
-import './styeld.css';
-import { useRecoilState } from 'recoil';
-import { modalState } from '../../../../../stores/modalState';
-import { TestInfoContext } from '../../../../../provider/Lecture/Test/TestInfoProvider';
+import { useContext, useRef, useState } from 'react';
+import { TestContext } from '../../../../provider/Lecture/Test/TestProvider';
 
-export const TestInfoSearch = () => {
-  const [_, setModal] = useRecoilState(modalState);
+export const TestSearch = () => {
   const searchTitle = useRef<HTMLInputElement>(null);
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [searchTag, setSearchTag] = useState<
     'lecName' | 'lecInstructorName' | 'lecRoomName'
   >('lecName');
-  const { setSearchData } = useContext(TestInfoContext);
+  const { setSearchData } = useContext(TestContext);
 
   // const navigate = useNavigate();
 
@@ -48,10 +36,6 @@ export const TestInfoSearch = () => {
     });
   };
 
-  const openModal = () => {
-    setModal({ isOpen: true, payload: 'register' });
-  };
-
   const handleSearchTagSelect = (e: BaseSyntheticEvent) => {
     setSearchTag(e.target.value);
   };
@@ -71,7 +55,6 @@ export const TestInfoSearch = () => {
         ></input>
         <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
         <button onClick={handlerSearch}>검색</button>
-        <button onClick={openModal}>등록</button>
       </div>
     </div>
   );

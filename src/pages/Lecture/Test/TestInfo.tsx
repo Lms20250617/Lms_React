@@ -1,7 +1,7 @@
 import { ContentBox } from '../../../components/common.componets/ContentBox/ContentBox';
 import { TestInfoMain } from '../../../components/Lecture/Test/TestInfo/TestInfoMain/TestInfoMain';
 import { TestInfoSearch } from '../../../components/Lecture/Test/TestInfo/TestInfoSearch/TestInfoSearch';
-import { TestInfoProvider } from '../../../provider/TestInfoProvider';
+import { TestInfoProvider } from '../../../provider/Lecture/Test/TestInfoProvider';
 
 export const TestInfo = () => {
   return (
