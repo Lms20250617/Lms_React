@@ -12,7 +12,7 @@ import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
-
+import { Company } from '../pages/System/Company';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -82,6 +82,10 @@ const routers: RouteObject[] = [
           {
             path: 'classroom',
             Component: Classroom,
+          },
+          {
+            path: 'company',
+            Component: Company,
           },
         ],
       },
