@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 import { modalState } from '../../../../stores/modalState';
 import { useContext, useRef } from 'react';
 import './styeld.css';
-import { ClassroomContext } from '../../../../provider/ClassroomProvider';
+import { ClassroomContext } from '../../../../provider/system/ClassroomProvider';
 
 // ClassroomSearch를 다른 곳에서 사용할 것임.
 export const ClassroomSearch = () => {
@@ -28,7 +28,7 @@ export const ClassroomSearch = () => {
     });
   };
 
-    const openModal = () => {
+  const openModal = () => {
     setmodal({ isOpen: true });
   };
 

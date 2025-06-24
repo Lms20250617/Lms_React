@@ -9,7 +9,14 @@ import { Classroom } from '../pages/System/Classroom';
 import { TestInfo } from '../pages/Lecture/Test/TestInfo';
 import { Test } from '../pages/Lecture/Test/Test';
 import { List } from '../pages/Lecture/List';
+import { Equipment } from '../pages/System/Equipment';
+import { Survey } from '../pages/Support/Survey';
+import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Student } from '../pages/manage/Student';
+import { Tutor } from '../pages/manage/Tutor';
+import { Company } from '../pages/System/Company';
+import { commoncode } from '../pages/System/commoncode';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -32,6 +39,14 @@ const routers: RouteObject[] = [
             path: 'learning-materials',
             Component: Material,
           },
+          {
+            path: 'lecture-survey',
+            Component: Survey,
+          },
+          {
+            path: 'manage-survey',
+            Component: SurveyManage,
+          },
         ],
       },
       {
@@ -40,6 +55,14 @@ const routers: RouteObject[] = [
           {
             path: 'counsel',
             Component: Counsel,
+          },
+          {
+            path: 'student',
+            Component: Student,
+          },
+          {
+            path: 'tutor',
+            Component: Tutor,
           },
         ],
       },
@@ -64,21 +87,21 @@ const routers: RouteObject[] = [
             path: 'classroom',
             Component: Classroom,
           },
-        ],
-      },
-      {
-        path: 'lecture',
-        children: [
           {
-            path: 'test-Info',
-            Component: TestInfo,
+            path: 'company',
+            Component: Company,
           },
           {
-            path: 'test',
-            Component: Test,
+            path: 'commoncode',
+            Component: commoncode,
+          },
+          {
+            path: 'equipment',
+            Component: Equipment,
           },
         ],
       },
+      // 여기에 page 추가
     ],
   },
 ];

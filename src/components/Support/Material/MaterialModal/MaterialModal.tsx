@@ -1,11 +1,10 @@
-import { useRecoilState } from 'recoil';
-import './styled.css';
-import { modalState } from '../../../../stores/modalState';
-import { useEffect, useRef, useState, type ChangeEvent, type FC } from 'react';
 import axios, { type AxiosResponse } from 'axios';
-import type { INtoticeDetail } from '../../../../model/Support/INotice';
+import { useEffect, useRef, useState, type ChangeEvent, type FC } from 'react';
+import { useRecoilState } from 'recoil';
 import type { IMaterialDetail } from '../../../../model/Support/IMaterial';
-import type { IClassList, ICounselDetail } from '../../../../model/manage/ICounsel';
+import type { IClassList } from '../../../../model/manage/ICounsel';
+import { modalState } from '../../../../stores/modalState';
+import './styled.css';
 
 interface INoticeProps {
   postSuccess: () => void;
@@ -25,6 +24,8 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
   const [detail, setDetail] = useState<IMaterialDetail>();
   const [imgaeUrl, setImageUrl] = useState<string>('');
 
+  const [fileName, setFileName] = useState<string>('');
+
   useEffect(() => {
 
     id && detailMaterial();
@@ -34,7 +35,7 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
     }
   }, []);
 
-
+  //저장
   const savaMaterial = () => {
     axios.post('/api/support/saveMtr.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
@@ -46,15 +47,17 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
 
   };
 
+
+  //상세보기 
   const detailMaterial = () => {
+
     const param = new URLSearchParams();
 
     param.append("materiId", id.toString());
 
     axios.post('/api/support/getMtrDetail.do',param).then((res:AxiosResponse<{detailValue: IMaterialDetail}>) => {
-        
-
-      console.log(res.data.detailValue);
+      
+      console.log(res.data.detailValue)
 
       const { fileExt, logicalPath } = res.data.detailValue;
 
@@ -68,11 +71,13 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
       }
 
       setDetail(res.data.detailValue);
+      setFileName(res.data.detailValue.fileName);
 
     }
   );
   }
 
+  //수정
   const updateDetail = () => {
 
     const formData = new FormData(formRef.current as HTMLFormElement);
@@ -90,6 +95,8 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
 
   };
 
+
+  //삭제 
   const deleteDetail = () => {
 
     const param = new URLSearchParams({ materiId : id.toString() });
@@ -105,31 +112,50 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
     })
   }
 
+  //파일 이름 미리보기 
   const handlerFile = (e : ChangeEvent<HTMLInputElement>) => {
     const fileInfo = e.target.files;
 
     if(fileInfo?.length){
-      const fileInfoSplit = fileInfo[0].name.split('.');
-      const fileExt = fileInfoSplit[1].toLowerCase();
-
-      if(fileExt === 'jpg' || 
-         fileExt === 'gif' || 
-         fileExt === 'png')
-        {
-          setImageUrl(URL.createObjectURL(fileInfo[0]));
-
-        } else{
-          setImageUrl('');
-        }
+      const fileInfoSplit = fileInfo[0].name;
+      setFileName(fileInfoSplit);
     }
-
 
   };
 
 
+  const downloadFile = () =>{
+
+    const param = new URLSearchParams();
+    param.append('materiId', id.toString());
+
+    axios.post('/api/support/materiDownload.do', param, {
+      responseType : 'blob' ,
+    }).then((res: AxiosResponse<Blob>) => {
+
+      const url = window.URL.createObjectURL(res.data);
+
+      const link = document.createElement('a');
+      link.href = url;
+
+      link.setAttribute('download', detail?.fileName as string);
+
+      document.body.appendChild(link);
+
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    })
+  };
+
   return (
     <div className="modal-overlay">
-      <form ref={formRef} className="modal-form modal-container">
+      {
+        lecture.length != 0 ?
+
+        // 강사의 경우
+        (
+          <form ref={formRef} className="modal-form modal-container">
         <label>
             강의명 
             <select className='LectureSelect' name='lecId' id='counselLecId' value={detail?.lecId}
@@ -142,11 +168,12 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
             >
             <option value="">-- 과목을 선택하세요 --</option>
             {
-                lecture.map((lec)=>{
+
+                (lecture.map((lec)=>{
                 return(
                     <option value={lec.lecId}>{lec.lecName}</option>
                 )
-                })
+                }))
             }
             </select>
         </label>
@@ -162,17 +189,10 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
           파일 첨부하기
         </label>
         <div>
-          <div>
-            {
-              imgaeUrl ? (
-                <>
-                  <label>미리보기</label>
-                  <img className="preview-image" src={imgaeUrl} />
-                </>
-              ) 
-              :
-              <div></div>
-            }
+          <div onClick={downloadFile} className='cursor-pointer'>
+          {
+            fileName 
+          }
           </div>
         </div>
         <div className="button-container">
@@ -188,6 +208,71 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
           }}>나가기</button>
         </div>
       </form>
+        )
+        :
+        (
+
+      // 관리자의 경우     
+      <form ref={formRef} className="modal-form modal-container">
+        <label>
+            강의명 
+            <select className='LectureSelect' name='lecId' id='counselLecId'
+            onChange={(e) =>
+            setDetail((prev) => ({
+                ...(prev as IMaterialDetail),
+                lecId: Number(e.target.value)
+            }))
+            }
+            aria-readonly
+            >
+            <option value="">{detail?.lecName}
+            </option>
+            {
+                (lecture.map((lec)=>{
+                return(
+                    <option value={lec.lecId}>{lec.lecName}</option>
+                )
+                }))
+            }
+            </select>
+        </label>
+        <label>
+          제목 :<input type="text" name="mtrTitle" defaultValue={detail?.materiTitle} readOnly/>
+        </label>
+        <label>
+          내용 :<input type="text" name="mtrContent" defaultValue={detail?.materiContent} readOnly/>
+        </label>
+        파일 :
+        <input type="file" id="fileInput" name='file' onChange={handlerFile} readOnly/>
+        <label className="img-label" htmlFor="fileInput">
+          파일 첨부하기
+        </label>
+        <div>
+          <div onClick={downloadFile} className='cursor-pointer'>
+          {
+            fileName 
+          }
+          </div>
+        </div>
+        <div className="button-container">
+          {
+            lecture.length > 0 &&
+            <button type="button" onClick={!id ? savaMaterial : updateDetail}>
+                {!id ? '저장' : '수정' }
+            </button>
+          }
+          {
+            lecture.length > 0 &&
+            (!!id && <button type="button" onClick={deleteDetail}>삭제</button>)
+          }
+
+          <button type="button" onClick={() => {
+            setModal({isOpen : false})
+          }}>나가기</button>
+        </div>
+      </form>
+        )
+      }
     </div>
   );
 };
