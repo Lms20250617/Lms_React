@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+.lecture-modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-gray-500/50 font-bold backdrop-blur-xs;
+}
+
+.lecture-modal-content {
+  @apply mx-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl;
+}
+
+.lecture-modal-header {
+  @apply flex items-center justify-between border-b border-gray-200 bg-gray-100 p-6;
+}
+
+.lecture-modal-title {
+  @apply text-lg font-semibold text-gray-800;
+}
+
+.lecture-close-button {
+  @apply flex h-8 w-8 items-center justify-center rounded text-2xl font-bold text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700;
+}
+
+.lecture-modal-form {
+  @apply space-y-4 p-6;
+}
+
+.lecture-form-row {
+  @apply flex gap-4;
+}
+
+.lecture-form-group {
+  @apply flex-1;
+}
+
+.lecture-form-label {
+  @apply mb-2 block rounded bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700;
+}
+
+.lecture-required {
+  @apply ml-1 text-red-500;
+}
+
+.lecture-form-input {
+  @apply w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+}
+
+.lecture-form-select {
+  @apply w-full rounded-md border border-gray-300 bg-white px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+}
+
+.lecture-modal-footer {
+  @apply flex justify-center gap-3 border-t border-gray-200 pt-4;
+}
+
+.lecture-save-button {
+  @apply rounded bg-blue-500 px-6 py-2 font-medium text-white transition-colors hover:bg-blue-600;
+}
+
+.lecture-cancel-button {
+  @apply rounded bg-gray-500 px-6 py-2 font-medium text-white transition-colors hover:bg-gray-600;
+}

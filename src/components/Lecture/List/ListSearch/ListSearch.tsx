@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import './styeld.css';
-import { ListContext } from '../../../provider/Lecture/ListProvider';
+import { ListContext } from '../../../../provider/Lecture/ListProvider';
 
 export const ListSearch = () => {
   const title = useRef<HTMLInputElement>(null);
@@ -11,6 +11,14 @@ export const ListSearch = () => {
   const { setSearchData } = useContext(ListContext);
 
   const handlerSearch = () => {
+    if (!!startDate && !!endDate) {
+      if (startDate >= endDate) {
+        alert(
+          '강의 날짜 입력을 잘못했습니다. 시작일이 종료일보다 늦을 수 없습니다.'
+        );
+        return false;
+      }
+    }
     setSearchData({
       searchTitle: title.current ? title.current.value : '',
       searchStDate: startDate || '',

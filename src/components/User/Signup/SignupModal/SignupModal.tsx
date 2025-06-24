@@ -255,8 +255,8 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
     <div className="signup-modal-overlay">
       <dl>
         <form className="modal-form signup-modal-container">
-          <div className="signup-border-line">
-            <dt className="signup-border-line mx-10 my-5 bg-blue-300/60 p-8 text-center text-3xl font-bold">
+          <div className="signup-border-line rounded-lg">
+            <dt className="signup-border-line mx-10 my-5 rounded-lg bg-blue-300/60 p-8 text-center text-3xl font-bold">
               회원가입
             </dt>
 
@@ -481,7 +481,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
                     </td>
                     <th className="signup-border-line bg-blue-300/30 px-5 py-3">
                       <span className="text-gray-700 after:ml-1 after:text-red-500 after:content-['*']">
-                        전화번호
+                        연락처
                       </span>
                     </th>
                     <td className="signup-border-line px-5 py-3" colSpan={2}>

@@ -8,8 +8,8 @@ import { loginInfoState } from '../../stores/userInfo';
 import './styled.css';
 import { modalState } from '../../stores/modalState';
 import { Portal } from '../../common/Portal';
-import { NoticeModal } from '../Support/Notice/NoticeModal/NoticeModal';
 import { SignupModal } from '../User/Signup/SignupModal/SignupModal';
+import { FindModal } from '../User/Find/FindModal/FindModal';
 
 export interface IAccount {
   lgn_Id: string;
@@ -27,8 +27,12 @@ export const LoginMain = () => {
 
   // ----------------------------//
 
+  const findModalDetail = () => {
+    setModal({ isOpen: true, type: 'find' });
+  };
+
   const signupDetail = () => {
-    setModal({ isOpen: true });
+    setModal({ isOpen: true, type: 'signup' });
   };
 
   const postSuccess = () => {
@@ -56,9 +60,14 @@ export const LoginMain = () => {
   return (
     <>
       <div className="login-main">
-        {modal.isOpen && (
+        {modal.isOpen && modal.type === 'signup' && (
           <Portal>
             <SignupModal reSearch={() => {}}></SignupModal>
+          </Portal>
+        )}
+        {modal.isOpen && modal.type === 'find' && (
+          <Portal>
+            <FindModal></FindModal>
           </Portal>
         )}
         <div className="login-container">
@@ -112,6 +121,9 @@ export const LoginMain = () => {
                 Sign Up
               </button>
             </div>
+            <span className="mt-2 text-center" onClick={findModalDetail}>
+              [ 계정을 잊어버리셨나요? ]
+            </span>
           </div>
         </div>
       </div>

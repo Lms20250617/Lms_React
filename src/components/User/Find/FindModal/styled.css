@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+.find-modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-gray-500/50 font-bold backdrop-blur-xs;
+}
+
+.find-modal-container {
+  @apply h-full w-full rounded-lg bg-white p-5 opacity-100 shadow-lg;
+}
+
+.find-modal-button {
+  @apply w-full rounded-xl bg-blue-500 px-4 py-3 text-white shadow-md transition duration-200 hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none active:bg-blue-700;
+}
