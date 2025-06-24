@@ -77,6 +77,14 @@ const routers: RouteObject[] = [
             path: 'lecture-manage-list',
             Component: ManageList,
           },
+          {
+            path: 'test',
+            Component: Test,
+          },
+          {
+            path: 'test-info',
+            Component: TestInfo,
+          },
         ],
       },
       // 여기에 page 추가
