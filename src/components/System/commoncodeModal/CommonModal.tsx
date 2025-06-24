@@ -1,8 +1,8 @@
-import { useRecoilState } from 'recoil';
-import './styled.css';
-import { useEffect, useRef, useState, type ChangeEvent, type FC } from 'react';
 import axios, { type AxiosResponse } from 'axios';
+import { useEffect, useRef, useState, type FC } from 'react';
+import { useRecoilState } from 'recoil';
 import { modalState } from '../../../stores/modalState';
+import './styled.css';
 
 interface INoticeProps {
   postSuccess: () => void;
@@ -75,10 +75,10 @@ export const CommonModal: FC<INoticeProps> = ({ postSuccess, id}) => {
     <div className="modal-overlay">
       <form ref={formRef} className="modal-form modal-container">
         <label>
-          대분류 :<input type="text" name="useYn" defaultValue={detail?.useYn} />
+          대분류 :<input type="text" name="useYn" defaultValue={detail?.useYn} disabled/>
         </label>
         <label>
-          그룹코드 :<input type="text" name="groupName" defaultValue={detail?.groupName} />
+          그룹코드 :<input type="text" name="groupName" defaultValue={detail?.groupName} disabled/>
         </label>
         <label>
           시리얼코드 :<input type="text" name="newDetailCode" defaultValue={detail?.detailCode} />
@@ -87,7 +87,7 @@ export const CommonModal: FC<INoticeProps> = ({ postSuccess, id}) => {
           상세명 :<input type="text" name="detailName" defaultValue={detail?.detailName} />
         </label>
         <label>
-          번호 :<input type="text" name="regId" defaultValue={detail?.regId} />
+          번호 :<input type="text" name="regId" defaultValue={detail?.regId} disabled/>
         </label>
         <input type="hidden" name="oldDetailCode" defaultValue={detail?.detailCode} />
         <div className="button-container">

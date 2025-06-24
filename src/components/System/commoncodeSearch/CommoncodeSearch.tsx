@@ -1,8 +1,8 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import './styeld.css';
-import { modalState } from '../../../stores/modalState';
 import { CommonCodeContext } from '../../../provider/CommoncodeProvier';
+import { modalState } from '../../../stores/modalState';
+import './styeld.css';
 
 export const CommoncodeSearch = () => {
   const [_, setModal] = useRecoilState(modalState);
