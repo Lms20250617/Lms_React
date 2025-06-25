@@ -17,6 +17,7 @@ import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
 import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
+import { Attendance } from '../pages/Lecture/attendance/Attendance';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -84,6 +85,10 @@ const routers: RouteObject[] = [
           {
             path: 'test-info',
             Component: TestInfo,
+          },
+          {
+            path: 'attendance',
+            Component: Attendance,
           },
         ],
       },
