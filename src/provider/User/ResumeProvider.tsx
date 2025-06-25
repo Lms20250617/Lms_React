@@ -2,18 +2,18 @@ import { createContext, useState, type FC } from 'react';
 
 interface IResumeContext {
   searchData: {
-    lecName: string;
-    lectureStartRound: string;
-    lectureEndRound: string;
+    lectureName: string;
+    lectureStartAround: string;
+    lectureEndAround: string;
   };
   setSearchData: (params: Partial<IResumeContext['searchData']>) => void;
 }
 
 const defaultValue: IResumeContext = {
   searchData: {
-    lecName: '',
-    lectureStartRound: '',
-    lectureEndRound: '',
+    lectureName: '',
+    lectureStartAround: '',
+    lectureEndAround: '',
   },
   setSearchData: () => {},
 };
