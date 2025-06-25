@@ -87,7 +87,6 @@ export const ResumeSearch = () => {
             ))}
           </select>
         </span>
-        <br />
         <span>
           시작 회차
           <select
