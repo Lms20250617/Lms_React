@@ -20,7 +20,6 @@ export const ListMain = () => {
 
   useEffect(() => {
     searchList();
-    console.log(searchData);
   }, [searchData]);
 
   const searchList = (cPage?: number) => {
@@ -76,12 +75,18 @@ export const ListMain = () => {
                   >
                     {list.lecName}
                   </td>
-                  <td className="list-cell">{list.lecInstructorName}</td>
-                  <td className="list-cell">{list.lecStartDate}</td>
-                  <td className="list-cell">{list.lecEndDate}</td>
-                  <td className="list-cell">{list.lecPersonnel}</td>
-                  <td className="list-cell">{list.courseCntPersonnel}</td>
-                  <td className="list-cell">{list.lecRoomName}</td>
+                  <td className="list-cell">{list.lecInstructorName || '-'}</td>
+                  <td className="list-cell">
+                    {list.lecStartDate.slice(0, 10) || '-'}
+                  </td>
+                  <td className="list-cell">
+                    {list.lecEndDate.slice(0, 10) || '-'}
+                  </td>
+                  <td className="list-cell">{list.lecPersonnel || '-'}</td>
+                  <td className="list-cell">
+                    {list.courseCntPersonnel || '0'}
+                  </td>
+                  <td className="list-cell">{list.lecRoomName || '-'}</td>
                 </tr>
               );
             })

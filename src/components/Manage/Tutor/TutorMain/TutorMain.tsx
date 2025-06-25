@@ -35,7 +35,6 @@ export const TutorMain = () => {
     axios
       .post('/api/manage/tutorListBody.do', searchParam)
       .then((res: AxiosResponse<ITutorListResponse>) => {
-        console.log(res.data);
         setTutorList(res.data.list);
         setTutorListCnt(res.data.count);
       });
@@ -57,7 +56,6 @@ export const TutorMain = () => {
     axios
       .post('/api/manage/update-ins-status', param)
       .then((res: AxiosResponse<string>) => {
-        console.log(res);
         if (res.data === 'SUCCESS') {
           alert('변경되었습니다.');
           searchList();

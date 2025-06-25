@@ -94,11 +94,21 @@ export const ManageListMain = () => {
                   >
                     {list.lecName}
                   </td>
-                  <td className="manage-list-cell">{list.lecInstructorName}</td>
-                  <td className="manage-list-cell">{list.lecStartDate}</td>
-                  <td className="manage-list-cell">{list.lecEndDate}</td>
-                  <td className="manage-list-cell">{list.lecPersonnel}</td>
-                  <td className="manage-list-cell">{list.lecRoomName}</td>
+                  <td className="manage-list-cell">
+                    {list.lecInstructorName || '-'}
+                  </td>
+                  <td className="manage-list-cell">
+                    {list.lecStartDate?.slice(0, 10) || '-'}
+                  </td>
+                  <td className="manage-list-cell">
+                    {list.lecEndDate?.slice(0, 10) || '-'}
+                  </td>
+                  <td className="manage-list-cell">
+                    {list.lecPersonnel || '-'}
+                  </td>
+                  <td className="manage-list-cell">
+                    {list.lecRoomName || '-'}
+                  </td>
                   <td className="manage-list-cell">
                     <button
                       onClick={() => {

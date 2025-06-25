@@ -35,7 +35,6 @@ export const CompanyModal: FC<ICompanyProps> = ({ payload, reSearch }) => {
     axios
       .post('/api/system/companyDetail.do', param)
       .then((res: AxiosResponse<{ detailValue: ICompanyDetail }>) => {
-        console.log(res.data);
         setDetailValue(res.data.detailValue);
       });
   };

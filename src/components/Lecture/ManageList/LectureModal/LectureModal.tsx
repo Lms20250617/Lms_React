@@ -72,7 +72,6 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
     const lecEndDate = formData.get('lecEndDate') as string;
     const lecDaysCnt = formData.get('lecDaysCnt') as string;
 
-    // 1. Not null 검증
     if (!lecName || lecName.trim() === '' || lecName === 'default') {
       alert('강의명을 입력해 주세요.');
       return false;
@@ -108,7 +107,6 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
       return false;
     }
 
-    // 2. 날짜 검증
     const startDate = new Date(lecStartDate);
     const endDate = new Date(lecEndDate);
 
@@ -119,7 +117,6 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
       return false;
     }
 
-    // 3. 강의 일수 검증
     const daysDiff =
       Math.ceil(
         (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
@@ -131,14 +128,12 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
       return false;
     }
 
-    // 4. 정원 숫자 검증 (추가)
     const personnel = parseInt(lecPersonnel);
     if (isNaN(personnel) || personnel <= 0) {
       alert('정원은 1 이상의 숫자를 입력해 주세요.');
       return false;
     }
 
-    // 5. 강의 일수 숫자 검증 (추가)
     if (isNaN(inputDays) || inputDays <= 0) {
       alert('강의 일수는 1 이상의 숫자를 입력해 주세요.');
       return false;
@@ -178,7 +173,6 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
           isLectureRegistrationAvailable: boolean;
         }>
       ) => {
-        console.log(res.data);
         setDetailValue(res.data.lectureDetailValue);
         setIsEditModal(res.data.isLectureRegistrationAvailable);
       }
@@ -217,7 +211,7 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
                 강의명<span className="lecture-required">*</span>
               </label>
 
-              {!isEditModal ? (
+              {!payload?.id ? (
                 <>
                   <select
                     name="lecName"
@@ -277,7 +271,7 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
               <select
                 key={detailValue?.lecInstructorId}
                 defaultValue={
-                  isEditModal ? detailValue?.lecInstructorId : 'default'
+                  !!payload?.id ? detailValue?.lecInstructorId : 'default'
                 }
                 name="lecInstructorId"
                 className="lecture-form-select"
@@ -321,7 +315,7 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
                 className="lecture-form-select"
                 key={detailValue?.lecRoomId}
                 defaultValue={
-                  isEditModal ? detailValue?.lecRoomId?.toString() : 'default'
+                  !!payload?.id ? detailValue?.lecRoomId?.toString() : 'default'
                 }
                 required
               >
@@ -346,7 +340,7 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
                 type="date"
                 name="lecStartDate"
                 className="lecture-form-input"
-                defaultValue={detailValue?.lecStartDate}
+                defaultValue={detailValue?.lecStartDate?.slice(0, 10)}
                 required
               />
             </div>
@@ -358,7 +352,7 @@ export const LectureModal: FC<ILectureProps> = ({ payload, reSearch }) => {
                 type="date"
                 name="lecEndDate"
                 className="lecture-form-input"
-                defaultValue={detailValue?.lecEndDate}
+                defaultValue={detailValue?.lecEndDate?.slice(0, 10)}
                 required
               />
             </div>
