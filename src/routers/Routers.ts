@@ -19,6 +19,7 @@ import { Tutor } from '../pages/manage/Tutor';
 import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
 import { Attendance } from '../pages/Lecture/attendance/Attendance';
+import { Statistics } from '../pages/User/Statistics';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -122,6 +123,10 @@ const routers: RouteObject[] = [
           {
             path: 'resume',
             Component: Resume,
+          },
+          {
+            path: 'statistics',
+            Component: Statistics,
           },
         ],
       },
