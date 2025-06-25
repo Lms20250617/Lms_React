@@ -20,9 +20,13 @@ export const ResumeMain = () => {
 
   useEffect(() => {
     if (!modal.isOpen) {
-      searchList();
+      searchList(1);
     }
   }, [modal]);
+
+  useEffect(() => {
+    searchList(1);
+  }, [searchData]);
 
   const searchList = async (cPage?: number) => {
     const searchParam = new URLSearchParams(searchData);
@@ -52,7 +56,9 @@ export const ResumeMain = () => {
         <Portal>
           <ResumeModal
             id={modal.payload as number}
-            reSearch={() => {}}
+            reSearch={() => {
+              searchList(1);
+            }}
           ></ResumeModal>
         </Portal>
       )}
@@ -83,12 +89,8 @@ export const ResumeMain = () => {
                   <td className="resume-cell">{resume.lectureRound}</td>
                   <td className="resume-cell">{resume.tutorName}</td>
                   <td className="resume-cell">{resume.lecPersonnel}</td>
-                  <td className="resume-cell">
-                    {resume.lecStartDate.split('.')[0].slice(0, 10)}
-                  </td>
-                  <td className="resume-cell">
-                    {resume.lecEndDate.split('.')[0].slice(0, 10)}
-                  </td>
+                  <td className="resume-cell">{resume.lecStartDate}</td>
+                  <td className="resume-cell">{resume.lecEndDate}</td>
                 </tr>
               );
             })

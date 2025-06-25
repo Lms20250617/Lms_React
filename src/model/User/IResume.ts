@@ -2,7 +2,7 @@ export interface IResume {
   lecId: number;
   lecName: string;
   lectureRound: number;
-  tutorId: number;
+  tutorId: string;
   tutorName: string;
   lecStartDate: string;
   lecEndDate: string;
@@ -12,4 +12,14 @@ export interface IResume {
 export interface IResumeResponse {
   resumeLectureCnt: number;
   resumeLectureList: IResume[];
+}
+
+export interface ICompanyInfo {
+  companyId: string;
+  companyName: string;
+  companyCeo: string;
+  companyHp: string;
+  companyLoc: string;
+  companyEmail: string;
+  companyRegDate: string;
 }
