@@ -32,7 +32,6 @@ export const CompanyMain = () => {
     axios
       .post('/api/system/companyListBody.do', searchParam)
       .then((res: AxiosResponse<ICompanyResponse>) => {
-        console.log(res.data);
         setCompanyList(res.data.list);
         setCompanyListCnt(res.data.count);
       });
