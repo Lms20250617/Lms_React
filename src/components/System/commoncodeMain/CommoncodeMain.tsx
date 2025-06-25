@@ -56,6 +56,7 @@ export const CommoncodeMain = () => {
   const postSuccess = () => {
     setModal({ isOpen: false });
     seearchList();
+    
   };
 
   const commonDetail = (id: string) => {
@@ -91,19 +92,20 @@ export const CommoncodeMain = () => {
             commonList.map((common) => {
               return (
                 <tr key={common.regId} className="notice-table-row"
-                    onClick={() => {
-                      commonDetail(common.detailCode);
-                    }}
                 >
-                  <td className="notice-cell">{common.detailCode}</td>
+                  <td className="notice-cell">{common.useYn}</td>
                   <td
-                    className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                    className="notice-cell"
                   >
                     {common.groupName}
                   </td>
+                  <td className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                    onClick={() => {
+                      commonDetail(common.detailCode);
+                    }}
+                  >{common.detailCode}</td>
                   <td className="notice-cell">{common.detailName}</td>
-                  <td className="notice-cell">{common.note}</td>
-                  <td className="notice-cell">{common.useYn}</td>
+                  <td className="notice-cell">{common.regId}</td>
                 </tr>
               );
             })

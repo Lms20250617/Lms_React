@@ -87,9 +87,10 @@ export const CommonModal: FC<INoticeProps> = ({ postSuccess, id}) => {
           상세명 :<input type="text" name="detailName" defaultValue={detail?.detailName} />
         </label>
         <label>
-          번호 :<input type="text" name="regId" defaultValue={detail?.regId} disabled/>
+          번호 :<input type="text" name="regIdDisabled" defaultValue={detail?.regId} disabled/>
         </label>
         <input type="hidden" name="oldDetailCode" defaultValue={detail?.detailCode} />
+        <input type="hidden" name="regId" defaultValue={detail?.regId}/>
         <div className="button-container">
           <button type="button" onClick={updateDetail}>
               수정
