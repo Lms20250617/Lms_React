@@ -4,8 +4,7 @@ import { NoticeSearch } from '../../components/Support/Notice/NoticeSearch/Notic
 import { NoticeProvider } from '../../provider/NoticeProvider';
 
 export const Notice = () => {
-
-  return(
+  return (
     <>
       <NoticeProvider>
         <ContentBox>공지사항</ContentBox>
