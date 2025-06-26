@@ -4,8 +4,11 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import type { ILoginInfo } from "../../../../model/ILogin";
 import { loginInfoState } from "../../../../stores/userInfo";
+import { useNavigate } from "react-router-dom";
 
 export const SurveyMain = () => {
+
+  const navigate  = useNavigate();
 
   const { selectData, setSelectData } = useContext(SurveyContext);
   //질문을 담아줄 배열 
@@ -14,6 +17,7 @@ export const SurveyMain = () => {
   //현재 문항이 몇번째 인지 담아줄 변수 
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  //modal 창에 1~5 값에 맞는 표기 방식 ex) 1= '매우 나쁨'
   const SurveyView = ['매우 나쁨', '나쁨', '보통', '좋음', '매우 좋음'];
 
   const [userInfo, setUserInfo] = useRecoilState<ILoginInfo>(loginInfoState);
@@ -114,9 +118,9 @@ export const SurveyMain = () => {
 
   useEffect(()=>{
 
-    if(userInfo.userType !== 'S'){
+    if(userInfo.userType && userInfo.userType !== 'S'){
       alert("설문 대상이 아닙니다.");
-      return;
+      navigate('/react');
     }
     //id 값이 있을 경우만 실행 
     // selectData.success !== 1 준 이유는 

@@ -6,14 +6,20 @@ import { NotFound } from '../pages/Error/NotFound/NotFound';
 import { Login } from './../pages/Login';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { Classroom } from '../pages/System/Classroom';
+import { TestInfo } from '../pages/Lecture/Test/TestInfo';
+import { Test } from '../pages/Lecture/Test/Test';
 import { List } from '../pages/Lecture/List';
 import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Resume } from '../pages/User/Resume';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
-
+import { Company } from '../pages/System/Company';
+import { commoncode } from '../pages/System/commoncode';
+import { Attendance } from '../pages/Lecture/attendance/Attendance';
+import { Statistics } from '../pages/User/Statistics';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -74,6 +80,18 @@ const routers: RouteObject[] = [
             path: 'lecture-manage-list',
             Component: ManageList,
           },
+          {
+            path: 'test',
+            Component: Test,
+          },
+          {
+            path: 'test-info',
+            Component: TestInfo,
+          },
+          {
+            path: 'attendance',
+            Component: Attendance,
+          },
         ],
       },
       // 여기에 page 추가
@@ -85,12 +103,33 @@ const routers: RouteObject[] = [
             Component: Classroom,
           },
           {
+            path: 'company',
+            Component: Company,
+          },
+          {
+            path: 'commoncode',
+            Component: commoncode,
+          },
+          {
             path: 'equipment',
             Component: Equipment,
           },
         ],
       },
       // 여기에 page 추가
+      {
+        path: 'user',
+        children: [
+          {
+            path: 'resume',
+            Component: Resume,
+          },
+          {
+            path: 'statistics',
+            Component: Statistics,
+          },
+        ],
+      },
     ],
   },
 ];

@@ -26,10 +26,8 @@ export const TutorModal: FC<ITutorProps> = ({ payload }) => {
     axios
       .post(`/api/manage/tutor-detail/${payload?.id}`)
       .then((res: AxiosResponse<ITutorDetail>) => {
-        console.log(res.data);
         setDetailValue(res.data);
         setLectureList(res.data.lectureInfo);
-        console.log(res.data.lectureInfo);
       });
   };
   const getStatusText = (status: string | undefined) => {

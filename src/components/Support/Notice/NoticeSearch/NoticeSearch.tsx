@@ -1,8 +1,9 @@
 import { useContext, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { MaterialContext } from '../../../../provider/support/MaterialProvier';
+
 import { modalState } from '../../../../stores/modalState';
 import './styeld.css';
+import { NoticeContext } from '../../../../provider/NoticeProvider';
 
 export const NoticeSearch = () => {
 
@@ -11,7 +12,7 @@ export const NoticeSearch = () => {
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
 
-  const { setSearchData } =useContext(MaterialContext);
+  const { setSearchData } =useContext(NoticeContext);
 
   const handlerSearch = () => {
     setSearchData({
