@@ -29,7 +29,7 @@ export const CommoncodeSearch = () => {
       <div className="input-box">
         분류 :
         <select ref={commonGroup} className='w-3/16 ml-2'>
-          <option value="">-분류-</option>
+          <option value=''>-분류-</option>
           <option value="equip">장비</option>
           <option value="loc">지역</option>
         </select>

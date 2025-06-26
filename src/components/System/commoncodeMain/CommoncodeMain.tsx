@@ -34,10 +34,11 @@ export const CommoncodeMain = () => {
   const [detailCode, setDetailCode] = useState<string>('');
 
   useEffect(() => {
-    seearchList();
+    seearchList(1);
   }, [searchData]);
 
   const seearchList = (cPage?: number) => {
+
     const searchParam = new URLSearchParams(searchData);
 
     cPage = cPage || 1;
@@ -91,7 +92,7 @@ export const CommoncodeMain = () => {
           {commonList.length > 0 ? (
             commonList.map((common) => {
               return (
-                <tr key={common.regId} className="notice-table-row"
+                <tr key={common.detailCode} className="notice-table-row"
                 >
                   <td className="notice-cell">{common.useYn}</td>
                   <td
@@ -112,7 +113,7 @@ export const CommoncodeMain = () => {
           ) : (
             <tr>
               <td colSpan={4} className="notice-empty-row">
-                등록된 공지사항이 없습니다
+                등록된 공통코드가 없습니다
               </td>
             </tr>
           )}
