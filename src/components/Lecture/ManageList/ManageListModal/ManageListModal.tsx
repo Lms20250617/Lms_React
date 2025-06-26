@@ -21,9 +21,13 @@ export const ManageListModal: FC<IManageListProps> = ({
   const [_, setModal] = useRecoilState(modalState);
   const [detailValue, setDetailValue] = useState<IManageListDetail>();
   const formRef = useRef<HTMLFormElement>(null);
+  const startRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     payload?.id && detailList();
+    if (startRef.current) {
+      startRef.current.focus();
+    }
   }, []);
 
   const detailList = () => {
@@ -129,49 +133,59 @@ export const ManageListModal: FC<IManageListProps> = ({
               <div className="detail-column">
                 <div className="detail-row">
                   <div className="detail-label">강의</div>
-                  <div className="detail-value">{detailValue?.lecName}</div>
+                  <div className="detail-value">
+                    {detailValue?.lecName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">강사</div>
                   <div className="detail-value">
-                    {detailValue?.lecInstructorName}
+                    {detailValue?.lecInstructorName || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">이메일</div>
-                  <div className="detail-value">{detailValue?.insEmail}</div>
+                  <div className="detail-value">
+                    {detailValue?.insEmail || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">강의 시작일</div>
                   <div className="detail-value">
-                    {detailValue?.lecStartDate}
+                    {detailValue?.lecStartDate.slice(0, 10) || '-'}
                   </div>
                 </div>
               </div>
 
               <div className="detail-column">
                 <div className="detail-row">
-                  <div className="detail-label">강의실*</div>
-                  <div className="detail-value">{detailValue?.lecRoomName}</div>
+                  <div className="detail-label">강의실</div>
+                  <div className="detail-value">
+                    {detailValue?.lecRoomName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">연락처</div>
-                  <div className="detail-value">{detailValue?.insHp}</div>
+                  <div className="detail-value">
+                    {detailValue?.insHp || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">정원</div>
                   <div className="detail-value">
-                    {detailValue?.lecPersonnel}
+                    {detailValue?.lecPersonnel || '-'}
                   </div>
                 </div>
                 <div className="detail-row">
                   <div className="detail-label">강의 종료일</div>
-                  <div className="detail-value">{detailValue?.lecEndDate}</div>
+                  <div className="detail-value">
+                    {detailValue?.lecEndDate.slice(0, 10) || '-'}
+                  </div>
                 </div>
               </div>
             </div>
@@ -189,6 +203,7 @@ export const ManageListModal: FC<IManageListProps> = ({
                     defaultValue={detailValue?.lecGoal || ''}
                     className="plan-input"
                     name="lecGoal"
+                    ref={startRef}
                   />
                 </div>
               </div>
