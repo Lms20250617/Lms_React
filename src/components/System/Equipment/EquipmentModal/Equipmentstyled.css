@@ -5,19 +5,26 @@
 }
 
 .modal-container {
-  @apply relative w-[400px] rounded-lg bg-white p-5 opacity-100 shadow-lg;
+  @apply relative w-[500px] rounded-lg bg-white p-6 opacity-100 shadow-lg;
+}
+
+.modal-form {
+  @apply space-y-3;
 }
 
 .modal-form label {
-  @apply mb-4 flex flex-col;
+  @apply flex items-center gap-4;
 }
 
-.modal-form input[type='text'] {
-  @apply mt-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+.modal-form label > span {
+  @apply w-28 text-gray-800 font-semibold;
 }
 
-.modal-form input[type='number'] {
-  @apply mt-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+.modal-form input[type='text'],
+.modal-form input[type='number'],
+.modal-form input[type='date'],
+.modal-form select {
+  @apply flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
 }
 
 .modal-form input[type='file'] {
@@ -33,9 +40,15 @@
 }
 
 .button-container {
-  @apply mt-4 space-x-2 text-right;
+  @apply mt-6 flex justify-end gap-3;
 }
 
 .button-container button {
   @apply rounded-md px-4 py-2 transition-colors duration-200 first:bg-blue-500 first:text-white last:bg-gray-300 last:text-gray-700 first:hover:bg-blue-600 last:hover:bg-gray-400;
 }
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+

@@ -5,8 +5,8 @@ import { modalState } from '../../../../stores/modalState';
 import { EquipmentContext } from '../../../../provider/system/EquipmentProvider';
 
 export const EquipmentSearch = () => {
-  //   const [_, setModal] = useRecoilState(modalState);
-  const searchequipName = useRef<HTMLInputElement>(null);
+  const [_, setModal] = useRecoilState(modalState);
+  const equipName = useRef<HTMLInputElement>(null);
   const [searchStDate, setStarDate] = useState<string>();
   const [searchEdDate, setEndDate] = useState<string>();
 
@@ -14,33 +14,33 @@ export const EquipmentSearch = () => {
 
   const handlerSearch = () => {
     setSearchData({
-      equipName: searchequipName.current
-        ? searchequipName.current.value
-        : '',
+      equipName: equipName.current?.value || '',
       searchStDate: searchStDate || '',
       searchEdDate: searchEdDate || '',
     });
   };
 
-  //   const openModal = () => {
-  //     setModal({isOpen: true});
-  //   }
+  const openModal = () => {
+    setModal({ isOpen: true });
+  };
 
   return (
     <div className="equipment-container">
       <div className="input-box">
-        장비명: <input ref={searchequipName}></input>
+        장비명: <input ref={equipName} />
         구매일자:{' '}
         <input
           type="date"
+          value={searchStDate}
           onChange={(e) => setStarDate(e.target.value)}
-        ></input>
-        <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
+        />
+        <input
+          type="date"
+          value={searchEdDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
         <button onClick={handlerSearch}>검색</button>
-        <button 
-        // onClick={openModal}
-        >
-            신규</button>
+        <button onClick={openModal}>신규</button>
       </div>
     </div>
   );
