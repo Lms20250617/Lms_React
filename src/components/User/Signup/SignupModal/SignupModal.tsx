@@ -30,6 +30,15 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
 
   //---------------------------------------//
 
+  const formatTel = (value: string) => {
+    const onlyNums = value.replace(/\D/g, '');
+
+    if (onlyNums.length < 4) return onlyNums;
+    if (onlyNums.length < 8)
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  };
+
   const closeModal = () => {
     setModal({ isOpen: false });
   };
@@ -494,7 +503,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
                           );
                         }}
                         value={tel}
-                        onChange={(e) => setTel(e.target.value)}
+                        onChange={(e) => setTel(formatTel(e.target.value))}
                         placeholder="000-0000-0000"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       />
