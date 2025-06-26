@@ -31,7 +31,9 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
   }, []);
 
   const savaNotice = () => {
-    axios.post('/api/support/noticeFileSave.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
+    axios.
+    post('/api/support/noticeFileSave.do', formRef.current).
+    then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
         alert('저장 되었습니다');
         setModal({isOpen:false});
@@ -46,7 +48,9 @@ export const NoticeModal: FC<INoticeProps> = ({ postSuccess, id, setId }) => {
 
     param.append("noticeId", id.toString());
 
-    axios.post('/api/support/noticeFileDetail.do',param).then((res:AxiosResponse<{detailValue: INtoticeDetail}>) => {
+    axios.
+    post('/api/support/noticeFileDetail.do',param).
+    then((res:AxiosResponse<{detailValue: INtoticeDetail}>) => {
 
       const { fileExt, logicalPath } = res.data.detailValue;
 
