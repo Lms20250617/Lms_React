@@ -13,31 +13,12 @@ export const NoticeSearch = () => {
 
   const { setSearchData } =useContext(MaterialContext);
 
-
-  // const navigate = useNavigate();
-
-  // useEffect(()=>{
-  //   window.location.search && navigate(window.location.pathname)
-  // },[navigate])
-
   const handlerSearch = () => {
-    // //console.log(startDate, endDate, title.current?.value);
-    // const query:string[] = [];
-
-    // !title.current?.value || query.push(`title=${title.current.value}`);
-    // !startDate || query.push(`startDate=${startDate}`);
-    // !endDate || query.push(`endDate=${endDate}`);
-
-    // const querySring = query.length > 0 ? `?${query.join("&")}` : '';
-
-    // navigate(querySring);
-
     setSearchData({
       title: title.current ? title.current.value : '',
       startDate: startDate || '',
       endDate: endDate || '',
     })
-
   };
 
   const openModal = () => {
