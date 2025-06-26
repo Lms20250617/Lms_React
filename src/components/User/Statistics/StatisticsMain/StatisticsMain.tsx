@@ -13,12 +13,13 @@ import type {
 } from '../../../../model/User/IStatistics';
 import { StatisticsModal } from '../StatisticsModal/StatisticsModal';
 import { StatisticsChartModal } from '../StatisticsModal/StatisticsChartModal';
+import { StatisticsContext } from '../../../../provider/User/StatisticsProvider';
 
 export const StatisticsMain = () => {
   const [statisticsList, setStatisticsList] = useState<IStatistics[]>([]);
   const [statisticsCnt, setStatisticsCnt] = useState<number>(0);
 
-  const { searchData } = useContext(ResumeContext);
+  const { searchData } = useContext(StatisticsContext);
 
   const [modal, setModal] = useRecoilState(modalState);
 
@@ -68,15 +69,12 @@ export const StatisticsMain = () => {
       )}
 
       {modal.isOpen && modal.type === 'chart' && (
-        <>
-          {console.log('✅ StatisticsChartModal 렌더링 중')}
-          <Portal>
-            <StatisticsChartModal
-              id={modal.payload as number}
-              reSearch={() => {}}
-            ></StatisticsChartModal>
-          </Portal>
-        </>
+        <Portal>
+          <StatisticsChartModal
+            id={modal.payload as number}
+            reSearch={() => {}}
+          ></StatisticsChartModal>
+        </Portal>
       )}
 
       <table className="statistics-table">
