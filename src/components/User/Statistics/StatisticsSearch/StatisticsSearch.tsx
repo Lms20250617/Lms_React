@@ -118,7 +118,7 @@ export const StatisticsSearch = () => {
             onChange={(e) => setSelectedLecName(e.target.value)}
             value={selectedLecName}
           >
-            <option key="all" value="">
+            <option key="" value="">
               전체
             </option>
             {lectures.map((l) => (
@@ -134,7 +134,7 @@ export const StatisticsSearch = () => {
             className="w-full rounded-sm border border-gray-300 p-2 md:w-56"
             onChange={(e) => setLectureStartAround(e.target.value)}
           >
-            <option key="all" value="">
+            <option key="" value="">
               전체
             </option>
             {rounds.map((r, index) => (
@@ -150,7 +150,7 @@ export const StatisticsSearch = () => {
             className="w-full rounded-sm border border-gray-300 p-2 md:w-56"
             onChange={(e) => setLectureEndAround(e.target.value)}
           >
-            <option key="all" value="">
+            <option key="" value="">
               전체
             </option>
             {rounds.map((r, index) => (
