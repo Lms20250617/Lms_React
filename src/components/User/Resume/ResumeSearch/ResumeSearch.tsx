@@ -13,10 +13,8 @@ interface IRound {
 }
 
 export const ResumeSearch = () => {
-  const lecName = useRef<HTMLInputElement>(null);
   const [lectureStartAround, setLectureStartAround] = useState<string>();
   const [lectureEndAround, setLectureEndAround] = useState<string>();
-  const [isInitialized, setIsInitialized] = useState<Boolean>(false);
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const [rounds, setRounds] = useState<IRound[]>([]);
 

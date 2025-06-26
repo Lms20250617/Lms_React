@@ -2,6 +2,11 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import './styled.css';
 import axios, { type AxiosResponse } from 'axios';
 import { StatisticsContext } from '../../../../provider/User/StatisticsProvider';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../../../../stores/modalState';
+import { StatisticsChartModal } from '../StatisticsModal/StatisticsChartModal';
+import type { ILecDetailResponse } from '../../../../model/User/IStatistics';
+import { Portal } from '../../../../common/Portal';
 
 interface ILecture {
   lecId: number;
@@ -17,8 +22,10 @@ export const StatisticsSearch = () => {
   const [lectureEndAround, setLectureEndAround] = useState<string>();
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const [rounds, setRounds] = useState<IRound[]>([]);
+  const [modal, setModal] = useRecoilState(modalState);
 
-  const { setSearchData } = useContext(StatisticsContext);
+  const { searchData, setSearchData } = useContext(StatisticsContext);
+
   const [selectedLecName, setSelectedLecName] = useState<string>('');
 
   useEffect(() => {
@@ -51,6 +58,40 @@ export const StatisticsSearch = () => {
     fetchRoundByLecName();
   }, [selectedLecName]);
 
+  const statisticsChart = async () => {
+    if (!selectedLecName || !lectureStartAround || !lectureEndAround) {
+      alert('통계를 내고자 하는 데이터를 선택해주세요.');
+      return;
+    }
+
+    const updatedSearchData = {
+      lectureName: selectedLecName,
+      lectureStartAround,
+      lectureEndAround,
+    };
+
+    setSearchData(updatedSearchData);
+
+    const statisticsParams = new URLSearchParams(updatedSearchData);
+
+    try {
+      const res: AxiosResponse<ILecDetailResponse> = await axios.post(
+        '/api/user/lacture-statistics',
+        statisticsParams
+      );
+
+      const id = res.data.lecId;
+      console.log('모달 열기 전, id:', id);
+      setModal({ isOpen: true, type: 'chart', payload: id });
+    } catch (err) {
+      console.error('통계 조회 실패', err);
+      alert('통계 조회 중 오류가 발생했습니다.');
+    }
+
+    console.log('modal.isOpen:', modal.isOpen);
+    console.log('modal.type:', modal.type);
+  };
+
   const handlerSearch = () => {
     if (
       lectureStartAround &&
@@ -77,7 +118,9 @@ export const StatisticsSearch = () => {
             onChange={(e) => setSelectedLecName(e.target.value)}
             value={selectedLecName}
           >
-            <option value="">전체</option>
+            <option key="all" value="">
+              전체
+            </option>
             {lectures.map((l) => (
               <option key={l.lecId} value={l.lecName}>
                 {l.lecName}
@@ -91,9 +134,11 @@ export const StatisticsSearch = () => {
             className="w-full rounded-sm border border-gray-300 p-2 md:w-56"
             onChange={(e) => setLectureStartAround(e.target.value)}
           >
-            <option value="">전체</option>
-            {rounds.map((r) => (
-              <option key={r.lectureRound} value={r.lectureRound}>
+            <option key="all" value="">
+              전체
+            </option>
+            {rounds.map((r, index) => (
+              <option key={`${r.lectureRound}-${index}`} value={r.lectureRound}>
                 {r.lectureRound}
               </option>
             ))}
@@ -105,9 +150,11 @@ export const StatisticsSearch = () => {
             className="w-full rounded-sm border border-gray-300 p-2 md:w-56"
             onChange={(e) => setLectureEndAround(e.target.value)}
           >
-            <option value="">전체</option>
-            {rounds.map((r) => (
-              <option key={r.lectureRound} value={r.lectureRound}>
+            <option key="all" value="">
+              전체
+            </option>
+            {rounds.map((r, index) => (
+              <option key={`${r.lectureRound}-${index}`} value={r.lectureRound}>
                 {r.lectureRound}
               </option>
             ))}
@@ -115,6 +162,7 @@ export const StatisticsSearch = () => {
         </span>
 
         <button onClick={handlerSearch}>검색</button>
+        <button onClick={statisticsChart}>통계</button>
       </div>
     </div>
   );

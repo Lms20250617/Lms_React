@@ -12,3 +12,11 @@ export interface IStatisticsResponse {
   resumeLectureCnt: number;
   resumeLectureList: IStatistics[];
 }
+
+export interface ILecDetailResponse extends IStatistics {
+  avgScore: number;
+  minScore: number;
+  maxScore: number;
+  failedStudents: number;
+  tutorName: string;
+}

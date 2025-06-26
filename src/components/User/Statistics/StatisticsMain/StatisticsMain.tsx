@@ -12,6 +12,7 @@ import type {
   IStatisticsResponse,
 } from '../../../../model/User/IStatistics';
 import { StatisticsModal } from '../StatisticsModal/StatisticsModal';
+import { StatisticsChartModal } from '../StatisticsModal/StatisticsChartModal';
 
 export const StatisticsMain = () => {
   const [statisticsList, setStatisticsList] = useState<IStatistics[]>([]);
@@ -50,12 +51,12 @@ export const StatisticsMain = () => {
   };
 
   const statisticsDetail = (id: number) => {
-    setModal({ isOpen: true, payload: id });
+    setModal({ isOpen: true, type: 'statistics', payload: id });
   };
 
   return (
-    <div className="resume-main-container">
-      {modal.isOpen && (
+    <div className="statistics-main-container">
+      {modal.isOpen && modal.type === 'statistics' && (
         <Portal>
           <StatisticsModal
             id={modal.payload as number}
@@ -65,8 +66,21 @@ export const StatisticsMain = () => {
           ></StatisticsModal>
         </Portal>
       )}
-      <table className="resume-table">
-        <thead className="resume-table-header">
+
+      {modal.isOpen && modal.type === 'chart' && (
+        <>
+          {console.log('✅ StatisticsChartModal 렌더링 중')}
+          <Portal>
+            <StatisticsChartModal
+              id={modal.payload as number}
+              reSearch={() => {}}
+            ></StatisticsChartModal>
+          </Portal>
+        </>
+      )}
+
+      <table className="statistics-table">
+        <thead className="statistics-table-header">
           <tr>
             <th>강의 번호</th>
             <th>강의 이름</th>
@@ -80,24 +94,24 @@ export const StatisticsMain = () => {
           {statisticsList.length > 0 ? (
             statisticsList.map((statistics) => {
               return (
-                <tr key={statistics.lecId} className="resume-table-row">
-                  <td className="resume-cell">{statistics.lecId}</td>
+                <tr key={statistics.lecId} className="statistics-table-row">
+                  <td className="statistics-cell">{statistics.lecId}</td>
                   <td
-                    className="resume-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                    className="statistics-cell cursor-pointer text-blue-600 hover:text-blue-800"
                     onClick={() => statisticsDetail(statistics.lecId)}
                   >
                     {statistics.lecName}
                   </td>
-                  <td className="resume-cell">{statistics.lectureRound}</td>
-                  <td className="resume-cell">{statistics.lecPersonnel}</td>
-                  <td className="resume-cell">{statistics.lecStartDate}</td>
-                  <td className="resume-cell">{statistics.lecEndDate}</td>
+                  <td className="statistics-cell">{statistics.lectureRound}</td>
+                  <td className="statistics-cell">{statistics.lecPersonnel}</td>
+                  <td className="statistics-cell">{statistics.lecStartDate}</td>
+                  <td className="statistics-cell">{statistics.lecEndDate}</td>
                 </tr>
               );
             })
           ) : (
             <tr>
-              <td colSpan={8} className="resume-empty-row">
+              <td colSpan={8} className="statistics-empty-row">
                 등록된 이력서가 없습니다
               </td>
             </tr>
