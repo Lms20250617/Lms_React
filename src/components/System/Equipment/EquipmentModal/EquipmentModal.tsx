@@ -41,6 +41,23 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
     { roomId: number; roomName: string }[]
   >([]);
 
+  // 장비를 클릭했을 때, roomName, equipGroup이 db에 저장되어있는 것이 보이도록.
+  const [roomId, setRoomId] = useState<string | number>('');
+  const [equipGroup, setEquipGroup] = useState('');
+
+  // detail이 로딩된 이후에 roomName, equipGroup 값을 반영
+  useEffect(() => {
+    if (detail?.roomId !== undefined) {
+      setRoomId(detail.roomId); // number 가능
+    }
+  }, [detail]);
+
+  useEffect(() => {
+    if (detail?.equipGroup) {
+      setEquipGroup(detail.equipGroup);
+    }
+  }, [detail]);
+
   useEffect(() => {
     id && detailEquipment();
 
@@ -155,8 +172,8 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   };
 
   return (
-    <div className="modal-overlay">
-      <form ref={formRef} className="modal-form modal-container">
+    <div className="equip-modal-overlay">
+      <form ref={formRef} className="equip-modal-form equip-modal-container">
         <h2 className="mb-4 text-center text-xl font-bold">장비 관리</h2>
 
         <label>
@@ -170,13 +187,15 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
             required
           />
         </label>
+
         <label>
           <span>
             강의실<span className="required">*</span>
           </span>
           <select
             name="roomId"
-            defaultValue={detail?.roomId?.toString() || ''}
+            value={roomId}
+            onChange={(e) => setRoomId(e.target.value)}
             required
           >
             <option value="">선택하세요</option>
@@ -229,7 +248,12 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
           <span>
             장비분류<span className="required">*</span>
           </span>
-          <select name="equipGroup" defaultValue={detail?.equipGroup} required>
+          <select
+            name="equipGroup"
+            value={equipGroup}
+            onChange={(e) => setEquipGroup(e.target.value)}
+            required
+          >
             <option value="">장비를 선택하세요</option>
             <option value="com">컴퓨터</option>
             <option value="ms">마우스</option>
