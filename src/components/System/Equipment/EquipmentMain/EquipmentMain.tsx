@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, type ChangeEvent } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './styled.css';
 import type {
   IClassroom,
@@ -12,11 +12,18 @@ import type {
   IEquipmentResponse,
 } from '../../../../model/System/IEquipment';
 import { ContentBox } from '../../../common.componets/ContentBox/ContentBox';
-import { EquipmentRoomSearch } from '../EquipmentRoomSearch/EquipmentRoomSearch';
 import { EquipmentSearch } from '../EquipmentSearch/EquipmentSearch';
-import { EquipmentProvider } from '../../../../provider/system/EquipmentProvider';
+import {
+  EquipmentContext,
+  EquipmentProvider,
+} from '../../../../provider/system/EquipmentProvider';
+import { Portal } from '../../../../common/Portal';
+import { EquipmentModal } from '../EquipmentModal/EquipmentModal';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../../../../stores/modalState';
 
 export const EquipmentMain = () => {
+  const [modal, setModal] = useRecoilState(modalState);
   const [classroomList, setClassroomList] = useState<IClassroom[]>([]);
   const [ClassroomCnt, setClassroomCnt] = useState<number>(0);
 
@@ -29,15 +36,10 @@ export const EquipmentMain = () => {
   // 선택된 강의실 ID, 클릭하면 equipment list 나오도록.
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
 
-  // equipment 검색창
-  const [equipmentSearch, setEquipmentSearch] = useState({
-    equipName: '',
-    searchStDate: '',
-    searchEdDate: '',
-  });
+  // // equipment 검색창
+  const { searchData: equipmentSearch } = useContext(EquipmentContext);
 
-  // // 신규 장비 등록 모달 상태
-  // const [modalOpen, setModalOpen] = useState(false);
+  const [equipId, setEquipmentId] = useState<number>(0);
 
   // classroom list 불러오기
   useEffect(() => {
@@ -89,8 +91,27 @@ export const EquipmentMain = () => {
   const formatRemainPeriod = (days: number): string =>
     days >= 0 ? `${days}일` : '사용기한 초과';
 
+  const postSuccess = () => {
+    setModal({ isOpen: false });
+    searchList();
+  };
+
+  const eqpuipmentDetail = (id: number) => {
+    setModal({ isOpen: true });
+    setEquipmentId(id);
+  };
+
   return (
     <div className="equipment-main-container">
+      {modal.isOpen && (
+        <Portal>
+          <EquipmentModal
+            postSuccess={postSuccess}
+            id={equipId}
+            setId={setEquipmentId}
+          ></EquipmentModal>
+        </Portal>
+      )}
       <table className="equipment-table">
         <thead className="equipment-table-header">
           <tr>
@@ -188,9 +209,7 @@ export const EquipmentMain = () => {
                         <td
                           className="equipment-cell cursor-pointer text-blue-600 hover:text-blue-800"
                           onClick={() => {
-                            // 여기에 장비 모달 뜨게할것임.
-                            // setSelectedEquipment(equipment);
-                            // setModalOpen(true);
+                            eqpuipmentDetail(equipment.equipId);
                           }}
                         >
                           {equipment.equipName}

@@ -20,9 +20,12 @@ export interface IEquipmentDetail extends IEquipment {
   fileName: string;
   fileExt: string;
   logicalPath: string;             // 실제 경로
+  physicalPath: string;
+  roomname: string;
+  roomId: number;
 }
 
 export interface IEquipmentResponse {
   count: number;
-    list: IEquipment[];
+    list: IEquipmentDetail[];
 }
