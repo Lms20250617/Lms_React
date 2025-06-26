@@ -47,7 +47,6 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
         { value: lecId.value, message: '과목을 선택해주세요.' },
         { value: mtrTitle.value, message: '제목을 입력해주세요.' },
         { value: mtrContent.value, message: '내용을 입력해주세요.' },
-        { value: file.value, message: '파일을 선택 해주세요.' },
     ];
 
     for (let { value, message } of validations) {
