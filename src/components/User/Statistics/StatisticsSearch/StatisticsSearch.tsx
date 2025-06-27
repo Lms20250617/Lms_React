@@ -59,37 +59,28 @@ export const StatisticsSearch = () => {
   }, [selectedLecName]);
 
   const statisticsChart = async () => {
-    if (!selectedLecName || !lectureStartAround || !lectureEndAround) {
-      alert('통계를 내고자 하는 데이터를 선택해주세요.');
-      return;
-    }
-
-    const updatedSearchData = {
-      lectureName: selectedLecName,
-      lectureStartAround,
-      lectureEndAround,
-    };
-
-    setSearchData(updatedSearchData);
-
-    const statisticsParams = new URLSearchParams(updatedSearchData);
+    const statisticsParams = new URLSearchParams();
+    if (selectedLecName)
+      statisticsParams.append('lectureName', selectedLecName);
+    if (lectureStartAround)
+      statisticsParams.append('lectureStartAround', lectureStartAround);
+    if (lectureEndAround)
+      statisticsParams.append('lectureEndAround', lectureEndAround);
 
     try {
-      const res: AxiosResponse<ILecDetailResponse> = await axios.post(
-        '/api/user/lacture-statistics',
-        statisticsParams
-      );
-
-      const id = res.data.lecId;
-      console.log('모달 열기 전, id:', id);
-      setModal({ isOpen: true, type: 'chart', payload: id });
+      await axios
+        .post('/api/user/lacture-statistics', statisticsParams)
+        .then((res: AxiosResponse<ILecDetailResponse[]>) => {
+          const chartResponse = res.data;
+          setModal({
+            isOpen: true,
+            type: 'chart',
+            payload: { chartRes: chartResponse },
+          });
+        });
     } catch (err) {
-      console.error('통계 조회 실패', err);
       alert('통계 조회 중 오류가 발생했습니다.');
     }
-
-    console.log('modal.isOpen:', modal.isOpen);
-    console.log('modal.type:', modal.type);
   };
 
   const handlerSearch = () => {
@@ -110,6 +101,15 @@ export const StatisticsSearch = () => {
 
   return (
     <div className="statistics-container">
+      {modal.isOpen && modal.type === 'chart' && (
+        <Portal>
+          <StatisticsChartModal
+            id={modal.payload as number}
+            reSearch={() => {}}
+          ></StatisticsChartModal>
+        </Portal>
+      )}
+
       <div className="input-box">
         <span>
           강의 이름
@@ -138,7 +138,7 @@ export const StatisticsSearch = () => {
               전체
             </option>
             {rounds.map((r, index) => (
-              <option key={`${r.lectureRound}-${index}`} value={r.lectureRound}>
+              <option key={index} value={r.lectureRound}>
                 {r.lectureRound}
               </option>
             ))}
@@ -154,7 +154,7 @@ export const StatisticsSearch = () => {
               전체
             </option>
             {rounds.map((r, index) => (
-              <option key={`${r.lectureRound}-${index}`} value={r.lectureRound}>
+              <option key={index} value={r.lectureRound}>
                 {r.lectureRound}
               </option>
             ))}
