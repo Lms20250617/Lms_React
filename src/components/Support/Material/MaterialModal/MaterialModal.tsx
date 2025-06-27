@@ -5,6 +5,8 @@ import type { IMaterialDetail } from '../../../../model/Support/IMaterial';
 import type { IClassList } from '../../../../model/manage/ICounsel';
 import { modalState } from '../../../../stores/modalState';
 import './styled.css';
+import type { ILoginInfo } from '../../../../model/ILogin';
+import { loginInfoState } from '../../../../stores/userInfo';
 
 interface INoticeProps {
   postSuccess: () => void;
@@ -26,6 +28,8 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
 
   const [fileName, setFileName] = useState<string>('');
 
+  const [userInfo, setUserInfo] = useRecoilState<ILoginInfo>(loginInfoState);
+
   useEffect(() => {
 
     id && detailMaterial();
@@ -35,8 +39,37 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
     }
   }, []);
 
+  //유효성 검사 
+
+    const validateForm = () => {
+    const form = formRef.current;
+    if (!form) return false;
+
+    const { lecId, mtrTitle, mtrContent, file } = form?.elements as any
+
+    const validations = [
+        { value: lecId.value, message: '과목을 선택해주세요.' },
+        { value: mtrTitle.value, message: '제목을 입력해주세요.' },
+        { value: mtrContent.value, message: '내용을 입력해주세요.' },
+    ];
+
+    for (let { value, message } of validations) {
+        if (!value.trim()) {
+        alert(message);
+        return false;
+        }
+    }
+
+    return true;
+    };
+
   //저장
   const savaMaterial = () => {
+
+    if (!validateForm()) {
+        return;
+    }
+
     axios.post('/api/support/saveMtr.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
         alert('저장 되었습니다');
@@ -79,6 +112,10 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
 
   //수정
   const updateDetail = () => {
+
+    if (!validateForm()) {
+        return;
+    }
 
     const formData = new FormData(formRef.current as HTMLFormElement);
     formData.append("materiId", id.toString());
@@ -225,8 +262,9 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
             }
             aria-readonly
             >
-            <option value="">{detail?.lecName}
-            </option>
+
+            <option value="">-- 과목을 선택하세요 --</option>
+
             {
                 (lecture.map((lec)=>{
                 return(
@@ -244,9 +282,6 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
         </label>
         파일 :
         <input type="file" id="fileInput" name='file' onChange={handlerFile} readOnly/>
-        <label className="img-label" htmlFor="fileInput">
-          파일 첨부하기
-        </label>
         <div>
           <div onClick={downloadFile} className='cursor-pointer'>
           {

@@ -1,8 +1,9 @@
 import { useContext, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { MaterialContext } from '../../../../provider/support/MaterialProvier';
+
 import { modalState } from '../../../../stores/modalState';
 import './styeld.css';
+import { NoticeContext } from '../../../../provider/NoticeProvider';
 
 export const NoticeSearch = () => {
 
@@ -11,33 +12,14 @@ export const NoticeSearch = () => {
   const [startDate, setStarDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
 
-  const { setSearchData } =useContext(MaterialContext);
-
-
-  // const navigate = useNavigate();
-
-  // useEffect(()=>{
-  //   window.location.search && navigate(window.location.pathname)
-  // },[navigate])
+  const { setSearchData } =useContext(NoticeContext);
 
   const handlerSearch = () => {
-    // //console.log(startDate, endDate, title.current?.value);
-    // const query:string[] = [];
-
-    // !title.current?.value || query.push(`title=${title.current.value}`);
-    // !startDate || query.push(`startDate=${startDate}`);
-    // !endDate || query.push(`endDate=${endDate}`);
-
-    // const querySring = query.length > 0 ? `?${query.join("&")}` : '';
-
-    // navigate(querySring);
-
     setSearchData({
       title: title.current ? title.current.value : '',
       startDate: startDate || '',
       endDate: endDate || '',
     })
-
   };
 
   const openModal = () => {

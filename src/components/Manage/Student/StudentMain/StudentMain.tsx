@@ -55,7 +55,6 @@ export const StudentMain = () => {
     axios
       .post('/api/manage/student-status', param)
       .then((res: AxiosResponse<string>) => {
-        console.log(res);
         if (res.data === 'SUCCESS') {
           alert('변경되었습니다.');
           searchList();

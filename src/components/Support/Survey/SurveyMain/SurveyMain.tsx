@@ -118,7 +118,7 @@ export const SurveyMain = () => {
 
   useEffect(()=>{
 
-    if(userInfo.userType !== 'S'){
+    if(userInfo.userType && userInfo.userType !== 'S'){
       alert("설문 대상이 아닙니다.");
       navigate('/react');
     }

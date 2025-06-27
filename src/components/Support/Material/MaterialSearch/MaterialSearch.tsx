@@ -81,7 +81,7 @@ export const MaterialSearch = () => {
           검색
         </button>
         {
-          userInfo.loginId === 'teacher'&&
+          userInfo.userType === 'T'&&
           <button onClick={openModal}>등록</button>
         }
       </div>

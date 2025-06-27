@@ -7,7 +7,7 @@ import { atom } from 'recoil';
 interface IModalState {
   isOpen: boolean;
   type?: string | null;
-  payload?: unknown;
+  payload?: any;
   // unknown
   // 모든 타입에 값을 할당될 수 있는 any와 비슷하나,
   // unknown 타입은 any 타입 외의 어떤 타입에도 할당할 수 없다

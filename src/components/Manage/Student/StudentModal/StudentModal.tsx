@@ -25,7 +25,6 @@ export const StudentModal: FC<IStudentProps> = ({ payload }) => {
     axios
       .post(`/api/manage/student-detail/${payload?.id}`)
       .then((res: AxiosResponse<IStudentDetail>) => {
-        console.log(res.data);
         setDetailValue(res.data);
         setLectureList(res.data.lectureInfo);
       });

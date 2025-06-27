@@ -10,12 +10,13 @@ import type {
   ICompanyList,
   ICompanyResponse,
 } from '../../../../model/System/ICompany';
+import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
 
 export const CompanyMain = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const { searchData } = useContext(CompanyContext);
   const [companyList, setCompanyList] = useState<ICompanyList[]>([]);
-  const [companyListCnt, setCompanyListCnt] = useState<number>();
+  const [companyListCnt, setCompanyListCnt] = useState<number>(0);
 
   useEffect(() => {
     searchList();
@@ -32,7 +33,6 @@ export const CompanyMain = () => {
     axios
       .post('/api/system/companyListBody.do', searchParam)
       .then((res: AxiosResponse<ICompanyResponse>) => {
-        console.log(res.data);
         setCompanyList(res.data.list);
         setCompanyListCnt(res.data.count);
       });
@@ -104,11 +104,11 @@ export const CompanyMain = () => {
           )}
         </tbody>
       </table>
-      {/* <PageNavigation
-        totalItems={studentListCnt}
+      <PageNavigation
+        totalItems={companyListCnt}
         itemsPerPage={5}
         onPageChange={searchList}
-      /> */}
+      />
     </div>
   );
 };

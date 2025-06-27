@@ -34,10 +34,11 @@ export const CommoncodeMain = () => {
   const [detailCode, setDetailCode] = useState<string>('');
 
   useEffect(() => {
-    seearchList();
+    seearchList(1);
   }, [searchData]);
 
   const seearchList = (cPage?: number) => {
+
     const searchParam = new URLSearchParams(searchData);
 
     cPage = cPage || 1;
@@ -56,6 +57,7 @@ export const CommoncodeMain = () => {
   const postSuccess = () => {
     setModal({ isOpen: false });
     seearchList();
+    
   };
 
   const commonDetail = (id: string) => {
@@ -90,27 +92,28 @@ export const CommoncodeMain = () => {
           {commonList.length > 0 ? (
             commonList.map((common) => {
               return (
-                <tr key={common.regId} className="notice-table-row"
-                    onClick={() => {
-                      commonDetail(common.detailCode);
-                    }}
+                <tr key={common.detailCode} className="notice-table-row"
                 >
-                  <td className="notice-cell">{common.detailCode}</td>
+                  <td className="notice-cell">{common.useYn}</td>
                   <td
-                    className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                    className="notice-cell"
                   >
                     {common.groupName}
                   </td>
+                  <td className="notice-cell cursor-pointer text-blue-600 hover:text-blue-800"
+                    onClick={() => {
+                      commonDetail(common.detailCode);
+                    }}
+                  >{common.detailCode}</td>
                   <td className="notice-cell">{common.detailName}</td>
-                  <td className="notice-cell">{common.note}</td>
-                  <td className="notice-cell">{common.useYn}</td>
+                  <td className="notice-cell">{common.regId}</td>
                 </tr>
               );
             })
           ) : (
             <tr>
               <td colSpan={4} className="notice-empty-row">
-                등록된 공지사항이 없습니다
+                등록된 공통코드가 없습니다
               </td>
             </tr>
           )}

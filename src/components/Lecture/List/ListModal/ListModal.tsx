@@ -41,10 +41,8 @@ export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
     axios
       .post('/api/lecture/lectureDetail.do', param)
       .then((res: AxiosResponse<IListDetailResponse>) => {
-        console.log(res.data.lectureDetailValue);
         setDetailValue(res.data.lectureDetailValue);
         setCanRegister(res.data.isLectureRegistrationAvailable);
-        console.log(userType);
       });
   };
 
@@ -93,50 +91,60 @@ export const ListModal: FC<IListProps> = ({ id, reSearch }) => {
               <div className="detail-column">
                 <div className="detail-row">
                   <div className="detail-label">강의</div>
-                  <div className="detail-value">{detailValue?.lecName}</div>
+                  <div className="detail-value">
+                    {detailValue?.lecName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">강사</div>
                   <div className="detail-value">
-                    {detailValue?.lecInstructorName}
+                    {detailValue?.lecInstructorName || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">이메일</div>
-                  <div className="detail-value">{detailValue?.insEmail}</div>
+                  <div className="detail-value">
+                    {detailValue?.insEmail || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">강의 시작일</div>
                   <div className="detail-value">
-                    {detailValue?.lecStartDate}
+                    {detailValue?.lecStartDate.slice(0, 10) || '-'}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">정원</div>
                   <div className="detail-value">
-                    {detailValue?.lecPersonnel}
+                    {detailValue?.lecPersonnel || '-'}
                   </div>
                 </div>
               </div>
 
               <div className="detail-column">
                 <div className="detail-row">
-                  <div className="detail-label">강의실*</div>
-                  <div className="detail-value">{detailValue?.lecRoomName}</div>
+                  <div className="detail-label">강의실</div>
+                  <div className="detail-value">
+                    {detailValue?.lecRoomName || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">연락처</div>
-                  <div className="detail-value">{detailValue?.insHp}</div>
+                  <div className="detail-value">
+                    {detailValue?.insHp || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">강의 종료일</div>
-                  <div className="detail-value">{detailValue?.lecEndDate}</div>
+                  <div className="detail-value">
+                    {detailValue?.lecEndDate.slice(0, 10) || '-'}
+                  </div>
                 </div>
 
                 <div className="detail-row">

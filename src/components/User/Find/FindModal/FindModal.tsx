@@ -23,6 +23,21 @@ export const FindModal: FC<IFindProps> = () => {
 
   //------------------------------------------------//
 
+  const formatTel = (value: string) => {
+    const onlyNums = value.replace(/\D/g, '');
+
+    if (onlyNums.length < 4) return onlyNums;
+    if (onlyNums.length < 8)
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    if (onlyNums.length === 8)
+      return `${onlyNums.slice(0, 4)}-${onlyNums.slice(4, 8)}`;
+    if (onlyNums.length === 9)
+      return `${onlyNums.slice(0, 2)}-${onlyNums.slice(2, 5)}-${onlyNums.slice(5, 9)}`;
+    if (onlyNums.length === 10)
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  };
+
   const changePassword = async () => {
     const passwordRules =
       /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
@@ -84,12 +99,10 @@ export const FindModal: FC<IFindProps> = () => {
 
           if (result === 'SUCCESS') {
             alert(`찾으신 ID는 ${loginId} 입니다.`);
-          } else if (result === 'FAIL') {
-            alert(`ID를 찾는데 실패했습니다.`);
           }
         });
     } catch (error) {
-      alert('서버 에러가 발생했습니다.');
+      alert(`ID를 찾는데 실패했습니다.`);
     }
   };
 
@@ -212,7 +225,7 @@ export const FindModal: FC<IFindProps> = () => {
                       }}
                       value={tel}
                       onChange={(e) => {
-                        setTel(e.target.value);
+                        setTel(formatTel(e.target.value));
                       }}
                       className="focus:ring-primary-500 w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-1 focus:outline-none"
                     />

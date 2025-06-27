@@ -14,8 +14,11 @@ export const CommoncodeSearch = () => {
   const { SetSearchData } = useContext(CommonCodeContext);
 
   const handlerSearch = () => {
-    console.log(commonGroup.current?.value);
-    console.log(detailCode.current?.value);
+
+    if(commonGroup.current?.value == 'loc' && groupCode.current?.value ){
+      alert("잘못된 분류 및 그룹코드 선택입니다.");
+      return
+    }
 
     SetSearchData({
       commonGroup: commonGroup.current ? commonGroup.current.value : '',
@@ -24,21 +27,17 @@ export const CommoncodeSearch = () => {
     });
   };
 
-  const openModal = () => {
-    setModal({ isOpen: true });
-  };
-
   return (
     <div className="notice-container-commoncode">
       <div className="input-box">
         분류 :
-        <select ref={commonGroup} className='w-3/16'>
-          <option value="">-분류-</option>
+        <select ref={commonGroup} className='w-3/16 ml-2'>
+          <option value=''>-분류-</option>
           <option value="equip">장비</option>
           <option value="loc">지역</option>
         </select>
         그룹코드 :
-        <select ref={groupCode} className='w-3/16'>
+        <select ref={groupCode} className='w-3/16  ml-2'>
           <option value="">-그룹코드-</option>
           <option value="com">컴퓨터</option>
           <option value="ms">마우스</option>
@@ -50,7 +49,7 @@ export const CommoncodeSearch = () => {
           <option value="wb">화이트보드</option>
           <option value="etc">기타</option>
         </select>
-        제목: <input ref={detailCode} className='w-3/16'></input>
+        상세코드: <input ref={detailCode} className='w-3/16'></input>
         <button onClick={handlerSearch}>검색</button>
       </div>
     </div>

@@ -13,12 +13,15 @@ import { Equipment } from '../pages/System/Equipment';
 import { Survey } from '../pages/Support/Survey';
 import { SurveyManage } from '../pages/Support/SurveyManage';
 import { ManageList } from '../pages/Lecture/ManageList';
+import { Resume } from '../pages/User/Resume';
 import { Student } from '../pages/manage/Student';
 import { Tutor } from '../pages/manage/Tutor';
 import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
 import { Attendance } from '../pages/Lecture/attendance/Attendance';
 import { QnA } from '../pages/Support/QnA';
+import { Statistics } from '../pages/User/Statistics';
+import { Recruit } from '../pages/manage/Recruit';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -70,6 +73,10 @@ const routers: RouteObject[] = [
             path: 'tutor',
             Component: Tutor,
           },
+          {
+            path: 'recruit',
+            Component: Recruit,
+          },
         ],
       },
       {
@@ -120,6 +127,19 @@ const routers: RouteObject[] = [
         ],
       },
       // 여기에 page 추가
+      {
+        path: 'user',
+        children: [
+          {
+            path: 'resume',
+            Component: Resume,
+          },
+          {
+            path: 'statistics',
+            Component: Statistics,
+          },
+        ],
+      },
     ],
   },
 ];
