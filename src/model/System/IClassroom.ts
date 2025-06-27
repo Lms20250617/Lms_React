@@ -1,5 +1,3 @@
-
-
 export interface IClassroom {
   roomId: number;
   roomPersonnel: number;
@@ -10,9 +8,12 @@ export interface IClassroom {
 
 export interface IClassroomDetail extends IClassroom {
   roomPersonnel: number;
+  fileName: string;
+  fileExt: string;
+  fileSize: number;
+  physicalPath: string;
+  logicalPath: string;
 }
-
-
 
 export interface IClassroomResponse {
   count: number;

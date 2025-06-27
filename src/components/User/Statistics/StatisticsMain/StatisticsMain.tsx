@@ -1,32 +1,25 @@
 import type { AxiosResponse } from 'axios';
-import './styled.css';
+import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { ResumeContext } from '../../../../provider/User/ResumeProvider';
-import { modalState } from '../../../../stores/modalState';
-import axios from 'axios';
 import { Portal } from '../../../../common/Portal';
-import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
 import type {
   IStatistics,
   IStatisticsResponse,
 } from '../../../../model/User/IStatistics';
+import { StatisticsContext } from '../../../../provider/User/StatisticsProvider';
+import { modalState } from '../../../../stores/modalState';
+import { PageNavigation } from '../../../common.componets/PageNavigation/PageNavigation';
 import { StatisticsModal } from '../StatisticsModal/StatisticsModal';
-import { StatisticsChartModal } from '../StatisticsModal/StatisticsChartModal';
+import './styled.css';
 
 export const StatisticsMain = () => {
   const [statisticsList, setStatisticsList] = useState<IStatistics[]>([]);
   const [statisticsCnt, setStatisticsCnt] = useState<number>(0);
 
-  const { searchData } = useContext(ResumeContext);
+  const { searchData } = useContext(StatisticsContext);
 
   const [modal, setModal] = useRecoilState(modalState);
-
-  useEffect(() => {
-    if (!modal.isOpen) {
-      searchList(1);
-    }
-  }, [modal]);
 
   useEffect(() => {
     searchList(1);
@@ -65,18 +58,6 @@ export const StatisticsMain = () => {
             }}
           ></StatisticsModal>
         </Portal>
-      )}
-
-      {modal.isOpen && modal.type === 'chart' && (
-        <>
-          {console.log('✅ StatisticsChartModal 렌더링 중')}
-          <Portal>
-            <StatisticsChartModal
-              id={modal.payload as number}
-              reSearch={() => {}}
-            ></StatisticsChartModal>
-          </Portal>
-        </>
       )}
 
       <table className="statistics-table">

@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+.equip-modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-gray-500/50 font-bold backdrop-blur-xs;
+}
+
+.equip-modal-container {
+  @apply relative w-[500px] rounded-lg bg-white p-6 opacity-100 shadow-lg;
+}
+
+.equip-modal-form {
+  @apply space-y-3;
+}
+
+.equip-modal-form label {
+  @apply flex items-center gap-4;
+}
+
+.equip-modal-form label > span {
+  @apply w-28 font-semibold text-gray-800;
+}
+
+.equip-modal-form input[type='text'],
+.equip-modal-form input[type='number'],
+.equip-modal-form input[type='date'],
+.equip-modal-form select {
+  @apply flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none;
+}
+
+.equip-modal-form input[type='file'] {
+  @apply hidden;
+}
+
+.preview-image {
+  @apply h-[100px] w-[100px] object-cover;
+}
+
+.img-label {
+  @apply mt-2 cursor-pointer rounded bg-gray-300 px-6 py-2 text-gray-900 transition-all duration-200 ease-in-out hover:bg-green-500 hover:text-white active:translate-y-0.5 active:transform active:bg-green-600 active:shadow-inner;
+}
+
+.button-container {
+  @apply mt-6 flex justify-end gap-3;
+}
+
+.button-container button {
+  @apply rounded-md px-4 py-2 transition-colors duration-200 first:bg-blue-500 first:text-white last:bg-gray-300 last:text-gray-700 first:hover:bg-blue-600 last:hover:bg-gray-400;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}

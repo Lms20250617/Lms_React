@@ -35,8 +35,37 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
     }
   }, []);
 
+  //유효성 검사 
+
+    const validateForm = () => {
+    const form = formRef.current;
+    if (!form) return false;
+
+    const { lecId, mtrTitle, mtrContent, file } = form?.elements as any
+
+    const validations = [
+        { value: lecId.value, message: '과목을 선택해주세요.' },
+        { value: mtrTitle.value, message: '제목을 입력해주세요.' },
+        { value: mtrContent.value, message: '내용을 입력해주세요.' },
+    ];
+
+    for (let { value, message } of validations) {
+        if (!value.trim()) {
+        alert(message);
+        return false;
+        }
+    }
+
+    return true;
+    };
+
   //저장
   const savaMaterial = () => {
+
+    if (!validateForm()) {
+        return;
+    }
+
     axios.post('/api/support/saveMtr.do', formRef.current).then((res:AxiosResponse<IPostResponse>) => {
       if(res.data.result === "success"){
         alert('저장 되었습니다');
@@ -79,6 +108,10 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
 
   //수정
   const updateDetail = () => {
+
+    if (!validateForm()) {
+        return;
+    }
 
     const formData = new FormData(formRef.current as HTMLFormElement);
     formData.append("materiId", id.toString());

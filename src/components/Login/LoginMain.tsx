@@ -121,7 +121,10 @@ export const LoginMain = () => {
                 Sign Up
               </button>
             </div>
-            <span className="mt-2 text-center" onClick={findModalDetail}>
+            <span
+              className="mt-2 cursor-pointer text-center"
+              onClick={findModalDetail}
+            >
               [ 계정을 잊어버리셨나요? ]
             </span>
           </div>

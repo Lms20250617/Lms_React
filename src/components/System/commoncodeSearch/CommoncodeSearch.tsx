@@ -14,8 +14,6 @@ export const CommoncodeSearch = () => {
   const { SetSearchData } = useContext(CommonCodeContext);
 
   const handlerSearch = () => {
-    console.log(commonGroup.current?.value);
-    console.log(detailCode.current?.value);
 
     SetSearchData({
       commonGroup: commonGroup.current ? commonGroup.current.value : '',
