@@ -20,6 +20,7 @@ import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
 import { Attendance } from '../pages/Lecture/attendance/Attendance';
 import { Statistics } from '../pages/User/Statistics';
+import { Recruit } from '../pages/manage/Recruit';
 
 const routers: RouteObject[] = [
   { path: '/', Component: Login },
@@ -66,6 +67,10 @@ const routers: RouteObject[] = [
           {
             path: 'tutor',
             Component: Tutor,
+          },
+          {
+            path: 'recruit',
+            Component: Recruit,
           },
         ],
       },
