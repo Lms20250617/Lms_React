@@ -15,6 +15,11 @@ export const CommoncodeSearch = () => {
 
   const handlerSearch = () => {
 
+    if(commonGroup.current?.value == 'loc' && groupCode.current?.value ){
+      alert("잘못된 분류 및 그룹코드 선택입니다.");
+      return
+    }
+
     SetSearchData({
       commonGroup: commonGroup.current ? commonGroup.current.value : '',
       groupCode: groupCode.current ? groupCode.current.value : '',

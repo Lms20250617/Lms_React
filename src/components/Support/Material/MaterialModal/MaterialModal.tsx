@@ -5,6 +5,8 @@ import type { IMaterialDetail } from '../../../../model/Support/IMaterial';
 import type { IClassList } from '../../../../model/manage/ICounsel';
 import { modalState } from '../../../../stores/modalState';
 import './styled.css';
+import type { ILoginInfo } from '../../../../model/ILogin';
+import { loginInfoState } from '../../../../stores/userInfo';
 
 interface INoticeProps {
   postSuccess: () => void;
@@ -25,6 +27,8 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
   const [imgaeUrl, setImageUrl] = useState<string>('');
 
   const [fileName, setFileName] = useState<string>('');
+
+  const [userInfo, setUserInfo] = useRecoilState<ILoginInfo>(loginInfoState);
 
   useEffect(() => {
 
@@ -258,8 +262,9 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
             }
             aria-readonly
             >
-            <option value="">{detail?.lecName}
-            </option>
+
+            <option value="">-- 과목을 선택하세요 --</option>
+
             {
                 (lecture.map((lec)=>{
                 return(
@@ -277,9 +282,6 @@ export const MaterialModal: FC<INoticeProps> = ({ postSuccess, id, setId, lectur
         </label>
         파일 :
         <input type="file" id="fileInput" name='file' onChange={handlerFile} readOnly/>
-        <label className="img-label" htmlFor="fileInput">
-          파일 첨부하기
-        </label>
         <div>
           <div onClick={downloadFile} className='cursor-pointer'>
           {
