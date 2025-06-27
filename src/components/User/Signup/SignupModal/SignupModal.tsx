@@ -138,7 +138,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
     }
 
     if (!telRules.test(tel)) {
-      alert('연락처는 8~11자리 숫자로 나타내 주세요.');
+      alert('연락처는 9~11자리 숫자로 나타내 주세요.');
       return false;
     }
 
