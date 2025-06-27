@@ -2,9 +2,9 @@ import { createContext, useState, type FC } from 'react';
 
 interface IStatisticsContext {
   searchData: {
-    lectureName: string;
-    lectureStartAround: string;
-    lectureEndAround: string;
+    lectureName?: string;
+    lectureStartAround?: string;
+    lectureEndAround?: string;
   };
   setSearchData: (params: Partial<IStatisticsContext['searchData']>) => void;
 }

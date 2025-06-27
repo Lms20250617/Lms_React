@@ -37,5 +37,5 @@
 }
 
 .statistics-border-line {
-  @apply table-auto border-collapse border border-gray-400/20;
+  @apply table-fixed border-collapse border border-gray-400/20;
 }
