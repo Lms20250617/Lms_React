@@ -1,22 +1,26 @@
-import type { FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import './styled.css';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../../../../stores/modalState';
+import type { ILecDetailResponse } from '../../../../model/User/IStatistics';
+import { ScoreChart } from '../ScoreChart/ScoreChart';
 
 interface IStatisticsChartProps {
   id: number;
   reSearch: () => void;
 }
 
-export const StatisticsChartModal: FC<IStatisticsChartProps> = ({
-  id,
-  reSearch,
-}) => {
+export const StatisticsChartModal: FC<IStatisticsChartProps> = () => {
   const [modal, setModal] = useRecoilState(modalState);
+  const [chartRes, setChartRes] = useState(modal.payload?.chartRes);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
 
   const closeModal = () => {
     setModal({ isOpen: false });
-    reSearch();
+    document.body.style.overflow = 'auto';
   };
 
   return (
@@ -34,90 +38,93 @@ export const StatisticsChartModal: FC<IStatisticsChartProps> = ({
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="max-h-[75vh] overflow-y-auto p-6">
             {/* Table */}
-            <div className="mb-8 overflow-x-auto">
+            <div className="mb-8 overflow-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
                       강의 번호
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
                       강의 이름
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-600">
                       강사 이름
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       회차
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       개강일
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       종강일
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       정원
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       평균 점수
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       최고 점수
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       최저 점수
                     </th>
-                    <th className="border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
+                    <th className="min-w-[100px] border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-600">
                       과락 인원
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="transition-colors duration-150 hover:bg-gray-50">
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
-                      9
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
-                      프로그래밍 기초 과정
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
-                      김지수
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      1
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      2025-05-24
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      2025-07-04
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      12
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      0
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      0
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      0
-                    </td>
-                    <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
-                      0
-                    </td>
-                  </tr>
+                  {chartRes.map((chart: ILecDetailResponse) => (
+                    <tr
+                      className="transition-colors duration-150 hover:bg-gray-50"
+                      key={chart.lecId}
+                    >
+                      <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
+                        {chart.lecId ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
+                        {chart?.lecName ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-sm text-gray-800">
+                        {chart?.tutorName ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.lectureRound ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.lecStartDate.substring(0, 10) ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.lecEndDate.substring(0, 10) ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.lecPersonnel ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.avgScore ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.maxScore ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.minScore ?? '-'}
+                      </td>
+                      <td className="border border-gray-200 px-4 py-3 text-center text-sm text-gray-800">
+                        {chart?.failedStudents ?? '-'}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
-            </div>
-
-            {/* Scrollbar visualization */}
-            <div className="absolute top-10 right-0 bottom-0 w-2 rounded-full bg-gray-200">
-              <div className="h-20 w-full cursor-pointer rounded-full bg-gray-500 transition-colors hover:bg-gray-600"></div>
+              <ScoreChart
+                data={Array.isArray(chartRes) ? chartRes : [chartRes]}
+              />
             </div>
           </div>
         </div>

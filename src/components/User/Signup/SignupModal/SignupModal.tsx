@@ -30,6 +30,15 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
 
   //---------------------------------------//
 
+  const formatTel = (value: string) => {
+    const onlyNums = value.replace(/\D/g, '');
+
+    if (onlyNums.length < 4) return onlyNums;
+    if (onlyNums.length < 8)
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  };
+
   const closeModal = () => {
     setModal({ isOpen: false });
   };
@@ -166,7 +175,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
     // (?=.*[0-9])	숫자가 하나 이상 포함
     // [a-z0-9]{6,20}	영문자와 숫자로 이루어진 6~20자
     // ^ 문자열의 시작, $	문자열의 끝
-    const idRules = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{6,20}$/;
+    const idRules = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{6,20}$/;
 
     if (!loginId) {
       alert('아이디를 입력하세요.');
@@ -494,7 +503,7 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
                           );
                         }}
                         value={tel}
-                        onChange={(e) => setTel(e.target.value)}
+                        onChange={(e) => setTel(formatTel(e.target.value))}
                         placeholder="000-0000-0000"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       />
