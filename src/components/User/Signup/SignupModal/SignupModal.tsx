@@ -36,6 +36,12 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
     if (onlyNums.length < 4) return onlyNums;
     if (onlyNums.length < 8)
       return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    if (onlyNums.length === 8)
+      return `${onlyNums.slice(0, 4)}-${onlyNums.slice(4, 8)}`;
+    if (onlyNums.length === 9)
+      return `${onlyNums.slice(0, 2)}-${onlyNums.slice(2, 5)}-${onlyNums.slice(5, 9)}`;
+    if (onlyNums.length === 10)
+      return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
   };
 
@@ -50,10 +56,18 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
       /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
 
     // 전화번호 정규식
-    const telRules = /^\d{8,11}$/;
+    const telRules = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
     // 이름 정규식
     const nameRules = /^[가-힣a-zA-Z]{2,20}$/;
+
+    // 생일 설정
+    const birthdayInput = new Date(birthday);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const birthdayNum = birthdayInput.getTime();
+    const todayNum = today.getTime();
 
     if (!idAvailable) {
       alert('아이디 중복확인을 해주세요.');
@@ -132,6 +146,12 @@ export const SignupModal: FC<ISignupProps> = ({ reSearch }) => {
       alert('생년월일을 입력해주세요.');
       return false;
     }
+
+    if (birthdayNum >= todayNum) {
+      alert('생년월일은 오늘 날짜보다 이전이어야 합니다.');
+      return false;
+    }
+
     return true;
   };
 
