@@ -79,13 +79,9 @@ export const TestRegisterModal: FC<ITestRegisterProps> = ({
 
   const handleSave = () => {
     axios
-      .post(
-        '/api/lecture/testInfoSave.do',
-        formRef.current
-        //   , {
-        //   headers: { 'Content-Type': 'application/json' },
-        // }
-      )
+      .post('/api/lecture/testInfoSave.do', formRef.current, {
+        headers: { 'Content-Type': 'application/json' },
+      })
       .then((res: AxiosResponse<IPostResponse>) => {
         if (res.data.result === 'success') {
           alert('등록되었습니다.');
