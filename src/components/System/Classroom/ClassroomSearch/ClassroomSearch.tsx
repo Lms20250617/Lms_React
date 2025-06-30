@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 import { modalState } from '../../../../stores/modalState';
 import { useContext, useRef } from 'react';
 import './styeld.css';
-import { ClassroomContext } from '../../../../provider/system/ClassroomProvider';
+import { ClassEquipContext } from '../../../../provider/system/ClassroomEquipmentProvider';
 
 // ClassroomSearch를 다른 곳에서 사용할 것임.
 export const ClassroomSearch = () => {
@@ -12,7 +12,7 @@ export const ClassroomSearch = () => {
   // personnel을 HTMLInputElement을 사용해서 Input할것임. null로 선언함.
   const personnel = useRef<HTMLInputElement>(null);
 
-  const { setSearchData } = useContext(ClassroomContext);
+  const { setSearchclassData } = useContext(ClassEquipContext);
 
   // 용도 : 검색
   const handlerSearch = () => {
@@ -22,7 +22,7 @@ export const ClassroomSearch = () => {
     const personnelRaw = personnel.current?.value;
 
     // ClassroomProvider에 있는 searchData를 입력한 검색값으로 변경
-    setSearchData({
+    setSearchclassData({
       title: titleVal,
       personnel: personnelRaw,
     });

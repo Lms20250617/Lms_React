@@ -2,18 +2,18 @@ import { useRecoilState } from 'recoil';
 import './styeld.css';
 import { useContext, useRef, useState } from 'react';
 import { modalState } from '../../../../stores/modalState';
-import { EquipmentContext } from '../../../../provider/system/EquipmentProvider';
+import { ClassEquipContext } from '../../../../provider/system/ClassroomEquipmentProvider';
 
 export const EquipmentSearch = () => {
   const [_, setModal] = useRecoilState(modalState);
   const equipName = useRef<HTMLInputElement>(null);
-  const [searchStDate, setStarDate] = useState<string>();
-  const [searchEdDate, setEndDate] = useState<string>();
+  const [searchStDate, setStarDate] = useState('');
+  const [searchEdDate, setEndDate] = useState('');
 
-  const { setSearchData } = useContext(EquipmentContext);
+  const { setSearchepuipData } = useContext(ClassEquipContext);
 
   const handlerSearch = () => {
-    setSearchData({
+    setSearchepuipData({
       equipName: equipName.current?.value || '',
       searchStDate: searchStDate || '',
       searchEdDate: searchEdDate || '',

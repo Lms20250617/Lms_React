@@ -13,6 +13,8 @@ interface IEquipmentProps {
   id: number;
   // 모달 닫을 때 초기화용
   setId: React.Dispatch<React.SetStateAction<number>>;
+  // Main에서 onClick하면서 roomId를 classRoomId에 담아서 가져왔다. readonly이다.
+  classRoomId: number;
 }
 // .api가 성공했는지 실패했는지
 interface IPostResponse {
@@ -24,6 +26,8 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   postSuccess,
   id,
   setId,
+  // props로 받아온것은 readonly여서 밑에서 useState를 통해 값을 변경해줄수 있게 할것임.
+  classRoomId,
 }) => {
   // useRecoilState으로 modalState를 관리하겠슴.
   // _ -> modal이 열려있을 때는 신경안쓰겠다.
@@ -41,30 +45,33 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
     { roomId: number; roomName: string }[]
   >([]);
 
-  // 장비를 클릭했을 때, roomName, equipGroup이 db에 저장되어있는 것이 보이도록.
-  const [roomId, setRoomId] = useState<string | number>('');
+  // 장비를 클릭했을 때, equipGroup이 db에 저장되어있는 것이 보이도록.
   const [equipGroup, setEquipGroup] = useState('');
+  // main에서 classRoomId를 받아온 것을 classRoomValue에 담아서 강의실에 디폴트로 넘겨줄거임.
+  const [classRoomValue, setClassRoomValue] = useState(classRoomId);
 
-  // detail이 로딩된 이후에 roomName, equipGroup 값을 반영
+  // detail이 로딩된 이후에 equipGroup 값을 반영
   useEffect(() => {
-    if (detail?.roomId !== undefined) {
-      setRoomId(detail.roomId); // number 가능
-    }
+    if (!detail) return; // detail이 undefined면 바로
+
+    if (detail.equipGroup) setEquipGroup(detail.equipGroup);
   }, [detail]);
 
   useEffect(() => {
-    if (detail?.equipGroup) {
-      setEquipGroup(detail.equipGroup);
-    }
-  }, [detail]);
-
-  useEffect(() => {
+    getRoomList();
     id && detailEquipment();
-
     return () => {
       setId(0);
     };
   }, []);
+
+  // 강의실 select box 정보를 가져옴
+  const getRoomList = () => {
+    axios.post('/api/system/classroomJsonList.do').then((res) => {
+      console.log(res.data.detailValue);
+      setRoomList(res.data.detailValue);
+    });
+  };
 
   const detailEquipment = () => {
     const param = new URLSearchParams();
@@ -85,7 +92,6 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
           equipPurchaseDate: toDateStr(raw.equipPurchaseDate),
           equipPerioduseDate: toDateStr(raw.equipPerioduseDate),
         };
-
         setDetail(fixedDetail);
       });
   };
@@ -102,9 +108,9 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
       .post('/api/system/equipFileSave.do', formData)
       .then((res: AxiosResponse<IPostResponse>) => {
         if (res.data.result === 'success') {
+          postSuccess();
           alert('저장 되었습니다');
           setModal({ isOpen: false });
-          postSuccess();
         }
       });
   };
@@ -158,13 +164,6 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
     }
   };
 
-  // roomlist 호출
-  useEffect(() => {
-    axios.post('/api/system/classroomJsonList.do').then((res) => {
-      setRoomList(res.data.detailValue);
-    });
-  }, []);
-
   // 날짜를 ISOstring으로 바꿔줌.
   const toDateStr = (value: string | number | null | undefined): string => {
     if (!value) return '';
@@ -183,7 +182,7 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
           <input
             type="text"
             name="equipSerial"
-            defaultValue={detail?.equipSerial}
+            value={detail?.equipSerial}
             required
           />
         </label>
@@ -192,11 +191,15 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
           <span>
             강의실<span className="required">*</span>
           </span>
+          {/* classRoomValue만 넘겨주면 됨 */}
           <select
             name="roomId"
-            value={roomId}
-            onChange={(e) => setRoomId(e.target.value)}
             required
+            value={classRoomValue}
+            onChange={(e) => {
+              // value를 string으로 다시 바꿔서 가져오길래 Number로 형변환 시켜줬다.
+              setClassRoomValue(Number(e.target.value));
+            }}
           >
             <option value="">선택하세요</option>
             {roomList.map((room) => (
@@ -315,7 +318,6 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
             닫기
           </button>
         </div>
-        <input type="hidden" name="roomId" value={detail?.roomId ?? ''} />
       </form>
     </div>
   );
