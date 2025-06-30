@@ -4,11 +4,12 @@ export interface IQnADetail {
   qnaContent: string;
   lecId: number;
   lecName: string;
-  qnaAnswer: string;
-  qnaAnswerDate: string;
+  qnaAnswer?: string;
+  qnaAnswerDate?: string;
   error: string;
   qnaRegDate?: string;
   loginId?: string;
+  tutorLoginId?: string;
 }
 
 export interface IQnAAnswerResponse {
@@ -19,4 +20,9 @@ export interface IQnAAnswerResponse {
 export interface IQnAListResponse {
   count: number;
   list: IQnADetail[];
+}
+
+export interface IQnAModalProps {
+  searchList: () => void;
+  detail: IQnADetail;
 }
