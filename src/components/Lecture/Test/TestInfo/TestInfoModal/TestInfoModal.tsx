@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState, type FC } from 'react';
 import type { INtoticeDetail } from '../../../../../model/Support/INotice';
 import { modalState } from '../../../../../stores/modalState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import axios, { type AxiosResponse } from 'axios';
 import './styled.css';
 import type {
   ITestInfo,
   ITestInfoResponse,
 } from '../../../../../model/lecture/test/ITest';
+import { loginInfoState } from '../../../../../stores/userInfo';
 interface ITestInfoProps {
   id: {
     testId: number;
@@ -32,6 +33,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
   const [newOptions, setNewOptions] = useState<string[]>(['', '', '', '', '']);
   const [openRows, setOpenRows] = useState<Set<number>>(new Set());
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const { userType, loginId } = useRecoilValue(loginInfoState);
 
   useEffect(() => {
     const param = new FormData();
@@ -174,6 +176,10 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
   };
 
   const handleSave = () => {
+    if (questionList.testQuestionInfoDetail.length < 1) {
+      alert('문제를 등록해 주세요.');
+      return;
+    }
     axios
       .post('/api/lecture/testQuestionsInfoSave.do', makeParam(questionList), {
         headers: { 'Content-Type': 'application/json' },
@@ -217,6 +223,100 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
       return { ...prev };
     });
   };
+
+  if (userType === 'T') {
+    return (
+      <div className="modal-overlay">
+        <div className="relative max-h-[90vh] w-full max-w-[700px] overflow-y-auto rounded-lg bg-white p-5 opacity-100 shadow-lg">
+          <h2 className="mb-4 text-xl font-semibold">시험 상세</h2>
+          <table className="w-full border text-center text-sm">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="border py-2">번호</th>
+                <th className="border py-2">내용</th>
+                <th className="border py-2">배점</th>
+                <th className="border py-2">정답</th>
+              </tr>
+            </thead>
+            <tbody>
+              {questionList.testQuestionInfoDetail.map((q) => {
+                const answer = questionList.testQuestionAnswerInfoDetail.find(
+                  (a) => a.questionId === q.questionId
+                );
+                const options =
+                  questionList.testQuestionOptionInfoDetail.filter(
+                    (opt) => opt.questionId === q.questionId
+                  );
+
+                return (
+                  <>
+                    <tr key={q.questionId} className="border">
+                      <td
+                        className="cursor-pointer border py-2"
+                        onClick={() => toggleRow(q.questionId)}
+                      >
+                        {q.questionNumber}
+                      </td>
+                      <td
+                        className="cursor-pointer border py-2"
+                        onClick={() => toggleRow(q.questionId)}
+                      >
+                        {q.questionContent}
+                      </td>
+                      <td className="border py-2">{q.questionScore}</td>
+                      <td className="border py-2">
+                        {answer?.correctOptionId}번
+                      </td>
+                    </tr>
+
+                    {openRows.has(q.questionId) && (
+                      <tr>
+                        <td colSpan={5} className="bg-gray-50 p-4">
+                          <div className="mb-2 grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="font-semibold">
+                                문제내용:{q.questionContent}
+                              </label>
+                            </div>
+                            <div>
+                              <label className="font-semibold">
+                                배점:{q.questionScore}
+                              </label>
+                            </div>
+                          </div>
+
+                          {options.map((opt, idx) => (
+                            <div className="mb-2" key={idx}>
+                              <label className="mr-2 font-semibold">
+                                보기 {opt.optionId}:{opt.optionContent}
+                              </label>
+                            </div>
+                          ))}
+
+                          <div className="mb-4">
+                            <label className="mr-2 font-semibold">
+                              정답:{answer?.correctOptionId}번
+                            </label>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
+            </tbody>
+          </table>
+          <button
+            type="button"
+            onClick={() => setModal({ isOpen: false })}
+            className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
+          >
+            취소
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modal-overlay">
@@ -468,7 +568,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
             onClick={() => setModal({ isOpen: false })}
             className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
           >
-            나가기
+            취소
           </button>
         </div>
       </div>

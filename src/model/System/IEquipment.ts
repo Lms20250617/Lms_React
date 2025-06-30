@@ -11,6 +11,7 @@ export interface IEquipment {
   equipQuantity: number;
   fileName: string;
   fileExt: string;
+  roomName: string;
   logicalPath: string;
 }
 
