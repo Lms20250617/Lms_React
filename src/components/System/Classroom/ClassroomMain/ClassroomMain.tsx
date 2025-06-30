@@ -10,20 +10,20 @@ import type {
   IClassroom,
   IClassroomResponse,
 } from '../../../../model/System/IClassroom';
-import { ClassroomContext } from '../../../../provider/system/ClassroomProvider';
+import { ClassEquipContext } from '../../../../provider/system/ClassroomEquipmentProvider';
 
 export const ClassroomMain = () => {
   const [classroomList, setClassroomList] = useState<IClassroom[]>([]);
   const [ClassroomCnt, setClassroomCnt] = useState<number>(0);
 
-  const { searchData } = useContext(ClassroomContext);
+  const { searchclassData } = useContext(ClassEquipContext);
   const [classroomId, setClassroomId] = useState<number>(0);
 
   const [modal, setModal] = useRecoilState(modalState);
 
   useEffect(() => {
     searchList();
-  }, [searchData]);
+  }, [searchclassData]);
 
   // 용도 : 검색한 값을 통해서 조건에 맞는 데이터를 불러옵니다.
   const searchList = (cPage?: number) => {
@@ -32,8 +32,8 @@ export const ClassroomMain = () => {
     // searchData.title, searchData.personnel을 searchParam에 담음
     // searchData.title은 서버에서 'title'라는 이름으로 사용을 할거임
     // String(searchData.personnel)는 서버에서 'personnel'로 사용
-    searchParam.append('title', searchData.title || '');
-    searchParam.append('personnel', String(searchData.personnel || ''));
+    searchParam.append('title', searchclassData.title || '');
+    searchParam.append('personnel', String(searchclassData.personnel || ''));
 
     // cPage가 존재하면 cPage 값 그래로 사용하고 undefinded면 1로
     cPage = cPage || 1;

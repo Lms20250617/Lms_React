@@ -1,6 +1,6 @@
 import { useContext, useRef } from 'react';
 import './styeld.css';
-import { ClassroomContext } from '../../../../provider/system/ClassroomProvider';
+import { ClassEquipContext } from '../../../../provider/system/ClassroomEquipmentProvider';
 
 export const EquipmentRoomSearch = () => {
   // title을 HTMLInputElement을 사용해서 Input할것임. null로 선언함.
@@ -8,13 +8,13 @@ export const EquipmentRoomSearch = () => {
   // personnel을 HTMLInputElement을 사용해서 Input할것임. null로 선언함.
   const personnel = useRef<HTMLInputElement>(null);
 
-  const { setSearchData } = useContext(ClassroomContext);
+  const { setSearchclassData } = useContext(ClassEquipContext);
 
   const handlerSearch = () => {
     const titleVal = title.current?.value || '';
     const personnelRaw = personnel.current?.value;
 
-    setSearchData({
+    setSearchclassData({
       title: titleVal,
       personnel: personnelRaw,
     });
