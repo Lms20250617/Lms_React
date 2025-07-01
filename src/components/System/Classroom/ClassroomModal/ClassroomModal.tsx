@@ -48,6 +48,8 @@ export const ClassroomModal: FC<IClassroomProps> = ({
   }, []);
 
   const saveClassroom = () => {
+    // alert
+    if (!validateEquipForm()) return;
     axios
       .post('/api/system/classroomSave.do', formRef.current)
       .then((res: AxiosResponse<IPostResponse>) => {
@@ -73,6 +75,9 @@ export const ClassroomModal: FC<IClassroomProps> = ({
   };
 
   const updateDetail = () => {
+    // alert
+    if (!validateEquipForm()) return;
+
     // HTMLFormElement에서 formRef.current로 input 값들을 모아서 FormData를 만든다.
     const formData = new FormData(formRef.current as HTMLFormElement);
     // formData에 roomId를 수동으로 추가
@@ -102,6 +107,36 @@ export const ClassroomModal: FC<IClassroomProps> = ({
           postSuccess();
         }
       });
+  };
+
+  // 정보 미입력시 alert
+  const validateEquipForm = () => {
+    // formRef로 연결된 <form> Dom을 가져오고 이건 form이다 명시
+    const form = formRef.current as HTMLFormElement;
+    // HTML <form>의 모든 input/select값들을 수집해서 FormData 객체로 만듬
+    const formData = new FormData(form);
+
+    // 필수 입력값 정의
+    const requiredFields = [
+      { key: 'roomName', label: '강의실 이름' },
+      { key: 'roomPersonnel', label: '강의실 정원' },
+      { key: 'roomSize', label: '강의실 사이즈' },
+    ];
+
+    // 위 배열을 반복 검사
+    for (const field of requiredFields) {
+      // 해당 key로 formData 값을 꺼냄
+      // null일 수 있으니 ?.toString으로 처리
+      // .trim() --> 공백만 입력된 경우를 막기위함.
+      const value = formData.get(field.key)?.toString().trim();
+      if (!value) {
+        // null, undifined, ''일 때
+        // alert창 띄우고 중단.
+        alert(`${field.label}을 입력해주세요.`);
+        return false;
+      }
+    }
+    return true;
   };
 
   // 69line을 이용해서 백앤드에서 가져오는 detail값을 확인하여type과 name을 맞춰준다.

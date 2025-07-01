@@ -51,10 +51,12 @@ export const EquipmentMain = () => {
   }, [selectedRoomId, searchequipData]);
 
   // 검색한 값을 통해 조건에 맞는 데이터를 불러옴
-  // 
+  //
   const searchList = (cPage?: number) => {
     // searchParam: 검색조건을 서버에 보내기위해 담는 객체
     const searchParam = new URLSearchParams();
+    //searchParam의 append를 사용할것임. // 'title' -> 서버로 보낼 파라미터 // searchclassData.title -> props로부터 받은 데이터
+    // => "searchclassData.title"이 존재하면 그 값을 'title'이라는 이름으로 서버에 보내고, 없으면 빈 문자열을 보낸다.
     searchParam.append('title', searchclassData.title || '');
     searchParam.append('personnel', String(searchclassData.personnel || ''));
 
@@ -63,9 +65,11 @@ export const EquipmentMain = () => {
     searchParam.append('pageSize', '5');
 
     axios
+      // '/api/system/classroomListBody.do'주소에서 받아온것을 searchParam에 저장
       .post('/api/system/classroomListBody.do', searchParam)
+      // post가 성공했을 때, 서버응답 객체(res)의 IClassroomResponse의 형식인 AxiosResponse 타입으로 명시하겠다.
       .then((res: AxiosResponse<IClassroomResponse>) => {
-        console.log(res.data);
+        // 그리고 이것을 밑의 함수로 실행한다.
         setClassroomList(res.data.list);
         setClassroomCnt(res.data.count);
       });
@@ -83,14 +87,16 @@ export const EquipmentMain = () => {
     axios
       .post('/api/system/equipmentListBody.do', params)
       .then((res: AxiosResponse<IEquipmentResponse>) => {
-        console.log('[장비 응답 데이터]', res.data);
         setEquipmentList(res.data.list);
         setEquipmentCnt(res.data.count);
       });
   };
-
+  
+  // number형 timestamp를 받겠다. 얘를 string으로 반환하겠다.
   const formatDate = (timestamp: number): string => {
+    // 넘겨받은 number형 timestamp를 Date객체 생성
     const date = new Date(timestamp);
+    // date객체를 ISO 8601형식 문자열로 반환하겠다. 
     return date.toISOString().split('T')[0];
   };
 

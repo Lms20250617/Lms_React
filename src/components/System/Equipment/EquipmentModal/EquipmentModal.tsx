@@ -50,21 +50,6 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   // main에서 classRoomId를 받아온 것을 classRoomValue에 담아서 강의실에 디폴트로 넘겨줄거임.
   const [classRoomValue, setClassRoomValue] = useState(classRoomId);
 
-  // detail이 로딩된 이후에 equipGroup 값을 반영
-  useEffect(() => {
-    if (!detail) return; // detail이 undefined면 바로
-
-    if (detail.equipGroup) setEquipGroup(detail.equipGroup);
-  }, [detail]);
-
-  useEffect(() => {
-    getRoomList();
-    id && detailEquipment();
-    return () => {
-      setId(0);
-    };
-  }, []);
-
   // 강의실 select box 정보를 가져옴
   const getRoomList = () => {
     axios.post('/api/system/classroomJsonList.do').then((res) => {
@@ -73,22 +58,51 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
     });
   };
 
+  // 날짜를 ISOstring으로 바꿔줌.
+  const toDateStr = (value: string | number | null | undefined): string => {
+    if (!value) return '';
+    return new Date(value).toISOString().slice(0, 10);
+  };
+
+  // detail이 바뀔 때, useEffect로 서버에서 받은 detail이 로딩된 이후에 equipGroup 값을 반영
+  useEffect(() => {
+    if (!detail) return; // detail이 undefined면 돌아가라.
+    // detail.equipGroup이 존재하면 setEquipGroup을 실행해라.
+    if (detail.equipGroup) setEquipGroup(detail.equipGroup);
+  }, [detail]);
+
+  useEffect(() => {
+    // page가 열리자마자 getRoomList 실행
+    getRoomList();
+    // if 축약문
+    // 조건 && 함수 --> 조건이 ture일 경우에만 함수를 실행시킨다.
+    id && detailEquipment(); //  => if (id) {detailEquipment()} 와 같음!
+    // 컴포넌트가 끝날 때(unmount), id를 0으로 리셋해라.
+    return () => {
+      setId(0);
+    };
+  }, []);
+
   const detailEquipment = () => {
+    // 서버로 보낼 파라미터 객체 만들기
     const param = new URLSearchParams();
+    // equip id = id 값 string으로 세팅
     param.append('equipId', id.toString());
     axios
-      .post('/api/system/equipmentDetail.do', param)
+      .post('/api/system/equipmentDetail.do', param) // post 요청
       .then((res: AxiosResponse<{ detailValue: IEquipmentDetail }>) => {
-        const raw = res.data.detailValue;
-        const { fileExt, logicalPath } = raw;
+        // 성공!
+        const raw = res.data.detailValue; // 서버가 준 원본 데이터를 raw에 담고
+        const { fileExt, logicalPath } = raw; // raw.fileExt, raw.logicalPath를 fileExt, logicalPath로 지정
 
         if (fileExt === 'jpg' || fileExt === 'png' || fileExt === 'gif') {
-          setImageUrl('/api' + logicalPath);
+          setImageUrl('/api' + logicalPath); // image면 url세팅
         } else {
           setImageUrl('');
         }
         const fixedDetail: IEquipmentDetail = {
-          ...raw,
+          // fixedDetail는 IEquipmentDetail 타입을 따르겠다!
+          ...raw, // raw(서버응답 받은 data)의 속성을 모두 복사한다.
           equipPurchaseDate: toDateStr(raw.equipPurchaseDate),
           equipPerioduseDate: toDateStr(raw.equipPerioduseDate),
         };
@@ -97,6 +111,10 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   };
 
   const saveEquipment = () => {
+    // alert
+    // validateEquipForm 실패하면 중단.
+    if (!validateEquipForm()) return;
+
     const form = formRef.current as HTMLFormElement;
     const formData = new FormData(form);
     //  roomId를 수동으로 숫자로 변환해서 다시 넣어줌
@@ -116,6 +134,9 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   };
 
   const updateDetail = () => {
+    // alert
+    if (!validateEquipForm()) return;
+
     const formData = new FormData(formRef.current as HTMLFormElement);
     // roomId가 비어있으면 detail에서 가져와서 다시 채워넣기
     const rawRoomId = formData.get('roomId')?.toString();
@@ -164,10 +185,38 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
     }
   };
 
-  // 날짜를 ISOstring으로 바꿔줌.
-  const toDateStr = (value: string | number | null | undefined): string => {
-    if (!value) return '';
-    return new Date(value).toISOString().slice(0, 10);
+  // 정보 미입력시 alert
+  const validateEquipForm = () => {
+    // formRef로 연결된 <form> Dom을 가져오고 이건 form이다 명시
+    const form = formRef.current as HTMLFormElement;
+    // HTML <form>의 모든 input/select값들을 수집해서 FormData 객체로 만듬
+    const formData = new FormData(form);
+
+    // 필수 입력값 정의
+    const requiredFields = [
+      { key: 'equipSerial', label: '시리얼넘버' },
+      { key: 'roomId', label: '강의실' },
+      { key: 'equipName', label: '장비명' },
+      { key: 'equipQuantity', label: '수량' },
+      { key: 'equipPurchaseDate', label: '구매일자' },
+      { key: 'equipGroup', label: '장비분류' },
+    ];
+
+    // 위 배열을 반복 검사
+    // for (const 변수 of 반복가능한 객체)
+    for (const field of requiredFields) {
+      // 해당 key로 formData 값을 꺼냄
+      // null일 수 있으니 ?.toString으로 처리
+      // .trim() --> 공백만 입력된 경우를 막기위함.
+      const value = formData.get(field.key)?.toString().trim();
+      if (!value) {
+        // null, undifined, ''일 때
+        // alert창 띄우고 중단.
+        alert(`${field.label}을 입력해주세요.`);
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
