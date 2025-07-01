@@ -98,7 +98,12 @@ export const QnATutorModal: FC<IQnAModalProps> = ({ detail, searchList }) => {
                     className="min-h-[150px] w-full resize-y rounded border px-2 py-1"
                     defaultValue={detail.qnaAnswer}
                   ></textarea>
-                  <input type="text" value={detail.qnaId} name="qnaId" hidden />
+                  <input
+                    type="text"
+                    defaultValue={detail.qnaId}
+                    name="qnaId"
+                    hidden
+                  />
                 </td>
               </tr>
               <tr>
