@@ -35,6 +35,7 @@ export const RecruitModal: FC<IRecruitModalProp> = ({
         if (res.data.result === 'success') {
           alert('저장되었습니다.');
           searchList();
+          setModal({ isOpen: false });
         } else {
           alert('재직 여부를 확인해주세요.');
         }

@@ -42,13 +42,23 @@ export const RecruitDetail: FC<IRecruitDetailProps> = ({ studentId }) => {
       });
   };
 
-  const handleRetire = (studentId: string) => {
+  const handleRetire = () => {
+    if (!confirm('퇴직처리 하시겠습니까?')) {
+      return;
+    }
     const param = new URLSearchParams();
+
+    param.append('loginID', studentId);
 
     axios
       .post('/api/manage/RetireStudent.do', param)
       .then((res: AxiosResponse) => {
-        console.log(res);
+        if (res.data.result === 'success') {
+          alert('퇴적처리 되었습니다.');
+          searchList();
+        } else {
+          alert('퇴직처리에 실패했습니다.');
+        }
       });
   };
 
@@ -108,7 +118,9 @@ export const RecruitDetail: FC<IRecruitDetailProps> = ({ studentId }) => {
                   <div className="button-container">
                     {!recruit.empRetireDate &&
                     recruit.studentsEmpStatus === 'Y' ? (
-                      <button type="button">퇴직</button>
+                      <button type="button" onClick={handleRetire}>
+                        퇴직
+                      </button>
                     ) : (
                       ''
                     )}
