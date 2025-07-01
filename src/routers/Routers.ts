@@ -19,6 +19,7 @@ import { Tutor } from '../pages/manage/Tutor';
 import { Company } from '../pages/System/Company';
 import { commoncode } from '../pages/System/commoncode';
 import { Attendance } from '../pages/Lecture/attendance/Attendance';
+import { QnA } from '../pages/Support/QnA';
 import { Statistics } from '../pages/User/Statistics';
 import { Recruit } from '../pages/manage/Recruit';
 
@@ -50,6 +51,10 @@ const routers: RouteObject[] = [
           {
             path: 'manage-survey',
             Component: SurveyManage,
+          },
+          {
+            path: 'qna',
+            Component: QnA,
           },
         ],
       },
