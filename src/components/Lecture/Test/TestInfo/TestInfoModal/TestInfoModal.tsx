@@ -283,6 +283,14 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id, setSelectedTest }) => {
     setModal({ isOpen: false });
   };
 
+  const handleNewScore = (score: number) => {
+    if (score < 1) {
+      alert('점수에는 양수만 입력 가능합니다.');
+      return;
+    }
+    setNewScore(score);
+  };
+
   if (userType === 'T') {
     return (
       <div className="modal-overlay">
@@ -417,7 +425,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id, setSelectedTest }) => {
               <input
                 type="number"
                 value={newScore}
-                onChange={(e) => setNewScore(parseInt(e.target.value))}
+                onChange={(e) => handleNewScore(parseInt(e.target.value))}
                 className="mt-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
               />
             </label>
