@@ -105,6 +105,10 @@ export const TestModal: FC<ITestProps> = ({
       } as ITestAnswer;
     });
 
+    if (!confirm('시험 답안을 제출하시겠습니까?')) {
+      return;
+    }
+
     const payload: ITestSubmit = {
       answers: answerList,
       lecId: lecId,
