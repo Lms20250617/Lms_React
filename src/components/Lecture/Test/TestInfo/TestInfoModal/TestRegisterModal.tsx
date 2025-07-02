@@ -77,6 +77,23 @@ export const TestRegisterModal: FC<ITestRegisterProps> = ({
     setTestEndDate('');
   };
 
+  const validateTestStartDate = (date: string) => {
+    if (!selectedLecture) {
+      alert('먼저 강의를 선택 해 주세요.');
+      return;
+    }
+
+    setTestStartDate(date);
+  };
+
+  const validateTestEndDate = (date: string) => {
+    if (!selectedLecture) {
+      alert('먼저 강의를 선택 해 주세요.');
+      return;
+    }
+    setTestEndDate(date);
+  };
+
   const handleSave = () => {
     axios
       .post('/api/lecture/testInfoSave.do', formRef.current, {
@@ -174,24 +191,68 @@ export const TestRegisterModal: FC<ITestRegisterProps> = ({
           <input
             type="datetime-local"
             name="testBeginDate"
-            min={selectedLecture?.lecStartDate}
+            min={
+              selectedLecture
+                ? new Date(selectedLecture.lecStartDate)
+                    .toISOString()
+                    .slice(0, -8)
+                : ''
+            }
+            max={
+              selectedLecture
+                ? testEndDate
+                  ? new Date(
+                      Math.min(
+                        new Date(selectedLecture.lecEndDate).getTime(),
+                        new Date(testEndDate).getTime()
+                      )
+                    )
+                      .toISOString()
+                      .slice(0, -8)
+                  : new Date(selectedLecture.lecEndDate)
+                      .toISOString()
+                      .slice(0, -8)
+                : ''
+            }
             value={testStartDate}
             onChange={(e) => {
-              setTestStartDate(e.target.value);
+              validateTestStartDate(e.target.value);
             }}
-          ></input>
+          />
         </label>
         <label>
           시험종료일
           <input
             type="datetime-local"
             name="testEndDate"
-            max={selectedLecture?.lecEndDate}
+            min={
+              selectedLecture
+                ? testStartDate
+                  ? new Date(
+                      Math.max(
+                        new Date(selectedLecture.lecStartDate).getTime(),
+                        new Date(testStartDate).getTime()
+                      )
+                    )
+                      .toISOString()
+                      .slice(0, -8)
+                  : new Date(selectedLecture.lecStartDate)
+                      .toISOString()
+                      .slice(0, -8)
+                : ''
+            }
+            max={
+              selectedLecture
+                ? new Date(selectedLecture.lecEndDate)
+                    .toISOString()
+                    .slice(0, -8)
+                : ''
+            }
             value={testEndDate}
             onChange={(e) => {
-              setTestEndDate(e.target.value);
+              validateTestEndDate(e.target.value);
             }}
-          ></input>
+          />
         </label>
         <input type="text" name="testType" defaultValue="0" hidden={true} />
         <div className="button-container">
