@@ -57,7 +57,10 @@ export const TestInfoMain = () => {
           </Portal>
         ) : (
           <Portal>
-            <TestInfoModal id={selectedTestId} />
+            <TestInfoModal
+              id={selectedTestId}
+              setSelectedTest={setSelectedTestId}
+            />
           </Portal>
         ))}
 

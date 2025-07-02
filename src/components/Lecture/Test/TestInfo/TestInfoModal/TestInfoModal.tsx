@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import { Fragment, useEffect, useRef, useState, type FC } from 'react';
 import type { INtoticeDetail } from '../../../../../model/Support/INotice';
 import { modalState } from '../../../../../stores/modalState';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import axios, { type AxiosResponse } from 'axios';
+import axios, { Axios, type AxiosResponse } from 'axios';
 import './styled.css';
 import type {
   ITestInfo,
@@ -14,9 +14,10 @@ interface ITestInfoProps {
     testId: number;
     lecId: number;
   };
+  setSelectedTest: () => void;
 }
 
-export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
+export const TestInfoModal: FC<ITestInfoProps> = ({ id, setSelectedTest }) => {
   const [_, setModal] = useRecoilState(modalState);
   const formRef = useRef<HTMLFormElement>(null);
   const [detail, setDetail] = useState<ITestInfoDetail>();
@@ -72,6 +73,15 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
   }, []);
 
   const handleAddQuestion = () => {
+    if (newQuestionContent === '') {
+      alert('문제 내용이 비어있습니다.');
+      return;
+    }
+    if (newOptions.map((x) => x.trim()).includes('')) {
+      alert('비어있는 보기가 있습니다.');
+      return;
+    }
+
     const newQuestionNumber = questionList.testQuestionInfoDetail.length + 1;
     const newQuestionId = parseInt(
       `${id.lecId}${id.testId}${newQuestionNumber}`
@@ -180,19 +190,33 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
       alert('문제를 등록해 주세요.');
       return;
     }
+    if (!validate()) {
+      return;
+    }
     axios
       .post('/api/lecture/testQuestionsInfoSave.do', makeParam(questionList), {
         headers: { 'Content-Type': 'application/json' },
       })
-      .then(() => {
-        alert('저장되었습니다');
-        setModal({ isOpen: false });
+      .then((res: AxiosResponse) => {
+        if (res.data.result === 'success') {
+          alert('저장되었습니다');
+          handleClose();
+        } else {
+          alert('실패하였습니다.');
+        }
       })
       .catch(() => {
         alert('저장 실패');
       });
   };
   const handleUpdate = () => {
+    if (questionList.testQuestionInfoDetail.length < 1) {
+      alert('문제를 등록해 주세요.');
+      return;
+    }
+    if (!validate()) {
+      return;
+    }
     axios
       .post(
         '/api/lecture/testQuestionsInfoUpdate.do',
@@ -201,13 +225,38 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(() => {
-        alert('저장되었습니다');
-        setModal({ isOpen: false });
+      .then((res: AxiosResponse) => {
+        if (res.data.result === 'success') {
+          alert('저장되었습니다');
+          handleClose();
+        } else {
+          alert('실패하였습니다.');
+        }
       })
       .catch(() => {
         alert('저장 실패');
       });
+  };
+
+  const validate = () => {
+    const emptyQuestion = questionList.testQuestionInfoDetail.find(
+      (x) => x.questionContent.trim() === ''
+    );
+    if (emptyQuestion) {
+      alert(`${emptyQuestion.questionNumber}번 문제내용이 비어있습니다.`);
+      return false;
+    }
+    const emptyOption = questionList.testQuestionOptionInfoDetail.find(
+      (x) => x.optionContent.trim() === ''
+    );
+    if (emptyOption) {
+      alert(
+        `${questionList.testQuestionInfoDetail.find((x) => x.questionId === emptyOption.questionId)?.questionNumber}번문제 ${emptyOption.optionId}번 보기가 비어있습니다.`
+      );
+      return false;
+    }
+
+    return true;
   };
 
   const makeParam = (arg: ITestInfo) => {
@@ -215,13 +264,23 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
       questionList: arg.testQuestionInfoDetail,
       optionList: arg.testQuestionOptionInfoDetail,
       answerList: arg.testQuestionAnswerInfoDetail,
+      testId: id.testId.toString(),
+      lecId: id.lecId.toString(),
     };
   };
 
   const handleUpdateInline = (questionId: number) => {
+    if (!validate()) {
+      return;
+    }
     setQuestionList((prev) => {
       return { ...prev };
     });
+  };
+
+  const handleClose = () => {
+    setSelectedTest();
+    setModal({ isOpen: false });
   };
 
   if (userType === 'T') {
@@ -308,7 +367,9 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
           </table>
           <button
             type="button"
-            onClick={() => setModal({ isOpen: false })}
+            onClick={() => {
+              handleClose;
+            }}
             className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
           >
             취소
@@ -441,8 +502,8 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
               );
 
               return (
-                <>
-                  <tr key={q.questionId} className="border">
+                <Fragment key={q.questionId}>
+                  <tr className="border">
                     <td
                       className="cursor-pointer border py-2"
                       onClick={() => toggleRow(q.questionId)}
@@ -496,7 +557,10 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
                         </div>
 
                         {options.map((opt, idx) => (
-                          <div className="mb-2" key={idx}>
+                          <div
+                            className="mb-2"
+                            key={opt.questionId + opt.optionId}
+                          >
                             <label className="mr-2 font-semibold">
                               보기 {opt.optionId}:
                             </label>
@@ -531,7 +595,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
                         </div>
 
                         <button
-                          className="rounded bg-blue-500 px-3 py-1 text-white"
+                          className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
                           onClick={() => handleUpdateInline(q.questionId)}
                         >
                           저장
@@ -539,7 +603,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </tbody>
@@ -565,7 +629,7 @@ export const TestInfoModal: FC<ITestInfoProps> = ({ id }) => {
           )}
           <button
             type="button"
-            onClick={() => setModal({ isOpen: false })}
+            onClick={handleClose}
             className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
           >
             취소
