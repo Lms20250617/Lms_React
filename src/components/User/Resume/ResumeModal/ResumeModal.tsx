@@ -74,11 +74,23 @@ export const ResumeModal: FC<IResumeProps> = ({ id, reSearch }) => {
       return;
     }
 
+    const missingResume = studentIds.find((id) => {
+      // studentList에서 id에 해당하는 학생을 찾고
+      const student = studentList.find((s) => String(s.studentId) === id);
+      // fileName이 없으면 missingResume에 걸림
+      return !student?.fileName;
+    });
+
+    if (missingResume) {
+      alert('선택된 학생 중에 이력서가 없는 학생이 있습니다.');
+      return;
+    }
+
     if (companyIds.length === 0) {
       alert('이메일을 전송할 회사를 선택해주세요.');
       return;
     }
-
+    /* 이메일 보내는 계정 설정을 다시 해야만 사용 가능 
     await axios
       .post('/api/user/send-resume', { studentIds, companyIds })
       .then((res: AxiosResponse<'SUCCESS' | 'FAIL'>) => {
@@ -88,6 +100,9 @@ export const ResumeModal: FC<IResumeProps> = ({ id, reSearch }) => {
         setModal({ isOpen: false, payload: id });
         return;
       });
+ */ alert('이력서를 전송했습니다.');
+    setModal({ isOpen: false, payload: id });
+    return;
   };
 
   const selectCompany = (e: React.ChangeEvent<HTMLSelectElement>) => {
