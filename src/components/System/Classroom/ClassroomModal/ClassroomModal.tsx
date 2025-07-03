@@ -152,6 +152,7 @@ export const ClassroomModal: FC<IClassroomProps> = ({
           <input
             type="number"
             step={1}
+            min={0}
             name="roomPersonnel"
             defaultValue={detail?.roomPersonnel}
           />

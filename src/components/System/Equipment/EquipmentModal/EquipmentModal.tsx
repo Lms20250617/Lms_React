@@ -139,11 +139,17 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
 
     const formData = new FormData(formRef.current as HTMLFormElement);
     // roomId가 비어있으면 detail에서 가져와서 다시 채워넣기
+    // formData에 입력한 roomId값을 가져옴
     const rawRoomId = formData.get('roomId')?.toString();
     const fixedRoomId =
+      // rawRoomId가 있을 때, trim --> 문자열의 앞뒤 공백을 제거하겠다
+      // !=='' --> 공백을 제거한 값이 빈 문자열이 아닌지 확인
       rawRoomId && rawRoomId.trim() !== ''
-        ? rawRoomId
-        : (detail?.roomId?.toString() ?? '');
+        ? // 조건이 참이면 rawRoomId 사용
+          rawRoomId
+        : // 조건이 거짓일 때, detail 객체가 존재하면, roomId가 존재하면 number인 roomId를 string으로 변환
+          // ?? '' --> 앞의 값이 null이나 undifined일 경우 ''(빈문자열)로 대체
+          (detail?.roomId?.toString() ?? '');
     formData.set('roomId', fixedRoomId);
     // 혹시 백엔드에서 room_id 이름으로도 쓰면 대비
     formData.set('room_id', fixedRoomId);
@@ -160,8 +166,10 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
   const deleteDetail = () => {
     const param = new URLSearchParams({ equipId: id.toString() });
     axios
+      // equipmentDelete.do에서 equipId 받아서 삭제 진행
       .post('/api/system/equipmentDelete.do', param)
       .then((res: AxiosResponse<IPostResponse>) => {
+        // 서버가 success 반환하면 alert창 알림
         if (res.data.result === 'success') {
           alert('삭제 되었습니다');
           setModal({ isOpen: false });
@@ -170,16 +178,24 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
       });
   };
 
+  // e는 <input>의 이벤트 객체이며 타입은 ChangeEvent<HTMLInputElement>이다.
   const handlerFile = (e: ChangeEvent<HTMLInputElement>) => {
+    // 사용자가 고른 파일을 fileInfo에 저장하겠다.
     const fileInfo = e.target.files;
 
+    // 파일이 한개 선택되었는지 확인, ? --> fileInfo가 null일 때를 대비
     if (fileInfo?.length) {
+      // 첫번째 파일의 이름을 . 기준으로 분리하겠다. ex) file.jpg --> ['file' , 'jpg' ]
       const fileInfoSplit = fileInfo[0].name.split('.');
+      // fileInfoSplit에 저장된 2번째 객체인 파일 확장자를 소문자로 교체시킨다.
       const fileExt = fileInfoSplit[1].toLowerCase();
 
+      // 확장자가 jpg, gif, png 일때,
       if (fileExt === 'jpg' || fileExt === 'gif' || fileExt === 'png') {
+        // 브라우저 내 임시 URL(fileInfo[0]) 생성해서 setImageUrl 상태에 저장
         setImageUrl(URL.createObjectURL(fileInfo[0]));
       } else {
+        // 이미지가 아닌경우 빈값 처리
         setImageUrl('');
       }
     }
@@ -278,6 +294,7 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
           <input
             type="number"
             name="equipQuantity"
+            // 최소가 0이 되도록
             min={0}
             defaultValue={detail?.equipQuantity}
             required

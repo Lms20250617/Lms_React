@@ -47,7 +47,7 @@ export const EquipmentMain = () => {
 
   // selectedRoomId, searchequipData 값이 변하면 selectedRoomId값이 들어간 searchEquipmentList 실행
   useEffect(() => {
-    searchEquipmentList(selectedRoomId);
+    selectedRoomId && searchEquipmentList(selectedRoomId);
   }, [selectedRoomId, searchequipData]);
 
   // 검색한 값을 통해 조건에 맞는 데이터를 불러옴
@@ -91,12 +91,12 @@ export const EquipmentMain = () => {
         setEquipmentCnt(res.data.count);
       });
   };
-  
+
   // number형 timestamp를 받겠다. 얘를 string으로 반환하겠다.
   const formatDate = (timestamp: number): string => {
     // 넘겨받은 number형 timestamp를 Date객체 생성
     const date = new Date(timestamp);
-    // date객체를 ISO 8601형식 문자열로 반환하겠다. 
+    // date객체를 ISO 8601형식 문자열로 반환하겠다.
     return date.toISOString().split('T')[0];
   };
 
@@ -160,7 +160,6 @@ export const EquipmentMain = () => {
                     className="classroom-cell cursor-pointer text-blue-600 hover:text-blue-800"
                     onClick={() => {
                       setSelectedRoomId(classroom.roomId);
-                      searchEquipmentList(classroom.roomId);
                       // 받아온 id값을 setClassRoomId에 넣어라
                       setClassRoomId(classroom.roomId);
                     }}
