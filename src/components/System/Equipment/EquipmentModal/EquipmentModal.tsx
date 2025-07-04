@@ -216,6 +216,7 @@ export const EquipmentModal: FC<IEquipmentProps> = ({
       { key: 'equipQuantity', label: '수량' },
       { key: 'equipPurchaseDate', label: '구매일자' },
       { key: 'equipGroup', label: '장비분류' },
+      { key: 'equipPerioduseDate', label: '사용기한' },
     ];
 
     // 위 배열을 반복 검사
